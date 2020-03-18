@@ -55,34 +55,63 @@
 </template>
 
 <script>
+
+// 导入apollo客户端相关api
+import gql from 'graphql-tag'
 export default {
+  name: 'Comment',
+  apollo: {
+    books: {
+      query: gql`
+        query books {
+          books {
+            title
+            author
+          }
+        }
+      `
+    }
+  },
+  data () {
+    return {
+      // info表示服务端返回的数据
+      info: {
+        books: []
+      }
+    }
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });
   },
   methods: {
+    login: function() {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation addBook($bookInput: BookInput) {
+            addBook( bookInput: $bookInput) {
+              title
+              author
+            }
+          }
+        `,
+        variables: {
+          bookInput: {
+              title: 'how to study',
+              author: 'juck'
+            }
+        }
+      })
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          // const axios = require('axios')
-          this.axios.post("http://localhost/api/login",values).then((response) => {
-            console.log(response.data)
-          })
+          this.login()
+          // 如何设置请求头，并将Accept字段设置为json（可以按照优先级设置多个）
+          // this.axios.post("http://localhost/api/login",values).then((response) => {
+          //   console.log(response.data)
+          // })
           //======================================================================
-          // 提交表单内容并验证登录---原生实现方法
-          // Login(values.IP,values.userName,values.password,values.remember)
-          // const httpRequest = new XMLHttpRequest(); //第一步：创建需要的对象
-          // httpRequest.open("POST", "http://localhost/api/login", true); //第二步：打开连接
-          // httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-          // httpRequest.send(JSON.stringify(values));
-          // httpRequest.onreadystatechange = function() {
-          //   if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-          //     const json = httpRequest.response; //获取到服务端返回的数据
-          //     console.log(typeof(json));  //string
-          //     console.log(json);
-          //   }
-          // };
-          //=====================================================================
         }
       });
     }

@@ -9,19 +9,7 @@
 const Client = require('ssh2').Client;
 const conn = new Client();
 const Login = (IP, userName, password, remember) => {
-  conn.on('ready', function () {
-    console.log('Client :: ready');
-    conn.shell(function (err, stream) {
-      if (err) throw err;
-      stream.on('close', function () {
-        console.log('Stream :: close');
-        conn.end();
-      }).on('data', function (data) {
-        console.log('OUTPUT: ' + data);
-      });
-      stream.end('ls -l\nexit\n');
-    });
-  }).connect({
+  conn.connect({
     host: IP,
     port: 22,
     username: userName,
@@ -30,6 +18,6 @@ const Login = (IP, userName, password, remember) => {
 }
 
 module.exports = {
-  // conn: conn,
+  conn: conn,
   Login: Login
 }

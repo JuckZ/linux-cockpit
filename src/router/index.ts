@@ -27,6 +27,11 @@ const routes = [
     path: '/desktop',
     name: 'Desktop',
     component: () => import('../views/Desktop.vue')
+  },
+   {
+    path: '/application/shell',
+    name: 'Shell',
+    component: () => import('../application/Shell.vue')
   }
 ]
 
