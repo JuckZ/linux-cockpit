@@ -1,18 +1,38 @@
 const { ApolloServer, gql } = require('apollo-server-koa');
+const { connectSSH, commandSSH } = require('./shell.js')
 const typeDefs = gql`
   input BookInput {
     title: String
     author: String
   }
+  input CommandInput {
+    uploadCommand: String
+  }
+  type CommandRes {
+    commandRes: String
+  }
   type Book {
     title: String
     author: String
   }
+  input LoginInput {
+      IP: String
+      userName: String
+      password: String
+      remember: Boolean
+  }
+  type LoginRes {
+      code: Int
+      msg: String
+  }
   type Query {
-    books: [Book]
+    books: [Book],
+    loginRes: LoginRes
   }
   type Mutation {
       addBook(bookInput: BookInput): Book
+      login(loginInput: LoginInput): LoginRes
+      uploadCommand(commandInput: CommandInput): CommandRes
   }
 
 `;
@@ -28,6 +48,7 @@ const books = [
   },
 ];
 
+let conn = null
 const resolvers = {
   Query: {
     books: () => books,
@@ -38,22 +59,39 @@ const resolvers = {
             title: args.bookInput.title,
             author: args.bookInput.author
         }
+      },
+      login: async (parent, args, context) => {
+          const reqData = args.loginInput
+          // 尝试使用ssh登录，注意要取出Promise对象的isReady属性进行判断登录结果
+          const shellRes = await connectSSH(reqData.IP, reqData.userName, reqData.password, reqData.remember)
+          let msg = ''
+          let code = 500
+          conn = null
+            if(shellRes.isReady) {
+                code = 200
+                msg = '登录成功，即将跳转到桌面'
+                conn = await shellRes.conn
+            }
+            else {
+                code = 500
+                msg = '登录超时，请检查您输入的信息'
+                conn = null
+            }
+            return await {
+                code: code,
+                msg: msg
+            }
+      },
+      uploadCommand: async (parent, args, context) => {
+        const uploadCommand = args.commandInput.uploadCommand
+        const resData = await commandSSH(uploadCommand)
+        return {
+                commandRes: await resData.commandRes
+            }
       }
   }
 };
 
-
-// let isLogin = false
-// const {
-//     conn,
-//     Login
-// } = require("./login")
-
-// TODO:配置一个全部请求都要经过的路由，通过next方法进行后续匹配？，验证是否登录，未登录则返回一个信息，由前端路由跳转
-// const auth = ( ctx, next ) => {
-//     console.log(`验证登录情况和token等--- 方法： ${ctx.request.method} 路径：${ctx.request.path}`)
-//     next()
-// }
 
 const server = new ApolloServer({ typeDefs, resolvers });
 

@@ -1,3 +1,4 @@
+// TODO:清理输入框默认值，修改滑块方式为下拉菜单
 <template>
   <a-form
     id="components-form-demo-normal-login"
@@ -27,17 +28,56 @@
         <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
       </a-input>
     </a-form-item>
+    <!-- <a-form-item>
+  <div>
+    <a-select key=1 :value=value defaultValue="lucy" style="width: 120px" @change="handleChange">
+      <a-icon slot="suffixIcon" type="smile" />
+      <a-select-option key="1" value="jack">Jack</a-select-option>
+      <a-select-option key="2" value="lucy">Lucy</a-select-option>
+      <a-select-option key="3" value="disabled" disabled>Disabled</a-select-option>
+      <a-select-option key="4" value="Yiminghe">yiminghe</a-select-option>
+    </a-select>
+  </div>
+    </a-form-item>-->
     <a-form-item>
-      <a-input
-        v-decorator="[
+      <a-input-group>
+        <a-row :gutter="0">
+          <a-col :span="4">
+            <a-switch
+              defaultChecked
+              checkedChildren="密码"
+              unCheckedChildren="私钥"
+              @change="changeLoginType"
+            />
+          </a-col>
+          <a-col :span="20">
+            <!-- 密码输入框 -->
+            <a-input
+              v-decorator="[
           'password',
           { rules: [{ required: true, message: 'Please input your Password!' }] },
         ]"
-        type="password"
-        placeholder="Password"
-      >
-        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-      </a-input>
+              type="password"
+              placeholder="Password"
+              v-if="loginType === 'password'"
+            >
+              <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+            </a-input>
+            <!-- 文件选择框 -->
+            <a-upload
+              name="file"
+              :multiple="true"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              v-if="loginType == 'privateKey'"
+              @change="uploadPrivateKey"
+            >
+              <a-button>
+                <a-icon type="upload" />Click to Upload
+              </a-button>
+            </a-upload>
+          </a-col>
+        </a-row>
+      </a-input-group>
     </a-form-item>
     <a-form-item>
       <a-checkbox
@@ -55,11 +95,10 @@
 </template>
 
 <script>
-
 // 导入apollo客户端相关api
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 export default {
-  name: 'Comment',
+  name: "Comment",
   apollo: {
     books: {
       query: gql`
@@ -72,23 +111,121 @@ export default {
       `
     }
   },
-  data () {
+  data() {
     return {
       // info表示服务端返回的数据
       info: {
         books: []
-      }
-    }
+      },
+      value: "lucy",
+      loginType: "password"
+    };
   },
+  // value: "lucy",
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });
   },
+  mounted() {
+    // 初始化登录参数
+    this.form.setFieldsValue({
+      IP: 'juck.site',
+      userName: 'root',
+      password: 'Zc1998zc'
+    })
+  },
   methods: {
-    login: function() {
+    // 切换登录方式
+    changeLoginType(checked) {
+      if (checked) this.loginType = "password";
+      else this.loginType = "privateKey";
+    },
+    // 上传私钥
+    uploadPrivateKey(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        this.$message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        this.$message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    async createSocket() {
+      const formData = {
+        IP: "juck.site",
+        userName: "root",
+        password: "Zc1998zc",
+        remember: true
+      };
+      await this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation login($loginInput: LoginInput) {
+              login(loginInput: $loginInput) {
+                # 返回的数据格式为loginRes，字段如下
+                code
+                msg
+              }
+            }
+          `,
+          variables: {
+            loginInput: formData
+          }
+        })
+        .then(res => {
+          this.openNotification(res.data.login);
+          console.log(formData);
+        });
+    },
+    openNotification(loginRes) {
+      let message = "";
+      let description = "";
+      let icon = "";
+      if (loginRes.code === 200) {
+        message = "登录成功";
+        description = `${loginRes.msg}`;
+        icon = <a-icon type="smile" style="color: #108ee9" />;
+        // 创建socket连接
+      } else {
+        message = "登录失败";
+        description = `失败原因：${loginRes.msg}`;
+        icon = <a-icon type="exclamation-circle" style="color: red" />;
+      }
+      this.$notification.open({
+        message: message,
+        description: description,
+        icon: icon
+      });
+    },
+    login: async function(formData) {
+      await this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation login($loginInput: LoginInput) {
+              login(loginInput: $loginInput) {
+                # 返回的数据格式为loginRes，字段如下
+                code
+                msg
+              }
+            }
+          `,
+          variables: {
+            loginInput: formData
+          }
+        })
+        .then(res => {
+          this.openNotification(res.data.login);
+          console.log(res);
+          if (res.data.login.code == 200) {
+            this.$router.push("/application/shell");
+          }
+        });
+    },
+    addBook: function() {
       this.$apollo.mutate({
         mutation: gql`
           mutation addBook($bookInput: BookInput) {
-            addBook( bookInput: $bookInput) {
+            addBook(bookInput: $bookInput) {
               title
               author
             }
@@ -96,22 +233,17 @@ export default {
         `,
         variables: {
           bookInput: {
-              title: 'how to study',
-              author: 'juck'
-            }
+            title: "how to study",
+            author: "juck"
+          }
         }
-      })
+      });
     },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.login()
-          // 如何设置请求头，并将Accept字段设置为json（可以按照优先级设置多个）
-          // this.axios.post("http://localhost/api/login",values).then((response) => {
-          //   console.log(response.data)
-          // })
-          //======================================================================
+          this.login(values);
         }
       });
     }

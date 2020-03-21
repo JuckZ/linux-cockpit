@@ -61,7 +61,7 @@
     "outputDir": "./server/public",
     "devServer": {
       "host": "localhost",
-      "port": 80,
+      "port": 81,
       "open": true
     },
     "css": {

@@ -1,99 +1,107 @@
 <template>
   <div class="webssh">
     <div id="header">
-        <div id="terminal"></div>
+      <div id="terminal"></div>
     </div>
   </div>
 </template>
 <script>
-// import * as Terminal from 'xterm/dist/xterm'
-// import * as fit from 'xterm/dist/addons/fit/fit'
-// import * as attach from 'xterm/lib/addons/attach/attach'
-// import * as zmodem from 'xterm/lib/addons/zmodem/zmodem'
-// import * as search from 'xterm/lib/addons/search/search'
-import { Terminal } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
-import { attach } from 'xterm-addon-attach'
-import { search } from 'xterm-addon-search'
+import gql from "graphql-tag";
+import "xterm/css/xterm.css";
+import { Terminal } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
+import { attach } from "xterm-addon-attach";
+import { search } from "xterm-addon-search";
+const terminal = new Terminal();
 export default {
+  data() {
+    return {};
+  },
+  mounted() {
     
-    data(){
-        return {
-        }
-    },
-    mounted() {
-        // const self=this;
-        const terminal = new Terminal();
-        const fitAddon = new FitAddon();
-        terminal.loadAddon(fitAddon);
-        const ele = document.getElementById("terminal")
-        terminal.open(ele)
-        terminal.focus()
-        fitAddon.fit()
-        terminal.x = 2
-        let command = ''
-                // term相关
-        terminal.onData((data)=>{
-          terminal.write(data)
-        })
-          terminal.on('paste', function (data, ev) {
-            terminal.write(data);
-            window.console.log(ev)
-        });
-          const shellprompt = '$ ';
-          terminal.prompt = function () {
-                terminal.write('\r\n' + shellprompt);
-                terminal.x=2
-            };
-          terminal.on('key', function (key, ev) {
-            const printable = (
-            !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey
-            );
-
-            if (ev.keyCode == 13) {
-                // 回车，执行本行代码并跳转到下一行
-                // 执行命令之后清空
-                self.$store.state.socket.emit('command',command)
-                command=''
-                terminal.prompt();
-            } else if (ev.keyCode == 8) {
-                // Do not delete the prompt
-                if (terminal.x > 2) {
-                    // 退格，命令删掉一个字符，并且回显清楚一个字符
-                    terminal.x--
-                    command=command.slice(0,-1)
-                    terminal.write('\b \b');
-                }
-            } else if (printable) {
-                terminal.x++;
-                terminal.write(key);
-                command+=key
-            }
-        });
-        self.$store.state.socket.on('result', (data)=> {
-            terminal.write("\b \b\b \b"+data+"\n\r$ ");
-        })
-        self.$store.state.socket.on('ready', function () {
-            terminal.writeln("Info: I am Ready")
-            terminal.prompt();
-            // socket.emit('geometry', terminal.cols, terminal.rows)
-        })
-        self.$store.state.socket.on('connect', function () {
-            terminal.writeln("Info: Connected")
-            terminal.prompt();
-            // socket.emit('geometry', terminal.cols, terminal.rows)
-        })
-        self.$store.state.socket.on('disconnect', function () {
-            terminal.writeln("Info: Disconnected")
-            terminal.prompt();
-            // socket.emit('geometry', terminal.cols, terminal.rows)
-        })
-    },
-    methods:{
-    },
-    beforeDestroy(){
-        // 销毁ws等进程
-        // this.socket.disconnect()
+    const fitAddon = new FitAddon();
+    terminal.loadAddon(fitAddon);
+    const ele = document.getElementById("terminal");
+    terminal.open(ele);
+    terminal.focus();
+    // Make the terminal's size and geometry fit the size of #terminal
+    fitAddon.fit();
+    terminal.x = 2;
+    terminal.write('Hello there. It\'s a terminal\n\r# ')
+    console.log(terminal);
+    
+    let printable = false;
+    // 保存当前输入的命令
+    let command = "";
+    terminal.prompt = () => {
+      terminal.write('\n\r# ')
     }
-}
+    // term相关
+    terminal.onKey(data => {
+      const key = data.domEvent.key;
+      // 是否为可打印字符
+      printable =
+        !data.domEvent.altKey &&
+        !data.domEvent.ctrlKey &&
+        !data.domEvent.metaKey;
+      
+      switch (key) {
+        case "Enter":
+          console.log("Enter");
+          // 提交命令并重置command值，然后将光标跳转到下一行行首
+          this.uploadCommand({
+            uploadCommand: command
+          })
+          command = "";
+          terminal.prompt();
+          break;
+        case "Backspace":
+          console.log("Backspace");
+          if (terminal.x > 2) {
+            // 退格，命令删掉一个字符，并且回显清楚一个字符
+            terminal.x--;
+            command = command.slice(0, -1);
+            terminal.write("\b \b");
+          }
+          break;
+        default:
+          if (printable) {
+            console.log('printable')
+            terminal.x++;
+            terminal.write(key);
+            command += key;
+          }
+      }
+    });
+  },
+  methods: {
+    uploadCommand: async function(uploadCommand) {
+      await this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation uploadCommand($commandInput: CommandInput) {
+              uploadCommand(commandInput: $commandInput) {
+                # 返回的数据格式为CommandRes，字段如下
+                commandRes
+              }
+            }
+          `,
+          variables: {
+            commandInput: uploadCommand
+          }
+        })
+        .then(res => {
+            // 先将返回值中的commandRes解析出来，然后将'\n'替换为'\n\r# '，最后还需要再拼接一个'\n\r# '
+            const data = res.data.uploadCommand.commandRes
+            console.log(data)
+            // const data = res.data.uploadCommand.commandRes.replace(/\n/,'\n\r# ')+'\n\r# '
+          terminal.write(data)
+        });
+    },
+  },
+  beforeDestroy() {
+    // 销毁ws等进程
+    // this.socket.disconnect()
+  }
+};
 </script>
