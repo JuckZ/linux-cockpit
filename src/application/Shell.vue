@@ -13,6 +13,25 @@ import { FitAddon } from "xterm-addon-fit";
 import { attach } from "xterm-addon-attach";
 import { search } from "xterm-addon-search";
 const terminal = new Terminal();
+
+// socket部分
+import io from "socket.io-client"
+const socket = io('http://localhost');
+socket.on('connect', function(){
+    console.log('client connect');
+    
+});
+
+socket.on('event', function(){
+    console.log('event');
+});
+socket.on('commandRes', (commandRes) => {
+    terminal.write(commandRes)
+})
+socket.on('disconnect', function(){
+    console.log('client disconnect');
+});
+
 export default {
   data() {
     return {};
@@ -49,9 +68,7 @@ export default {
         case "Enter":
           console.log("Enter");
           // 提交命令并重置command值，然后将光标跳转到下一行行首
-          this.uploadCommand({
-            uploadCommand: command
-          })
+          this.uploadCommand(command)
           command = "";
           terminal.prompt();
           break;
@@ -75,28 +92,9 @@ export default {
     });
   },
   methods: {
-    uploadCommand: async function(uploadCommand) {
-      await this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation uploadCommand($commandInput: CommandInput) {
-              uploadCommand(commandInput: $commandInput) {
-                # 返回的数据格式为CommandRes，字段如下
-                commandRes
-              }
-            }
-          `,
-          variables: {
-            commandInput: uploadCommand
-          }
-        })
-        .then(res => {
-            // 先将返回值中的commandRes解析出来，然后将'\n'替换为'\n\r# '，最后还需要再拼接一个'\n\r# '
-            const data = res.data.uploadCommand.commandRes
-            console.log(data)
-            // const data = res.data.uploadCommand.commandRes.replace(/\n/,'\n\r# ')+'\n\r# '
-          terminal.write(data)
-        });
+    uploadCommand: function(command) {
+        // 发送命令让服务端执行
+        socket.emit('uploadCommand',command)
     },
   },
   beforeDestroy() {

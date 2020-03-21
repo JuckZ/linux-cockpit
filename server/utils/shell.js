@@ -21,16 +21,6 @@ const timeToCommandEvent = new events.EventEmitter();
 let timeToCommandTimer = () => {}
 let timeToLoginTimer = () => {}
 
-
-
-
-
-
-
-
-
-
-
 // 直接调用异步操作，然后await他的结果
 const connectSSH = async (IP, userName, password, remember) => {
   conn.connect({
@@ -69,38 +59,19 @@ const connectSSH = async (IP, userName, password, remember) => {
   })
 }
 
-
-const commandSSH = async (command) => {
-  // 当收到客户端uploadCommand事件即调用命令
-  conn.shell((err, stream) => {
+const commandSSH = (socket,command) => {
+    conn.shell(function(err, stream) {
     if (err) throw err;
-    stream.on('close', function (code, signal) {
-        console.log('Stream :: close');
-        // conn.end();
-      }).on('data', function (data) {
-        // 此处data时object类型
-        console.log(`datais:${data.toString()}`);
-        //一有数据返回就回传
-        // 清除超时计时器
-        clearTimeout(timeToCommandTimer)
-        timeToCommandEvent.emit('timeToCommandRes', data)
-      })
-      .stderr.on('data', function (data) {
-        console.log('STDERR==: ' + data);
-      });
-  })
-  return await new Promise((resolve, reject) => {
-    timeToCommandEvent.on('timeToCommandRes', (data) => {
-      resolve({
-        commandRes: data.toString()
-      })
-    })
-    timeToCommandTimer = setTimeout(() => {
-      // 如果规定时间没有回显，则。。。
-      timeToCommandEvent.emit('timeToCommandRes', 'timeout when exec command')
-      console.log('timeout when exec command')
-    }, timeToCommand)
-  })
+    stream.on('close', function() {
+      console.log('Stream :: close');
+      // conn.end();
+    }).on('data', function(data) {
+      console.log('OUTPUT: ' + data);
+      socket.emit('commandRes',data.toString())
+    });
+    stream.write(command+'\n');
+  });
+  // socket.emit('commandRes',commadnRes)
 }
 
 

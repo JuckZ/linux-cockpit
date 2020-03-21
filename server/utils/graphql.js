@@ -5,12 +5,7 @@ const typeDefs = gql`
     title: String
     author: String
   }
-  input CommandInput {
-    uploadCommand: String
-  }
-  type CommandRes {
-    commandRes: String
-  }
+
   type Book {
     title: String
     author: String
@@ -32,7 +27,6 @@ const typeDefs = gql`
   type Mutation {
       addBook(bookInput: BookInput): Book
       login(loginInput: LoginInput): LoginRes
-      uploadCommand(commandInput: CommandInput): CommandRes
   }
 
 `;
@@ -80,13 +74,6 @@ const resolvers = {
             return await {
                 code: code,
                 msg: msg
-            }
-      },
-      uploadCommand: async (parent, args, context) => {
-        const uploadCommand = args.commandInput.uploadCommand
-        const resData = await commandSSH(uploadCommand)
-        return {
-                commandRes: await resData.commandRes
             }
       }
   }

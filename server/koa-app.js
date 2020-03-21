@@ -1,5 +1,6 @@
 // 获取koa请求参数的3种方法
 // ctx.query ctx.params ctx.request.body
+
 const Koa = require('koa');
 const path = require('path')
 const serve = require('koa-static')
@@ -11,6 +12,18 @@ const app = new Koa();
 const fs = require('fs')
 const router = new Router()
 const { server } = require('./utils/graphql')
+// 整合socket和Koa
+const serverWithSocket = require('http').createServer(app.callback());
+const io = require('socket.io')(serverWithSocket)
+const { commandSSH } = require('./utils/shell.js')
+
+io.on('connection', (socket) => {
+    console.log('++++++++++++++ io connection ++++++++++++++')
+    socket.on('uploadCommand', (command)=>{
+        commandSSH(socket,command)
+    })
+    // socket.emit('event')
+})
 
 
 //  错误处理中间件
@@ -37,6 +50,7 @@ app.use(bodyParser())
 // 静态资源目录配置
 app.use(serve(path.join(__dirname) + '/public/'))
 app.use(router.routes()).use(router.allowedMethods())
-app.listen(80);
+// app.listen(80);
+serverWithSocket.listen(80)
 server.applyMiddleware({ app })
 console.log(`Server running at port 80`)
