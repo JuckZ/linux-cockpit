@@ -15,14 +15,15 @@ const { server } = require('./utils/graphql')
 // 整合socket和Koa
 const serverWithSocket = require('http').createServer(app.callback());
 const io = require('socket.io')(serverWithSocket)
-const { commandSSH } = require('./utils/shell.js')
+const { commandSSH, initSocket } = require('./utils/shell.js')
 
 io.on('connection', (socket) => {
     console.log('++++++++++++++ io connection ++++++++++++++')
+    // 将socket对象共享到shell.js中
+    initSocket(socket)
     socket.on('uploadCommand', (command)=>{
-        commandSSH(socket,command)
+        commandSSH(command)
     })
-    // socket.emit('event')
 })
 
 

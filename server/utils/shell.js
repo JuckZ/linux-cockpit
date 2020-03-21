@@ -12,6 +12,8 @@ const Client = require('ssh2').Client;
 const conn = new Client();
 // 用于表示shell是否准备就绪
 let isReady = false
+// 存储socket对象
+let mySocket = null
 // 自定义参数
 // 登录超时时间
 const timeToLogin = 3000
@@ -21,6 +23,25 @@ const timeToCommandEvent = new events.EventEmitter();
 let timeToCommandTimer = () => {}
 let timeToLoginTimer = () => {}
 
+const initSocket = socket => {
+  mySocket = socket
+  // 创建shell
+  if(isReady)
+  conn.shell(function (err, stream) {
+  if (err) throw err;
+  stream.on('close', function () {
+    console.log('Stream :: close');
+    // conn.end();
+  }).on('data', function (data) {
+    mySocket.emit('commandRes',data.toString())
+  });
+  conn.on('uploadCommand',(command) => {
+    stream.write(command+'\n')
+  })
+});
+
+}
+
 // 直接调用异步操作，然后await他的结果
 const connectSSH = async (IP, userName, password, remember) => {
   conn.connect({
@@ -29,21 +50,22 @@ const connectSSH = async (IP, userName, password, remember) => {
     username: userName,
     password: password
   })
-  // 错误处理
-  conn.on('error', (err) => {
-    console.log('======================')
-    console.log(err.toString())
-    console.log('======================')
-  })
-  // 就绪处理
+
+      // 就绪处理
   conn.on('ready', () => {
     isReady = true
     console.log('client ready')
     // 清除登录超时计时器，触发登录成功事件（即向客户端发送登录成功的响应）
     clearTimeout(timeToLoginTimer)
     timeToLoginEvent.emit('timeToLoginRes')
-
   });
+  // 错误处理
+  conn.on('error', (err) => {
+    console.log('======================')
+    console.log(err.toString())
+    console.log('======================')
+  })
+
   return await new Promise((resolve, reject) => {
     // 登录最多5秒，如果没有就绪即超时
     timeToLoginEvent.on('timeToLoginRes', () => {
@@ -59,23 +81,14 @@ const connectSSH = async (IP, userName, password, remember) => {
   })
 }
 
-const commandSSH = (socket,command) => {
-    conn.shell(function(err, stream) {
-    if (err) throw err;
-    stream.on('close', function() {
-      console.log('Stream :: close');
-      // conn.end();
-    }).on('data', function(data) {
-      console.log('OUTPUT: ' + data);
-      socket.emit('commandRes',data.toString())
-    });
-    stream.write(command+'\n');
-  });
-  // socket.emit('commandRes',commadnRes)
+const commandSSH = (command) => {
+  // 触发命令上传的监听事件
+  conn.emit('uploadCommand',command)
 }
 
 
 module.exports = {
   connectSSH: connectSSH,
-  commandSSH: commandSSH
+  commandSSH: commandSSH,
+  initSocket: initSocket
 }

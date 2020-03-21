@@ -19,7 +19,6 @@ import io from "socket.io-client"
 const socket = io('http://localhost');
 socket.on('connect', function(){
     console.log('client connect');
-    
 });
 
 socket.on('event', function(){
@@ -37,7 +36,6 @@ export default {
     return {};
   },
   mounted() {
-    
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
     const ele = document.getElementById("terminal");
@@ -45,16 +43,14 @@ export default {
     terminal.focus();
     // Make the terminal's size and geometry fit the size of #terminal
     fitAddon.fit();
-    terminal.x = 2;
-    terminal.write('Hello there. It\'s a terminal\n\r# ')
     console.log(terminal);
     
     let printable = false;
     // 保存当前输入的命令
     let command = "";
-    terminal.prompt = () => {
-      terminal.write('\n\r# ')
-    }
+    // terminal.prompt = () => {
+    //   terminal.write('\n\r# ')
+    // }
     // term相关
     terminal.onKey(data => {
       const key = data.domEvent.key;
@@ -66,24 +62,24 @@ export default {
       
       switch (key) {
         case "Enter":
-          console.log("Enter");
-          // 提交命令并重置command值，然后将光标跳转到下一行行首
+          // 清除terminal中当前行的内容（因为避免与服务端返回的内容重复），然后提交命令并重置command值
+          for(let i = command.length; i > 0; i--){
+              console.log('one');
+            terminal.write("\b \b")
+          }
           this.uploadCommand(command)
           command = "";
-          terminal.prompt();
+        //   terminal.prompt();
           break;
         case "Backspace":
-          console.log("Backspace");
-          if (terminal.x > 2) {
-            // 退格，命令删掉一个字符，并且回显清楚一个字符
-            terminal.x--;
+          {
+            // 退格，命令删掉一个字符，并且回显清除一个字符
             command = command.slice(0, -1);
             terminal.write("\b \b");
           }
           break;
         default:
           if (printable) {
-            console.log('printable')
             terminal.x++;
             terminal.write(key);
             command += key;
