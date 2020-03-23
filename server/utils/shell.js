@@ -30,7 +30,6 @@ const initSocket = socket => {
   conn.shell(function (err, stream) {
   if (err) throw err;
   stream.on('close', function () {
-    console.log('Stream :: close');
     // conn.end();
   }).on('data', function (data) {
     mySocket.emit('commandRes',data.toString())
@@ -52,10 +51,9 @@ const connectSSH = async (IP, userName, password, remember) => {
     password: password
   })
 
-      // 就绪处理
+  // 就绪处理
   conn.on('ready', () => {
     isReady = true
-    console.log('client ready')
     // 清除登录超时计时器，触发登录成功事件（即向客户端发送登录成功的响应）
     clearTimeout(timeToLoginTimer)
     timeToLoginEvent.emit('timeToLoginRes')

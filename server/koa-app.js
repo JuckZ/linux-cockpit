@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
         commandSSH(command)
     })
     socket.on('disconnect', () => {
-        console.log('断开连接'+io.clients.length);
+        // console.log('断开连接');
         socket.disconnect();
         
         // 广播

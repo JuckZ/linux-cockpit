@@ -43,22 +43,17 @@ export default {
     if (this.$store.state.isLogined == true) {
       socket = io("http://localhost");
       socket.on("connect", function() {
-        console.log("client connect");
-      });
-      socket.on("event", function() {
-        console.log("event");
+        // console.log("client connect");
       });
       socket.on("commandRes", commandRes => {
         terminal.write(commandRes);
       });
       socket.on("disconnect", function() {
-        console.log("client disconnect");
+        // console.log("client disconnect");
       });
     } else {
       // this 指的是webssh
       // 提示您尚未登录，然后跳转到登录页面
-      console.log(this.$parent.$message);
-      
       this.$parent.$message.error("您尚未登录");
       this.$parent.$parent.$router.push("/login");
     }

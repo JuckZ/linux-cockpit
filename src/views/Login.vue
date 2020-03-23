@@ -198,6 +198,10 @@ export default {
       });
     },
     login: async function(formData) {
+      if(this.$parent.$store.state.isLogined) {
+        this.$parent.$router.push("/application/shell");
+        return;
+      }
       await this.$apollo
         .mutate({
           mutation: gql`
@@ -216,7 +220,6 @@ export default {
         .then(res => {
           // 注意此处的this指向，是表单
           this.openNotification(res.data.login);
-          console.log(res);
           if (res.data.login.code == 200) {
             this.$router.push("/application/shell");
             // 修改vuex中的登录状态为true
