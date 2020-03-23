@@ -43,6 +43,7 @@ const initSocket = socket => {
 }
 
 // 直接调用异步操作，然后await他的结果
+// privateKey: require('fs').readFileSync('/here/is/my/key')
 const connectSSH = async (IP, userName, password, remember) => {
   conn.connect({
     host: IP,

@@ -8,7 +8,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/about',
@@ -16,27 +19,39 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/Login.vue'),
+    meta: {
+      keepAlive: true
+    }
   },
    {
     path: '/desktop',
     name: 'Desktop',
-    component: () => import('../views/Desktop.vue')
+    component: () => import('../views/Desktop.vue'),
+    meta: {
+      keepAlive: true
+    }
   },
    {
     path: '/application/shell',
     name: 'Shell',
-    component: () => import('../application/Shell.vue')
+    component: () => import('../application/Shell.vue'),
+    meta: {
+      keepAlive: true
+    }
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

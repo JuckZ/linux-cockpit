@@ -214,10 +214,13 @@ export default {
           }
         })
         .then(res => {
+          // 注意此处的this指向，是表单
           this.openNotification(res.data.login);
           console.log(res);
           if (res.data.login.code == 200) {
             this.$router.push("/application/shell");
+            // 修改vuex中的登录状态为true
+            this.$parent.$store.state.isLogined = true;
           }
         });
     },

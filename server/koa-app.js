@@ -24,8 +24,17 @@ io.on('connection', (socket) => {
     socket.on('uploadCommand', (command)=>{
         commandSSH(command)
     })
+    socket.on('disconnect', () => {
+        console.log('断开连接'+io.clients.length);
+        socket.disconnect();
+        
+        // 广播
+        // socket.broadcast.emit(...)
+    })
 })
 
+// 广播
+// io.emit('xxx',()={})
 
 //  错误处理中间件
 const errorHandle = async (ctx, next) => {

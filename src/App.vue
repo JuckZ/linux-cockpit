@@ -7,7 +7,10 @@
       <router-link to="/desktop">Desktop</router-link> |
       <router-link to="/application/shell">Shell</router-link>
     </div>
-    <router-view/>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 
