@@ -14,23 +14,27 @@ import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 import { attach } from "xterm-addon-attach";
 import { search } from "xterm-addon-search";
-import io from "socket.io-client";
-let socket;
 
+console.log('dom');
 export default {
   data() {
     return {};
   },
   beforeCreate() {
     //
+    console.log('beforeCreate');
   },
   created() {
     //
+    console.log('created');
   },
   destroyed() {
+    console.log('destroyed');
+    
     //
   },
   mounted() {
+    console.log('mounted');
     const terminal = new Terminal();
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
@@ -41,14 +45,13 @@ export default {
     // socket部分
     // 检查登录状态，如果已经是登录状态才可以建立socket连接
     if (this.$store.state.isLogined == true) {
-      socket = io("http://localhost");
-      socket.on("connect", function() {
+      this.$store.state.socket.on("connect", function() {
         // console.log("client connect");
       });
-      socket.on("commandRes", commandRes => {
+      this.$store.state.socket.on("commandRes", commandRes => {
         terminal.write(commandRes);
       });
-      socket.on("disconnect", function() {
+      this.$store.state.socket.on("disconnect", function() {
         // console.log("client disconnect");
       });
     } else {
@@ -101,7 +104,7 @@ export default {
   methods: {
     uploadCommand: function(command) {
       // 发送命令让服务端执行
-      socket.emit("uploadCommand", command);
+      this.$store.state.socket.emit("uploadCommand", command);
     }
   },
   beforeDestroy() {

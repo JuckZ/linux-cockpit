@@ -5,7 +5,7 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/login">Login</router-link> |
       <router-link to="/desktop">Desktop</router-link> |
-      <router-link to="/application/shell">Shell</router-link>
+      <router-link to="/apps/shell">Shell</router-link>
     </div>
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>

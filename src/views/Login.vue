@@ -97,6 +97,7 @@
 <script>
 // 导入apollo客户端相关api
 import gql from "graphql-tag";
+import io from "socket.io-client";
 export default {
   name: "Comment",
   apollo: {
@@ -199,7 +200,7 @@ export default {
     },
     login: async function(formData) {
       if(this.$parent.$store.state.isLogined) {
-        this.$parent.$router.push("/application/shell");
+        this.$parent.$router.push("/apps/shell");
         return;
       }
       await this.$apollo
@@ -221,9 +222,10 @@ export default {
           // 注意此处的this指向，是表单
           this.openNotification(res.data.login);
           if (res.data.login.code == 200) {
-            this.$router.push("/application/shell");
+            this.$router.push("/apps/shell");
             // 修改vuex中的登录状态为true
             this.$parent.$store.state.isLogined = true;
+            this.$parent.$store.state.socket = io("http://localhost");
           }
         });
     },

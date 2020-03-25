@@ -41,9 +41,9 @@ const routes = [
     }
   },
    {
-    path: '/application/shell',
+    path: '/apps/shell',
     name: 'Shell',
-    component: () => import('../application/Shell.vue'),
+    component: () => import('../apps/Shell/index.vue'),
     meta: {
       keepAlive: true
     }

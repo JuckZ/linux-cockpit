@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["about"],{f820:function(t,e,n){"use strict";n.r(e);var a=function(){var t=this,e=t.$createElement;t._self._c;return t._m(0)},s=[function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("div",{staticClass:"home"},[a("img",{attrs:{alt:"Vue logo",src:n("cf05")}}),t._v(" 关于我们 ")])}],c=(n("fdab"),{name:"About"}),l=c,r=n("2877"),u=Object(r["a"])(l,a,s,!1,null,null,null);e["default"]=u.exports}}]);
-//# sourceMappingURL=about.b6fe8d85.js.map
