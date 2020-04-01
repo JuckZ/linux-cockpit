@@ -64,3 +64,12 @@ module.exports = {
     }
   }
 }
+
+
+## API
+
+1. 天气查询
+  i.tianqi.com/index.php?c=code&id=55
+2. bing每日壁纸
+  https://bing.biturl.top/
+3. 

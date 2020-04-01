@@ -7,12 +7,9 @@ export default new Vuex.Store({
   state: {
     token: '',
     isLogined: false,
-    socket: null
+    socket: null,
   },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
+  mutations: {},
+  actions: {},
+  modules: {},
 })

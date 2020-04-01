@@ -1,59 +1,54 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '@/platform/apps/Login/Index.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Desktop',
+    component: () => import('@/platform/apps/Desktop/Index.vue'),
     meta: {
-      keepAlive: true
-    }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-    meta: {
-      keepAlive: true
-    }
+      keepAlive: true,
+    },
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue'),
+    component: Login,
     meta: {
-      keepAlive: true
-    }
+      keepAlive: true,
+    },
   },
-   {
+  {
     path: '/desktop',
     name: 'Desktop',
-    component: () => import('../views/Desktop.vue'),
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ '@/platform/apps/Desktop/Index.vue'
+      ),
     meta: {
-      keepAlive: true
-    }
+      keepAlive: true,
+    },
   },
-   {
-    path: '/apps/shell',
-    name: 'Shell',
-    component: () => import('../apps/Shell/index.vue'),
+  {
+    path: '/*',
+    name: 'notfound',
+    component: () => import('@/platform/apps/NotFound/Index.vue'),
     meta: {
-      keepAlive: true
-    }
-  }
+      keepAlive: true,
+    },
+  },
 ]
 
 const router = new VueRouter({
   mode: 'hash',
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 export default router

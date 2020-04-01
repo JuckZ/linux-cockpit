@@ -5,29 +5,35 @@ const Koa = require('koa');
 const path = require('path')
 const serve = require('koa-static')
 const Router = require('@koa/router')
-const cors = require('@koa/cors')
+// const cors = require('@koa/cors')
 // const views = require('koa-views')
 const bodyParser = require('koa-bodyparser')
 const app = new Koa();
 const fs = require('fs')
 const router = new Router()
-const { server } = require('./utils/graphql')
+const {
+    server
+} = require('./utils/graphql')
+
 // 整合socket和Koa
 const serverWithSocket = require('http').createServer(app.callback());
 const io = require('socket.io')(serverWithSocket)
-const { commandSSH, initSocket } = require('./utils/shell.js')
+const {
+    commandSSH,
+    initSocket
+} = require('./utils/shell.js')
 
 io.on('connection', (socket) => {
     console.log('++++++++++++++ io connection ++++++++++++++')
     // 将socket对象共享到shell.js中
     initSocket(socket)
-    socket.on('uploadCommand', (command)=>{
+    socket.on('uploadCommand', (command) => {
         commandSSH(command)
     })
     socket.on('disconnect', () => {
         // console.log('断开连接');
         socket.disconnect();
-        
+
         // 广播
         // socket.broadcast.emit(...)
     })
@@ -40,12 +46,12 @@ io.on('connection', (socket) => {
 const errorHandle = async (ctx, next) => {
     try {
         await next();
-    } catch(err) {
+    } catch (err) {
         ctx.response.status = err.statusCode || err.status || 500
         ctx.response.body = {
-            status:  err.statusCode || err.status || 500,
+            status: err.statusCode || err.status || 500,
             message: err.message,
-            router: "错误处理中间件"
+            router: '错误处理中间件'
         }
     }
 }
@@ -53,7 +59,7 @@ const errorHandle = async (ctx, next) => {
 // 错误处理中间件，要放在最前面
 app.use(errorHandle)
 // 允许跨域
-app.use(cors())
+// app.use(cors())
 app.use(bodyParser())
 // 验证登录和token等
 // app.use(auth)
@@ -62,5 +68,7 @@ app.use(serve(path.join(__dirname) + '/public/'))
 app.use(router.routes()).use(router.allowedMethods())
 // app.listen(80);
 serverWithSocket.listen(80)
-server.applyMiddleware({ app })
-console.log(`Server running at port 80`)
+server.applyMiddleware({
+    app
+})
+console.log('Server running at port 80')

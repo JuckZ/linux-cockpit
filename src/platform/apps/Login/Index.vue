@@ -10,7 +10,14 @@
       <a-input
         v-decorator="[
           'IP',
-          { rules: [{ required: true, message: 'Please input your server\'s ip address or domain!' }] },
+          {
+            rules: [
+              {
+                required: true,
+                message: 'Please input your server\'s ip address or domain!',
+              },
+            ],
+          },
         ]"
         placeholder="IP address or Domin"
       >
@@ -21,7 +28,9 @@
       <a-input
         v-decorator="[
           'userName',
-          { rules: [{ required: true, message: 'Please input your username!' }] },
+          {
+            rules: [{ required: true, message: 'Please input your username!' }],
+          },
         ]"
         placeholder="Username"
       >
@@ -54,14 +63,22 @@
             <!-- 密码输入框 -->
             <a-input
               v-decorator="[
-          'password',
-          { rules: [{ required: true, message: 'Please input your Password!' }] },
-        ]"
+                'password',
+                {
+                  rules: [
+                    { required: true, message: 'Please input your Password!' },
+                  ],
+                },
+              ]"
               type="password"
               placeholder="Password"
               v-if="loginType === 'password'"
             >
-              <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+              <a-icon
+                slot="prefix"
+                type="lock"
+                style="color: rgba(0,0,0,.25)"
+              />
             </a-input>
             <!-- 文件选择框 -->
             <a-upload
@@ -71,9 +88,7 @@
               v-if="loginType == 'privateKey'"
               @change="uploadPrivateKey"
             >
-              <a-button>
-                <a-icon type="upload" />Click to Upload
-              </a-button>
+              <a-button> <a-icon type="upload" />Click to Upload </a-button>
             </a-upload>
           </a-col>
         </a-row>
@@ -88,18 +103,24 @@
             initialValue: true,
           },
         ]"
-      >Remember me</a-checkbox>
-      <a-button type="primary" html-type="submit" class="login-form-button">Log in</a-button>
+        >Remember me</a-checkbox
+      >
+      <a-button type="primary" html-type="submit" class="login-form-button"
+        ><a-icon type="login" />Log in</a-button
+      >
+      <a-button type="default" @click="skipLogin"
+        >Skip Login<a-icon type="right"
+      /></a-button>
     </a-form-item>
   </a-form>
 </template>
 
 <script>
 // 导入apollo客户端相关api
-import gql from "graphql-tag";
-import io from "socket.io-client";
+import gql from 'graphql-tag'
+import io from 'socket.io-client'
 export default {
-  name: "Comment",
+  name: 'Comment',
   apollo: {
     books: {
       query: gql`
@@ -109,55 +130,59 @@ export default {
             author
           }
         }
-      `
-    }
+      `,
+    },
   },
   data() {
     return {
       // info表示服务端返回的数据
       info: {
-        books: []
+        books: [],
       },
-      value: "lucy",
-      loginType: "password"
-    };
+      value: 'lucy',
+      loginType: 'password',
+    }
   },
   // value: "lucy",
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "normal_login" });
+    this.form = this.$form.createForm(this, { name: 'normal_login' })
   },
   mounted() {
+    // 如果已经登录则直接跳转
+    if (this.$parent.$store.state.isLogined) {
+      this.$parent.$router.push('/desktop')
+    }
     // 初始化登录参数
     this.form.setFieldsValue({
       IP: 'juck.site',
       userName: 'root',
-      password: 'Zc1998zc'
+      password: 'Zc1998zc',
     })
   },
   methods: {
     // 切换登录方式
     changeLoginType(checked) {
-      if (checked) this.loginType = "password";
-      else this.loginType = "privateKey";
+      if (checked) this.loginType = 'password'
+      else this.loginType = 'privateKey'
     },
     // 上传私钥
     uploadPrivateKey(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList)
       }
-      if (info.file.status === "done") {
-        this.$message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        this.$message.error(`${info.file.name} file upload failed.`);
+      if (info.file.status === 'done') {
+        this.$message.success(`${info.file.name} file uploaded successfully`)
+      } else if (info.file.status === 'error') {
+        this.$message.error(`${info.file.name} file upload failed.`)
       }
     },
     async createSocket() {
       const formData = {
-        IP: "juck.site",
-        userName: "root",
-        password: "Zc1998zc",
-        remember: true
-      };
+        IP: 'juck.site',
+        userName: 'root',
+        password: 'Zc1998zc',
+        remember: true,
+      }
       await this.$apollo
         .mutate({
           mutation: gql`
@@ -170,38 +195,39 @@ export default {
             }
           `,
           variables: {
-            loginInput: formData
-          }
+            loginInput: formData,
+          },
         })
         .then(res => {
-          this.openNotification(res.data.login);
-          console.log(formData);
-        });
+          this.openNotification(res.data.login)
+          console.log(formData)
+        })
     },
     openNotification(loginRes) {
-      let message = "";
-      let description = "";
-      let icon = "";
+      let message = ''
+      let description = ''
+      let icon = ''
       if (loginRes.code === 200) {
-        message = "登录成功";
-        description = `${loginRes.msg}`;
-        icon = <a-icon type="smile" style="color: #108ee9" />;
+        message = '登录成功'
+        description = `${loginRes.msg}`
+        icon = <a-icon type="smile" style="color: #108ee9" />
         // 创建socket连接
       } else {
-        message = "登录失败";
-        description = `失败原因：${loginRes.msg}`;
-        icon = <a-icon type="exclamation-circle" style="color: red" />;
+        message = '登录失败'
+        description = `失败原因：${loginRes.msg}`
+        icon = <a-icon type="exclamation-circle" style="color: red" />
       }
       this.$notification.open({
         message: message,
         description: description,
-        icon: icon
-      });
+        icon: icon,
+      })
     },
     login: async function(formData) {
-      if(this.$parent.$store.state.isLogined) {
-        this.$parent.$router.push("/apps/shell");
-        return;
+      if (this.$parent.$store.state.isLogined) {
+        // 如果已经登录就直接进入桌面
+        this.$parent.$router.push('/desktop')
+        return
       }
       await this.$apollo
         .mutate({
@@ -215,19 +241,19 @@ export default {
             }
           `,
           variables: {
-            loginInput: formData
-          }
+            loginInput: formData,
+          },
         })
         .then(res => {
           // 注意此处的this指向，是表单
-          this.openNotification(res.data.login);
+          this.openNotification(res.data.login)
           if (res.data.login.code == 200) {
-            this.$router.push("/apps/shell");
+            this.$router.push('/desktop')
             // 修改vuex中的登录状态为true
-            this.$parent.$store.state.isLogined = true;
-            this.$parent.$store.state.socket = io("http://localhost");
+            this.$parent.$store.state.isLogined = true
+            this.$parent.$store.state.socket = io('http://localhost')
           }
-        });
+        })
     },
     addBook: function() {
       this.$apollo.mutate({
@@ -241,22 +267,25 @@ export default {
         `,
         variables: {
           bookInput: {
-            title: "how to study",
-            author: "juck"
-          }
-        }
-      });
+            title: 'how to study',
+            author: 'juck',
+          },
+        },
+      })
     },
     handleSubmit(e) {
-      e.preventDefault();
+      e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.login(values);
+          this.login(values)
         }
-      });
-    }
-  }
-};
+      })
+    },
+    skipLogin() {
+      this.$router.push('/desktop')
+    },
+  },
+}
 </script>
 <style>
 #components-form-demo-normal-login {

@@ -2,7 +2,7 @@
   "name": "linux-cockpit",
   "version": "0.1.0",
   "private": true,
-  "main": "server/main.js",
+  "main": "server/electron-main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,7 +10,6 @@
     "start": "(vue-cli-service build) && (electron .)"
   },
   "dependencies": {
-    "@koa/cors": "2",
     "@koa/router": "^8.0.8",
     "ant-design-vue": "^1.4.12",
     "apollo-boost": "^0.4.7",
@@ -63,7 +62,15 @@
     "devServer": {
       "host": "localhost",
       "port": 81,
-      "open": true
+      "open": true,
+      "proxy": {
+        "/api": {
+          "target": "http://localhost:80",
+          "pathRewrite": {
+            "^/api": ""
+          }
+        }
+      }
     },
     "css": {
       "loaderOptions": {
