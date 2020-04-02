@@ -6,7 +6,8 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 
-import desktop from '@/platform/apps/Desktop/store'
+import desktop from '@/platform/apps/Desktop/store/'
+import menu from '@/platform/apps/Menu/store/'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules: {
-    desktop,
+    desktop: desktop.store,
+    menu: menu.store,
   },
 })

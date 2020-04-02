@@ -4,7 +4,7 @@ import actions from './actions'
 import getters from './getters'
 
 export default {
-  moduleName: 'Desktop',
+  moduleName: 'Menu',
   store: {
     namespaced: true,
     state,

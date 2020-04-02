@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -16,13 +17,18 @@ export default {
     }
   },
   methods: {
-    toggleMenu() {
-      // 弹出或者收起开始菜单
-      this.$store.state.showMenu = !this.$store.state.showMenu
-      //   this.show = !this.show
-      //   this.$parent.$parent.$emit('toggleMenuEvent', this.show)
-      console.log(this.$store.state.showMenu)
-    },
+    ...mapActions({
+      toggleMenu: 'menu/toggleMenu',
+    }),
+    // toggleMenu() {
+    //   console.log('here toggle')
+
+    // 弹出或者收起开始菜单
+    //   this.$store.state.showMenu = !this.$store.state.showMenu
+    //   this.show = !this.show
+    //   this.$parent.$parent.$emit('toggleMenuEvent', this.show)
+    //   console.log(this.$store.state.showMenu)
+    // },
   },
 }
 </script>

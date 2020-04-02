@@ -1,5 +1,5 @@
 <template>
-  <div id="menu" ref="menu">
+  <div :style="'display:' + show" id="menu" ref="menu">
     <!-- <a @click="toggleMenu" href="javascript:void(0)">
         <img src="../../../assets/win7/win.svg" />
       </a> -->
@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -14,19 +15,17 @@ export default {
     }
   },
   computed: {
-    show() {
-      console.log('computed')
-
-      return this.$store.state.showMenu
-    },
+    ...mapState('menu', {
+      show: 'show',
+    }),
   },
-  watch: {
-    show: function(val) {
-      console.log('watched')
+  //   watch: {
+  //     show: function(val) {
+  //       console.log('watched')
 
-      this.toggleMenu(val)
-    },
-  },
+  //       this.toggleMenu(val)
+  //     },
+  //   },
   mounted() {
     // 添加事件监听，并初始化显示状态
     // eslint-disable-next-line @typescript-eslint/no-this-alias
