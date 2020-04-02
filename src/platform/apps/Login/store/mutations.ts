@@ -1,4 +1,3 @@
-import io from 'socket.io-client'
 export default {
   // 修改登录状态
   setIsLogined: (state: any, res: any) => {
