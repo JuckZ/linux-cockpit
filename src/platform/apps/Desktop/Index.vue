@@ -1,16 +1,25 @@
 <template>
   <div id="desktop">
     this is desktop
-    <WallPaper msg1="1111" />
+    <Wallpaper msg1="1111" />
+    <TaskBar />
+    <Menu />
   </div>
 </template>
 
 <script>
-import WallPaper from '@/platform/apps/Wallpaper/Index.vue'
+import Wallpaper from '@/platform/apps/Wallpaper/Index.vue'
+import TaskBar from '@/platform/apps/TaskBar/Index.vue'
+import Menu from '@/platform/apps/Menu/Index.vue'
 export default {
+  data() {
+    return {}
+  },
   name: 'desktop',
   components: {
-    WallPaper,
+    Wallpaper,
+    TaskBar,
+    Menu,
   },
   mounted() {
     if (this.$store.state.isLogined) {
@@ -22,4 +31,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+#desktop {
+  height: 100vh;
+}
+</style>

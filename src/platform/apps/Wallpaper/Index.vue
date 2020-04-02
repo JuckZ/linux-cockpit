@@ -1,7 +1,5 @@
 <template>
-  <div :style="'background:url(' + imgSrc + ')'" id="wallpaper">
-    wallpapaer{{ msg1 }}
-  </div>
+  <div id="wallpaper" ref="wallpaper"></div>
 </template>
 
 <script>
@@ -12,20 +10,23 @@ export default {
     }
   },
   props: {
-    msg1: String,
+    // msg1: String,
   },
   // beforeCreate() {},
   mounted() {
     this.axios.get('https://bing.biturl.top/').then(res => {
+      // 设置背景图片链接地址
       this.imgSrc = res.data.url
-      this.test('testing')
-      // console.log(this.data)
+      this.$refs.wallpaper.style.cssText += `
+      background:url(${this.imgSrc});
+      background-position: top left;
+      background-size: cover
+      `
     })
   },
   methods: {
     test(res) {
       console.log(res)
-      console.log(this.imgSrc)
     },
   },
 }
@@ -35,8 +36,8 @@ export default {
 #wallpaper {
   top: 0;
   position: fixed;
-  z-index: -1;
+  z-index: -5;
   width: 100%;
-  height: 500px;
+  height: 100%;
 }
 </style>

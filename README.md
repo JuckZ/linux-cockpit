@@ -73,3 +73,14 @@ module.exports = {
 2. bing每日壁纸
   https://bing.biturl.top/
 3. 
+
+## 图层
+
+z-index影响交互，暂不添加 壁纸除外
+<!-- 壁纸 -5
+桌面 -4
+任务栏 -3
+开始菜单 -3
+app -2
+警告等弹窗 -1
+其他默认 -->
