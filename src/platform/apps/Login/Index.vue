@@ -37,17 +37,6 @@
         <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
       </a-input>
     </a-form-item>
-    <!-- <a-form-item>
-  <div>
-    <a-select key=1 :value=value defaultValue="lucy" style="width: 120px" @change="handleChange">
-      <a-icon slot="suffixIcon" type="smile" />
-      <a-select-option key="1" value="jack">Jack</a-select-option>
-      <a-select-option key="2" value="lucy">Lucy</a-select-option>
-      <a-select-option key="3" value="disabled" disabled>Disabled</a-select-option>
-      <a-select-option key="4" value="Yiminghe">yiminghe</a-select-option>
-    </a-select>
-  </div>
-    </a-form-item>-->
     <a-form-item>
       <a-input-group>
         <a-row :gutter="0">
@@ -72,7 +61,7 @@
               ]"
               type="password"
               placeholder="Password"
-              v-if="loginType === 'password'"
+              v-show="userInfo.loginType === 'password'"
             >
               <a-icon
                 slot="prefix"
@@ -85,7 +74,7 @@
               name="file"
               :multiple="true"
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              v-if="loginType == 'privateKey'"
+              v-show="userInfo.loginType === 'privateKey'"
               @change="uploadPrivateKey"
             >
               <a-button> <a-icon type="upload" />Click to Upload </a-button>
@@ -116,41 +105,33 @@
 </template>
 
 <script>
-// 导入apollo客户端相关api
-import gql from 'graphql-tag'
+import { mapState, mapActions } from 'vuex'
 import io from 'socket.io-client'
 export default {
-  name: 'Comment',
-  apollo: {
-    books: {
-      query: gql`
-        query books {
-          books {
-            title
-            author
-          }
-        }
-      `,
-    },
-  },
   data() {
-    return {
-      // info表示服务端返回的数据
-      info: {
-        books: [],
-      },
-      value: 'lucy',
-      loginType: 'password',
-    }
+    return {}
   },
-  // value: "lucy",
+  beforeRouteEnter(to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+    // 不过，你可以通过传一个回调给 next来访问组件实例。
+    // 在导航被确认的时候执行回调，并且把组件实例作为回
+    // 调方法的参数。
+    next(vm => {
+      // 通过 `vm` 访问组件实例
+      if (vm.isLogined) {
+        vm.$router.push('/')
+      }
+    })
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_login' })
   },
   mounted() {
     // 如果已经登录则直接跳转
-    if (this.$parent.$store.state.isLogined) {
-      this.$parent.$router.push('/desktop')
+    if (this.isLogined) {
+      this.$parent.$router.push('/')
     }
     // 初始化登录参数
     this.form.setFieldsValue({
@@ -159,12 +140,18 @@ export default {
       password: 'Zc1998zc',
     })
   },
+  computed: {
+    ...mapState('login', {
+      isLogined: 'isLogined',
+      userInfo: 'userInfo',
+    }),
+  },
   methods: {
-    // 切换登录方式
-    changeLoginType(checked) {
-      if (checked) this.loginType = 'password'
-      else this.loginType = 'privateKey'
-    },
+    ...mapActions({
+      login: 'login/login',
+      changeLoginType: 'login/changeLoginType',
+      createSocket: 'login/createSocket',
+    }),
     // 上传私钥
     uploadPrivateKey(info) {
       if (info.file.status !== 'uploading') {
@@ -176,33 +163,6 @@ export default {
         this.$message.error(`${info.file.name} file upload failed.`)
       }
     },
-    async createSocket() {
-      const formData = {
-        IP: 'juck.site',
-        userName: 'root',
-        password: 'Zc1998zc',
-        remember: true,
-      }
-      await this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation login($loginInput: LoginInput) {
-              login(loginInput: $loginInput) {
-                # 返回的数据格式为loginRes，字段如下
-                code
-                msg
-              }
-            }
-          `,
-          variables: {
-            loginInput: formData,
-          },
-        })
-        .then(res => {
-          this.openNotification(res.data.login)
-          console.log(formData)
-        })
-    },
     openNotification(loginRes) {
       let message = ''
       let description = ''
@@ -211,7 +171,6 @@ export default {
         message = '登录成功'
         description = `${loginRes.msg}`
         icon = <a-icon type="smile" style="color: #108ee9" />
-        // 创建socket连接
       } else {
         message = '登录失败'
         description = `失败原因：${loginRes.msg}`
@@ -223,66 +182,25 @@ export default {
         icon: icon,
       })
     },
-    login: async function(formData) {
-      if (this.$parent.$store.state.isLogined) {
-        // 如果已经登录就直接进入桌面
-        this.$parent.$router.push('/desktop')
-        return
-      }
-      await this.$apollo
-        .mutate({
-          mutation: gql`
-            mutation login($loginInput: LoginInput) {
-              login(loginInput: $loginInput) {
-                # 返回的数据格式为loginRes，字段如下
-                code
-                msg
-              }
-            }
-          `,
-          variables: {
-            loginInput: formData,
-          },
-        })
-        .then(res => {
-          // 注意此处的this指向，是表单
-          this.openNotification(res.data.login)
-          if (res.data.login.code == 200) {
-            this.$router.push('/desktop')
-            // 修改vuex中的登录状态为true
-            this.$parent.$store.state.isLogined = true
-            this.$parent.$store.state.socket = io('http://localhost')
-          }
-        })
-    },
-    addBook: function() {
-      this.$apollo.mutate({
-        mutation: gql`
-          mutation addBook($bookInput: BookInput) {
-            addBook(bookInput: $bookInput) {
-              title
-              author
-            }
-          }
-        `,
-        variables: {
-          bookInput: {
-            title: 'how to study',
-            author: 'juck',
-          },
-        },
-      })
-    },
     handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.login(values)
+          this.login(values).then(res => {
+            // 提示登录结果
+            this.openNotification(res.data.login)
+            // 登录成功则跳转到首页，否则不作任何操作
+            // TODO:登录成功还需要创建io对象
+            if (res.data.login.code === 200) {
+              this.createSocket(io('http://localhost'))
+              this.$router.push('/')
+            }
+          })
         }
       })
     },
     skipLogin() {
-      this.$router.push('/desktop')
+      this.$router.push('/')
     },
   },
 }

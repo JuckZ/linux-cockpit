@@ -878,7 +878,7 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@koa/cors@2", "@koa/cors@^2.2.1":
+"@koa/cors@^2.2.1":
   version "2.2.3"
   resolved "https://registry.npm.taobao.org/@koa/cors/download/@koa/cors-2.2.3.tgz#c32a9907acbee1e72fedfb0b9ac840d2e6f9be57"
   integrity sha1-wyqZB6y+4ecv7fsLmshA0ub5vlc=
@@ -1189,6 +1189,11 @@
   dependencies:
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
+
+"@types/socket.io-client@^1.4.32":
+  version "1.4.32"
+  resolved "https://registry.npm.taobao.org/@types/socket.io-client/download/@types/socket.io-client-1.4.32.tgz#988a65a0386c274b1c22a55377fab6a30789ac14"
+  integrity sha1-mIploDhsJ0scIqVTd/q2oweJrBQ=
 
 "@types/webpack-env@^1.15.1":
   version "1.15.1"

@@ -1,8 +1,20 @@
 <!-- TODO:
 
+! import 
+Desktop组件销毁后使用vuex销毁io链接
+动态导入静态资源 如图片等 出现404的问题
+1. 路由守卫 用于验证页面的跳转，如果访问了需要验证的页面则提示需要登录并跳转到登录页面
+2. 对apps的打开状态、位置信息、窗口大小等信息进行保存，并且点击桌面空白时进行收起主菜单等
+3. history模式的路由
+4. relative absolute fixed flex
+5. 写论文 paperfree查询论文重复率
+
 vuex中增加一个application的状态值，用于记录是否需要重新渲染
 所有api相关的、获取数据的操作都放入到vuex中去
 
+vue slot
+路由transition 
+JMT
 
 ## 跨域问题
 jsonp 淘汰

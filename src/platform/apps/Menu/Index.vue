@@ -1,8 +1,30 @@
 <template>
-  <div :style="'display:' + show" id="menu" ref="menu">
-    <!-- <a @click="toggleMenu" href="javascript:void(0)">
-        <img src="../../../assets/win7/win.svg" />
-      </a> -->
+  <div :style="`display:${show}`" id="menu" ref="menu">
+    <a id="avatar" ref="avatar">
+      <img :src="avatar.avatarSrc" />
+    </a>
+    <ul id="appList" ref="appList">
+      <li v-for="item in apps" :key="item.id">
+        <a>
+          <img src="../../../assets/app.png" /><span>{{ item.name }}</span>
+        </a>
+      </li>
+    </ul>
+    <ul id="otherInfoList" ref="otherInfoList">
+      <li v-for="item in otherInfo" :key="item.id">
+        <a>
+          {{ item.name }}
+        </a>
+      </li>
+    </ul>
+    <!-- 按钮，用于关机、重启等 -->
+    <ul id="btnGroup" ref="btnGroup">
+      <li v-for="item in btnGroup" :key="item.id">
+        <a @click="targetHandler($event, item.target)">
+          <a-icon style="color: rgba(0,0,0,1);" :type="item.type" />
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -11,48 +33,127 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      //   show: false,
+      publicPath: process.env,
+      btnGroup: [
+        {
+          id: 1,
+          type: 'poweroff',
+          target: '/',
+        },
+        {
+          id: 2,
+          type: 'login',
+          target: '/login',
+        },
+        {
+          id: 3,
+          type: 'logout',
+          target: '/',
+        },
+      ],
+      //
     }
   },
   computed: {
     ...mapState('menu', {
       show: 'show',
+      apps: 'apps',
+      otherInfo: 'otherInfo',
+      avatar: 'avatar',
     }),
   },
-  //   watch: {
-  //     show: function(val) {
-  //       console.log('watched')
-
-  //       this.toggleMenu(val)
-  //     },
-  //   },
   mounted() {
-    // 添加事件监听，并初始化显示状态
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    // const self = this
-    // this.$parent.$parent.$on('toggleMenuEvent', function(val) {
-    //   self.toggleMenu(val)
-    // })
-    // self.toggleMenu(self.show)
+    //
+    // this.test = require(this.avatar.avatarSrc)
   },
   methods: {
-    toggleMenu(show) {
-      if (show) {
-        this.$refs.menu.style.display = 'block'
-      } else {
-        this.$refs.menu.style.display = 'none'
-      }
+    targetHandler(e, target) {
+      if (this.$route.path !== target) this.$router.push(target)
     },
   },
 }
 </script>
 
 <style lang="scss">
+* {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
 #menu {
   bottom: 40px;
   position: fixed;
   width: 400px;
   height: 80vh;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+#avatar {
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  position: relative;
+  left: 270px;
+  top: -30px;
+  img {
+    height: 60px;
+  }
+}
+
+#appList {
+  margin: 6px 0px 6px 6px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
   background-color: rgba(255, 255, 255, 0.6);
+  width: 200px;
+  height: 550px;
+  li {
+    padding: 4px 0px;
+    a {
+      display: block;
+      height: 36px;
+      color: black;
+      padding-left: 20px;
+      img {
+        height: 36px;
+      }
+      span {
+        margin-left: 8px;
+      }
+    }
+    a:hover {
+      background-color: white;
+      border-left: 3px solid blue;
+    }
+  }
+}
+#otherInfoList {
+  position: relative;
+  top: 20px;
+  left: 240px;
+  width: 120px;
+  a {
+    color: white;
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+  }
+}
+#btnGroup {
+  position: fixed;
+  bottom: 45px;
+  left: 230px;
+  li {
+    display: inline-block;
+    margin: 0px 5px;
+    height: 40px;
+    width: 40px;
+    a {
+      i {
+        font-size: 40px;
+      }
+    }
+  }
 }
 </style>

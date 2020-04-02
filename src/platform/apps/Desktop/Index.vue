@@ -1,9 +1,12 @@
 <template>
   <div id="desktop">
-    this is desktop
     <Wallpaper msg1="1111" />
     <TaskBar />
     <Menu />
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 
@@ -22,10 +25,7 @@ export default {
     Menu,
   },
   mounted() {
-    if (this.$store.state.isLogined) {
-      this.$router.push('/desktop')
-    }
-    console.log(this.$store.state.isLogined)
+    //
   },
 }
 </script>

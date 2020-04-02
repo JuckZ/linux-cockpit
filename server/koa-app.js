@@ -65,6 +65,7 @@ app.use(bodyParser())
 // app.use(auth)
 // 静态资源目录配置
 app.use(serve(path.join(__dirname) + '/public/'))
+
 app.use(router.routes()).use(router.allowedMethods())
 // app.listen(80);
 serverWithSocket.listen(80)

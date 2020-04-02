@@ -16,19 +16,13 @@ export default {
       show: false,
     }
   },
+  created() {
+    //
+  },
   methods: {
     ...mapActions({
       toggleMenu: 'menu/toggleMenu',
     }),
-    // toggleMenu() {
-    //   console.log('here toggle')
-
-    // 弹出或者收起开始菜单
-    //   this.$store.state.showMenu = !this.$store.state.showMenu
-    //   this.show = !this.show
-    //   this.$parent.$parent.$emit('toggleMenuEvent', this.show)
-    //   console.log(this.$store.state.showMenu)
-    // },
   },
 }
 </script>
@@ -38,9 +32,11 @@ export default {
   bottom: 0;
   position: fixed;
   width: 100%;
-  height: 40px;
+  height: 43px;
   background-color: rgba(255, 255, 255, 0.2);
   //   filter: blur(5px);
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   #startMenu {
     a {
       display: inline-block;
