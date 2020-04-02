@@ -18,9 +18,10 @@ export default {
   methods: {
     toggleMenu() {
       // 弹出或者收起开始菜单
-      this.show = !this.show
-      this.$parent.$parent.$emit('toggleMenuEvent', this.show)
-      console.log(this.show)
+      this.$store.state.showMenu = !this.$store.state.showMenu
+      //   this.show = !this.show
+      //   this.$parent.$parent.$emit('toggleMenuEvent', this.show)
+      console.log(this.$store.state.showMenu)
     },
   },
 }
