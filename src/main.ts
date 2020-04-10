@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-10 16:25:15
+ * @LastEditTime: 2020-04-10 16:38:01
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -15,6 +15,7 @@ import ApolloClient from 'apollo-boost'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import animate from 'animate.css'
 
 // 导入自定义组件
 
@@ -40,6 +41,7 @@ Vue.prototype.$notification = notification
 Vue.prototype.$message = message
 Vue.use(VueApollo)
 Vue.use(VueAxios, axios)
+Vue.use(animate)
 // Vue.use(
 //   Button,
 //   Form,

@@ -1,3 +1,12 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-14 09:32:42
+ * @LastEditTime: 2020-04-10 16:53:22
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\.eslintrc.js
+ * @Juck is coding...
+ */
 module.exports = {
   root: true,
   env: {

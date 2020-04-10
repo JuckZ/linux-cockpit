@@ -190,8 +190,8 @@ export default {
             // 登录成功则跳转到首页，否则不作任何操作
             if (res.data.login.code === 200) {
               // 存储登录信息
-              localStorage.setItem('isLogined', true)
-              localStorage.setItem('userInfo', values)
+              sessionStorage.setItem('isLogined', true)
+              sessionStorage.setItem('userInfo', values)
               this.$router.push('/')
             }
           })

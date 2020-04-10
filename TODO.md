@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-10 12:12:36
+ * @LastEditTime: 2020-04-10 17:12:52
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -57,8 +57,8 @@ http proxy前端解决方案
 
 ## 样式
 
-1. 导航栏应当放入到左下角的徽标按钮中
-2. animate.css
+1. ??
+2. 首先要知道，vuex中的状态一旦页面刷新，就不再存在。所以为了实现在刷新页面时，仍然展现出用户头像，就需要从sessionStorage种提取状态再传值给vuex。
 
 ## 功能
 
@@ -70,9 +70,8 @@ http proxy前端解决方案
 ## 安全
 
 1. shell传输加密
-2. 记住密码的逻辑
-3. token session jwt
-4. 过期时间
+2. graphql axios都要设置token逻辑
+3. 过期时间
 
 ## 个性配置
 

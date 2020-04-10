@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-10 13:30:42
+ * @LastEditTime: 2020-04-10 17:02:23
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\router\index.ts
@@ -96,7 +96,7 @@ router.beforeEach((to, from, next) => {
   // if(to.path === '/login' && )
   // 如果需要验证并且未登录，则提示该操作需要先登录，然后跳转到登录页面
   // localStorage存储登录状态
-  if(to.meta.requireAuth === true && !localStorage.getItem('isLogined')) {
+  if(to.meta.requireAuth === true && !sessionStorage.getItem('isLogined')) {
     console.log('需要验证的页面');
     
     next('/login')

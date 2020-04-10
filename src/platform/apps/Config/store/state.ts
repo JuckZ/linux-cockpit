@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-10 12:30:07
+ * @LastEditTime: 2020-04-10 16:57:33
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -53,7 +53,6 @@ export default {
       },
       version: 'V0.0.1',
       author: 'Juck'
-
     },
     {
       id:'2',
@@ -69,7 +68,21 @@ export default {
       },
       version: 'V0.0.1',
       author: 'Juck'
-
+    },
+    {
+      id:'3',
+      name: 'taskManager',
+      path: '@/platform/apps/TaskManager',
+      imgSrc: '/assets/apps/TaskManager/logo.png',
+      target: '/taskManager',
+      status: {
+        installed: true,
+        focus: false,
+        window: 'minimize',
+        running: false
+      },
+      version: 'V0.0.1',
+      author: 'Juck'
     }
   ],
 }

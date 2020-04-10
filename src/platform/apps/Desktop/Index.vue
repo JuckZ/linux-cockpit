@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-10 12:31:54
+ * @LastEditTime: 2020-04-10 16:54:10
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -12,6 +12,8 @@
     <!-- 壁纸模块 -->
     <Wallpaper msg1="1111" />
     <!-- 桌面快捷方式 -->
+    <h1 class="animated infinite bounce delay-2s">Example</h1>
+
     <div id="desktopIcons">
       <ul>
         <li v-for="app in apps" :key="app.id">
