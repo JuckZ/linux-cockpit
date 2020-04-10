@@ -1,19 +1,31 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-14 09:32:42
+ * @LastEditTime: 2020-04-10 13:28:50
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\store\index.ts
+ * @Juck is coding...
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
 
 import state from './state'
 import mutations from './mutations'
 import actions from './actions'
-import getters from './getters'
+// import getters from './getters'
 
 import desktop from '@/platform/apps/Desktop/store/'
 import menu from '@/platform/apps/Menu/store/'
 import login from '@/platform/apps/Login/store/'
+import wallpaper from '@/platform/apps/Wallpaper/store/'
+import fileManager from '@/platform/apps/FileManager/store/'
+import config from '@/platform/apps/Config/store/'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   // strict: process.env.NODE_ENV !== 'production',
-  strict: true,
+  strict: false,
   state: state,
   mutations,
   actions,
@@ -21,5 +33,8 @@ export default new Vuex.Store({
     desktop: desktop.store,
     menu: menu.store,
     login: login.store,
+    wallpaper: wallpaper.store,
+    fileManager: fileManager.store,
+    config: config.store
   },
 })

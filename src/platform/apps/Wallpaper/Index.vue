@@ -1,8 +1,13 @@
 <template>
-  <div id="wallpaper" ref="wallpaper"></div>
+  <div
+    id="wallpaper"
+    :style="`background-image:url(${wallpaperSrc})`"
+    ref="wallpaper"
+  ></div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -12,22 +17,19 @@ export default {
   props: {
     // msg1: String,
   },
-  // beforeCreate() {},
   mounted() {
-    this.axios.get('https://bing.biturl.top/').then(res => {
-      // 设置背景图片链接地址
-      this.imgSrc = res.data.url
-      this.$refs.wallpaper.style.cssText += `
-      background:url(${this.imgSrc});
-      background-position: top left;
-      background-size: cover
-      `
-    })
+    // 设置背景图片链接地址
+    this.setWallpaperSrc()
+  },
+  computed: {
+    ...mapState('wallpaper', {
+      wallpaperSrc: 'wallpaperSrc',
+    }),
   },
   methods: {
-    test(res) {
-      console.log(res)
-    },
+    ...mapActions({
+      setWallpaperSrc: 'wallpaper/setWallpaperSrc',
+    }),
   },
 }
 </script>
@@ -39,5 +41,7 @@ export default {
   z-index: -5;
   width: 100%;
   height: 100%;
+  background-position: top left;
+  background-size: cover;
 }
 </style>

@@ -6,10 +6,11 @@
     <ul id="appList" ref="appList">
       <li v-for="item in apps" :key="item.id">
         <a>
-          <img src="../../../assets/app.png" /><span>{{ item.name }}</span>
+          <img :src="item.imgSrc" /><span>{{ item.name }}</span>
         </a>
       </li>
     </ul>
+    <!-- 菜单右侧选项卡 -->
     <ul id="otherInfoList" ref="otherInfoList">
       <li v-for="item in otherInfo" :key="item.id">
         <a>
@@ -17,6 +18,13 @@
         </a>
       </li>
     </ul>
+    <!-- 菜单右侧底部 应用信息 -->
+    <div id="appInfo" ref="appInfo">
+      <div>Name: {{ appInfo.Name }}</div>
+      <div>Author: {{ appInfo.Author }}</div>
+      <div>Version: {{ appInfo.Version }}</div>
+      <!-- <div>SourceCode: {{ appInfo.SourceCode }}</div> -->
+    </div>
     <!-- 按钮，用于关机、重启等 -->
     <ul id="btnGroup" ref="btnGroup">
       <li v-for="item in btnGroup" :key="item.id">
@@ -59,6 +67,7 @@ export default {
       show: 'show',
       apps: 'apps',
       otherInfo: 'otherInfo',
+      appInfo: 'appInfo',
       avatar: 'avatar',
     }),
   },
@@ -138,6 +147,16 @@ export default {
     width: 100%;
     height: 40px;
     text-align: center;
+  }
+}
+#appInfo {
+  position: fixed;
+  bottom: 150px;
+  left: 240px;
+  font-size: 14px;
+  color: white;
+  div {
+    padding: 5px;
   }
 }
 #btnGroup {

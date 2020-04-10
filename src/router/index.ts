@@ -1,6 +1,15 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-14 09:32:42
+ * @LastEditTime: 2020-04-10 13:30:42
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\router\index.ts
+ * @Juck is coding...
+ */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/platform/apps/Login/Index.vue'
+// import Login from '@/platform/apps/Login/Index.vue'
 
 Vue.use(VueRouter)
 
@@ -19,23 +28,41 @@ const routes = [
       keepAlive: true,
     },
     beforeEnter: (to: any, from: any, next: any) => {
-      // ...
+      // 将登录状态存到cookie或者session中或者localStorage
+      // console.log(this)
+
       next()
     },
     children: [
+      {
+        path: '/shell',
+        component: () => import('@/platform/apps/Shell/Index.vue'),
+        meta: {
+          keepAlive: true,
+          requireAuth: true
+        },
+      },
       {
         path: '/login',
         name: 'login',
         component: () => import('@/platform/apps/Login/Index.vue'),
         meta: {
           keepAlive: true,
+          requireAuth: false
+        },
+      },
+      {
+        path: '/fileManager',
+        component: () => import('@/platform/apps/FileManager/Index.vue'),
+        meta: {
+          keepAlive: true
         },
       },
       {
         path: '/notfound',
         component: () => import('@/platform/apps/NotFound/Index.vue'),
         meta: {
-          keepAlive: true,
+          keepAlive: true
         },
       },
     ],
@@ -60,14 +87,21 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 })
 router.beforeEach((to, from, next) => {
   // TODO:怎样获取Login组件的isLogined状态，并以此验证登录
   // if(to.path === '/login' && )
-
+  // 如果需要验证并且未登录，则提示该操作需要先登录，然后跳转到登录页面
+  // localStorage存储登录状态
+  if(to.meta.requireAuth === true && !localStorage.getItem('isLogined')) {
+    console.log('需要验证的页面');
+    
+    next('/login')
+  }
+  // 其他情况默认跳转即可
   next()
 })
 

@@ -4,13 +4,14 @@
   "private": true,
   "main": "server/electron-main.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "start": "(vue-cli-service build) && (electron .)"
   },
   "dependencies": {
     "@koa/router": "^8.0.8",
+    "animate.css": "^3.7.2",
     "ant-design-vue": "^1.4.12",
     "apollo-boost": "^0.4.7",
     "apollo-server-koa": "^2.11.0",
@@ -60,6 +61,7 @@
   "vue": {
     "publicPath": "./",
     "outputDir": "./server/public",
+    "assetsDir": "",
     "devServer": {
       "host": "localhost",
       "port": 81,

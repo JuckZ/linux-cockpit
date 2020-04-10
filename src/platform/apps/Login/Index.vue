@@ -14,10 +14,10 @@
             rules: [
               {
                 required: true,
-                message: 'Please input your server\'s ip address or domain!',
-              },
-            ],
-          },
+                message: 'Please input your server\'s ip address or domain!'
+              }
+            ]
+          }
         ]"
         placeholder="IP address or Domin"
       >
@@ -29,8 +29,8 @@
         v-decorator="[
           'userName',
           {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          },
+            rules: [{ required: true, message: 'Please input your username!' }]
+          }
         ]"
         placeholder="Username"
       >
@@ -55,9 +55,9 @@
                 'password',
                 {
                   rules: [
-                    { required: true, message: 'Please input your Password!' },
-                  ],
-                },
+                    { required: true, message: 'Please input your Password!' }
+                  ]
+                }
               ]"
               type="password"
               placeholder="Password"
@@ -89,8 +89,8 @@
           'remember',
           {
             valuePropName: 'checked',
-            initialValue: true,
-          },
+            initialValue: true
+          }
         ]"
         >Remember me</a-checkbox
       >
@@ -106,7 +106,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import io from 'socket.io-client'
 export default {
   data() {
     return {}
@@ -137,20 +136,19 @@ export default {
     this.form.setFieldsValue({
       IP: 'juck.site',
       userName: 'root',
-      password: 'Zc1998zc',
+      password: 'Zc1998zc'
     })
   },
   computed: {
     ...mapState('login', {
       isLogined: 'isLogined',
-      userInfo: 'userInfo',
-    }),
+      userInfo: 'userInfo'
+    })
   },
   methods: {
     ...mapActions({
       login: 'login/login',
-      changeLoginType: 'login/changeLoginType',
-      createSocket: 'login/createSocket',
+      changeLoginType: 'login/changeLoginType'
     }),
     // 上传私钥
     uploadPrivateKey(info) {
@@ -179,7 +177,7 @@ export default {
       this.$notification.open({
         message: message,
         description: description,
-        icon: icon,
+        icon: icon
       })
     },
     handleSubmit(e) {
@@ -190,9 +188,10 @@ export default {
             // 提示登录结果
             this.openNotification(res.data.login)
             // 登录成功则跳转到首页，否则不作任何操作
-            // TODO:登录成功还需要创建io对象
             if (res.data.login.code === 200) {
-              this.createSocket(io('http://localhost'))
+              // 存储登录信息
+              localStorage.setItem('isLogined', true)
+              localStorage.setItem('userInfo', values)
               this.$router.push('/')
             }
           })
@@ -201,8 +200,8 @@ export default {
     },
     skipLogin() {
       this.$router.push('/')
-    },
-  },
+    }
+  }
 }
 </script>
 <style>

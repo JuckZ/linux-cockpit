@@ -2,7 +2,7 @@
   <div id="taskbar" ref="taskbar">
     <div id="startMenu">
       <a @click="toggleMenu" href="javascript:void(0)">
-        <img src="../../../assets/win7/win.svg" />
+        <img src="/assets/win7/win.svg" />
       </a>
     </div>
   </div>

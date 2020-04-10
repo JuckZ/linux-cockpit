@@ -1,0 +1,15 @@
+import state from './state'
+import mutations from './mutations'
+import actions from './actions'
+import getters from './getters'
+
+export default {
+  moduleName: 'Wallpaper',
+  store: {
+    namespaced: true,
+    state,
+    getters,
+    mutations,
+    actions,
+  },
+}

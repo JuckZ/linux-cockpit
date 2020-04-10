@@ -1,3 +1,12 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-04-02 11:30:46
+ * @LastEditTime: 2020-04-10 10:53:55
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\platform\apps\Desktop\store\state.ts
+ * @Juck is coding...
+ */
 export default {
   state: {
     token: '',
@@ -18,6 +27,6 @@ export default {
       avatar: '@/assets/win7/avatar.svg',
       // 是否展示开始菜单
       showMenu: false,
-    },
-  },
+    }
+  }
 }

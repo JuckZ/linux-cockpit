@@ -1,3 +1,12 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-15 12:46:16
+ * @LastEditTime: 2020-04-07 11:59:38
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\server\koa-app.js
+ * @Juck is coding...
+ */
 // 获取koa请求参数的3种方法
 // ctx.query ctx.params ctx.request.body
 
@@ -5,11 +14,11 @@ const Koa = require('koa');
 const path = require('path')
 const serve = require('koa-static')
 const Router = require('@koa/router')
-// const cors = require('@koa/cors')
+const cors = require('@koa/cors')
 // const views = require('koa-views')
 const bodyParser = require('koa-bodyparser')
 const app = new Koa();
-const fs = require('fs')
+// const fs = require('fs')
 const router = new Router()
 const {
     server
@@ -23,17 +32,23 @@ const {
     initSocket
 } = require('./utils/shell.js')
 
+// 设置最大监听数
+io.sockets.setMaxListeners(1)
+console.log(io.sockets.getMaxListeners());
+
 io.on('connection', (socket) => {
     console.log('++++++++++++++ io connection ++++++++++++++')
     // 将socket对象共享到shell.js中
     initSocket(socket)
+    socket.setMaxListeners(1)
+    console.log(socket.getMaxListeners());
+    
     socket.on('uploadCommand', (command) => {
         commandSSH(command)
     })
     socket.on('disconnect', () => {
-        // console.log('断开连接');
+        console.log('断开连接');
         socket.disconnect();
-
         // 广播
         // socket.broadcast.emit(...)
     })
@@ -59,7 +74,7 @@ const errorHandle = async (ctx, next) => {
 // 错误处理中间件，要放在最前面
 app.use(errorHandle)
 // 允许跨域
-// app.use(cors())
+app.use(cors())
 app.use(bodyParser())
 // 验证登录和token等
 // app.use(auth)
