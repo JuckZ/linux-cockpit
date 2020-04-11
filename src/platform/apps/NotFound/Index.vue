@@ -27,7 +27,8 @@ body {
 
 #notfound {
   position: relative;
-  height: 100vh;
+  // height: 100vh;
+  height: 100%;
   .notfound {
     position: absolute;
     left: 50%;

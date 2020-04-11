@@ -1,15 +1,15 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-18 17:01:40
+ * @LastEditTime: 2020-04-11 14:24:17
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\server\utils\graphql.js
+ * @Juck is coding...
+ */
 const { ApolloServer, gql } = require('apollo-server-koa');
 const { connectSSH, commandSSH } = require('./shell.js')
 const typeDefs = gql`
-  input BookInput {
-    title: String
-    author: String
-  }
-
-  type Book {
-    title: String
-    author: String
-  }
   input LoginInput {
       IP: String
       userName: String
@@ -21,39 +21,19 @@ const typeDefs = gql`
       msg: String
   }
   type Query {
-    books: [Book],
     loginRes: LoginRes
   }
   type Mutation {
-      addBook(bookInput: BookInput): Book
       login(loginInput: LoginInput): LoginRes
   }
-
 `;
-
-const books = [
-  {
-    title: 'Harry Potter and the Chamber of Secrets',
-    author: 'J.K. Rowling',
-  },
-  {
-    title: 'Jurassic Park',
-    author: 'Michael Crichton',
-  },
-];
 
 let conn = null
 const resolvers = {
   Query: {
-    books: () => books,
+    // books: () => books,
   },
   Mutation: {
-      addBook: (parent, args, context) => {
-        return {
-            title: args.bookInput.title,
-            author: args.bookInput.author
-        }
-      },
       login: async (parent, args, context) => {
           const reqData = args.loginInput
           // 尝试使用ssh登录，注意要取出Promise对象的isReady属性进行判断登录结果

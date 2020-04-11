@@ -1,7 +1,7 @@
 // TODO:清理输入框默认值，修改滑块方式为下拉菜单
 <template>
   <a-form
-    id="components-form-demo-normal-login"
+    id="login"
     :form="form"
     class="login-form"
     @submit="handleSubmit"
@@ -129,7 +129,9 @@ export default {
   },
   mounted() {
     // 如果已经登录则直接跳转
-    if (this.isLogined) {
+    if (sessionStorage.getItem('isLogined')===true) {
+      // 设置vuex的值（因为刷新页面后session未清空，但是vuex清空了）
+      // this.login(sessionStorage.getItem('userInfo'))
       this.$parent.$router.push('/')
     }
     // 初始化登录参数
@@ -205,12 +207,8 @@ export default {
 }
 </script>
 <style>
-#components-form-demo-normal-login {
-  margin: auto;
-  width: 40%;
-  min-width: 300px;
-}
-#components-form-demo-normal-login {
-  width: 50%;
+
+#login {
+
 }
 </style>

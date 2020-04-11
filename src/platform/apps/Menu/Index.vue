@@ -3,9 +3,10 @@
     <a id="avatar" ref="avatar">
       <img :src="avatar.avatarSrc" />
     </a>
+    <!-- 左侧菜单 app列表 -->
     <ul id="appList" ref="appList">
-      <li v-for="item in apps" :key="item.id">
-        <a>
+      <li v-for="item in apps" v-show="item.inStartMenu" :key="item.id">
+        <a @click="targetHandler($event, item)">
           <img :src="item.imgSrc" /><span>{{ item.name }}</span>
         </a>
       </li>
@@ -37,26 +38,26 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
       publicPath: process.env,
       btnGroup: [
         {
-          id: 1,
+          id: 0,
           type: 'poweroff',
-          target: '/',
+          target: 'poweroff',
+        },
+        {
+          id: 1,
+          type: 'login',
+          target: 'login',
         },
         {
           id: 2,
-          type: 'login',
-          target: '/login',
-        },
-        {
-          id: 3,
           type: 'logout',
-          target: '/',
+          target: 'logout',
         },
       ],
       //
@@ -64,20 +65,27 @@ export default {
   },
   computed: {
     ...mapState('menu', {
-      show: 'show',
+      show: 'show'
+    }),
+    ...mapState('config', {
       apps: 'apps',
       otherInfo: 'otherInfo',
       appInfo: 'appInfo',
       avatar: 'avatar',
-    }),
+    })
   },
   mounted() {
     //
     // this.test = require(this.avatar.avatarSrc)
   },
   methods: {
-    targetHandler(e, target) {
-      if (this.$route.path !== target) this.$router.push(target)
+    ...mapActions({
+      // 修改app运行状态
+      setAppStatus: 'config/setAppStatus'
+    }),
+    targetHandler(e, payload) {
+      this.setAppStatus(payload)
+      // if (this.$route.path !== target) this.$router.push(target)
     },
   },
 }

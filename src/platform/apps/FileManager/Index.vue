@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-11 13:37:33
+ * @LastEditTime: 2020-04-11 15:30:51
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\Index.vue
@@ -14,11 +14,7 @@
 </template>
 <style lang="scss">
 #fileManager {
-  top: 100px;
-  left: 300px;
-  width: 800px;
-  position: fixed;
-  background: white;
+// 
 }
 </style>
 <script>

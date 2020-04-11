@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-11 12:42:15
+ * @LastEditTime: 2020-04-11 20:25:56
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -14,8 +14,8 @@
     <!-- 桌面快捷方式 -->
     <div id="desktopIcons">
       <ul>
-        <li v-for="app in apps" :key="app.id">
-          <a @click="targetHandler($event, app.target)"
+        <li v-for="app in apps" v-show="app.inDesktop" :key="app.id">
+          <a @dblclick="targetHandler($event, app)"
             ><img :src="app.imgSrc" :alt="app.name"
           /></a>
         </li>
@@ -24,20 +24,26 @@
     <!-- 状态栏 -->
     <StatusBar />
     <!-- 任务栏模块 -->
-    <TaskBar />
+    <TaskBar>
+      <ul>
+        <li v-for="item in runningApps" :key="item.key">
+          <a>
+            <img :src="item.imgSrc" :alt="item.name">
+          </a>
+        </li>
+      </ul>
+    </TaskBar>
     <!-- 徽标菜单 -->
     <Menu />
     <!-- 遮罩层，用于放置运行中的程序 -->
-    <!-- <div id="runningApps">
-      <button onclick="alert(111)">百度一下</button>
-      <my-notFound></my-notFound>
-    </div> -->
-    
-    <!-- Desktop的子路由 -->
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <ul class="runningApps">
+      <li v-for="item in runningApps" :key="item.key">
+        <AppContainer>
+          <!-- <my-notFound></my-notFound> -->
+          <!-- 动态添加app -->
+        </AppContainer>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -46,7 +52,8 @@ import Wallpaper from '@/platform/apps/Wallpaper/Index.vue'
 import StatusBar from '@/platform/apps/StatusBar/Index.vue'
 import TaskBar from '@/platform/apps/TaskBar/Index.vue'
 import Menu from '@/platform/apps/Menu/Index.vue'
-import { mapState } from 'vuex'
+import AppContainer from '@/platform/apps/AppContainer/Index.vue'
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {}
@@ -56,6 +63,7 @@ export default {
     Wallpaper,
     StatusBar,
     TaskBar,
+    AppContainer,
     Menu
   },
   computed: {
@@ -69,9 +77,15 @@ export default {
     console.log(process.env.NODE_ENV)
   },
   methods: {
-    targetHandler(e, target) {
-      if (this.$route.path !== target) this.$router.push(target)
-    }
+    ...mapActions({
+      // 修改app运行状态
+      setAppStatus: 'config/setAppStatus'
+    }),
+    // 处理点击桌面图标的事件
+    targetHandler(e, payload) {
+      this.setAppStatus(payload)
+      // if (this.$route.path !== target) this.$router.push(target)
+    },
   }
 }
 </script>
@@ -83,7 +97,7 @@ export default {
 }
 #desktopIcons {
   position: fixed;
-  top:30px;
+  top: 30px;
   a {
     display: inline-block;
     padding: 3px;
@@ -95,7 +109,7 @@ export default {
     }
   }
 }
-#runningApps {
+.runningApps {
   top: 0;
   position: fixed;
   width: 100%;

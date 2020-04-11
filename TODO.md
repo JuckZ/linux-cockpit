@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-11 13:46:24
+ * @LastEditTime: 2020-04-11 19:32:40
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -9,8 +9,6 @@
  -->
 
 # Hello
-
-
 
 TODO
 
@@ -22,10 +20,12 @@ TODO
        blurWindow: // 窗口未被focus时添加的效果（黑白）
    }
 
-
 3. socket.io emitter.setMaxListeners()
-4. 点击程序图标，则将程序加入到runningApp中，通过watch等方式监控runningApp的变化，如果发生改变，则在遮罩层添加或移除变化部分的应用
+4. socket.setMaxListeners(1)
+5. io.sockets.setMaxListeners(1)
+6. 点击程序图标，则将程序加入到runningApp中，通过watch等方式监控runningApp的变化，如果发生改变，则在遮罩层添加或移除变化部分的应用
 如何将app展示到div#runningApps中去呢
+7. 通知栏（比如安装软件成功，卸载成功等）
 
 FIXME
 

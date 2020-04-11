@@ -9,11 +9,7 @@
 </template>
 <style lang="scss" scoped>
 #shell {
-    top: 100px;
-  left: 400px;
-  width: 600px;
-  position: fixed;
-  background: white;
+// 
 }
 </style>
 <script>

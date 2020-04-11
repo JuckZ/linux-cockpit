@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-15 12:46:16
- * @LastEditTime: 2020-04-11 14:08:29
+ * @LastEditTime: 2020-04-11 14:13:53
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\koa-app.js
@@ -30,16 +30,11 @@ const {
     initSocket
 } = require('./utils/shell.js')
 
-// 设置最大监听数
-// io.sockets.setMaxListeners(1)
-// console.log(io.sockets.getMaxListeners());
 
 io.on('connection', (socket) => {
     console.log('++++++++++++++ io connection ++++++++++++++')
     // 将socket对象共享到shell.js中
     initSocket(socket)
-    // socket.setMaxListeners(1)
-    // console.log(socket.getMaxListeners());
     socket.on('uploadCommand', (command) => {
         commandSSH(command)
     })

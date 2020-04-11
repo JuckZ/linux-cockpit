@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-11 10:39:52
+ * @LastEditTime: 2020-04-11 14:46:26
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\router\index.ts
@@ -99,6 +99,11 @@ router.beforeEach((to: any, from: any, next: any) => {
     alert('需要登录的页面')
     next('/login')
   }
+  // 如果已经登录的状态去访问登录页面，则直接跳到桌面
+  // if(to.path === '/login' && sessionStorage.getItem('isLogined')) {
+  //   alert('已经登录')
+  //   next('/')
+  // }
   // 其他情况默认跳转即可
   next()
 })
