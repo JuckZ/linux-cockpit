@@ -1,5 +1,5 @@
 <template>
-  <div class="webssh">
+  <div id="shell">
     <div id="header">
       <div id="terminal">
         
@@ -7,6 +7,15 @@
     </div>
   </div>
 </template>
+<style lang="scss" scoped>
+#shell {
+    top: 100px;
+  left: 400px;
+  width: 600px;
+  position: fixed;
+  background: white;
+}
+</style>
 <script>
 // 一定要注意vue实例的生命周期，怎样创建对象才是最节约资源的：
 // 我的思考：创建一次terminal但是每次的socket必须重新连接（考虑到安全问题）

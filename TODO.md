@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-11 10:39:03
+ * @LastEditTime: 2020-04-11 13:46:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -10,26 +10,27 @@
 
 # Hello
 
-点击程序图标，则将程序加入到runningApp中，通过watch等方式监控runningApp的变化，如果发生改变，则在遮罩层添加或移除变化部分的应用
 
-全屏应用背景不要透明，默认加一个背景颜色
-
-如何将app展示到div#runningApps中去呢
 
 TODO
 
-1. 增加全局样式定义
+1. 文件管理器：
+   目录部分可以制作下拉菜单，点击下拉菜单触发请求。
+   data中存储文件名和绝对路径，可取属性（时间，pwd拼接绝对路径，所属组和用户，大小）
+2. 增加全局样式定义
    {
        blurWindow: // 窗口未被focus时添加的效果（黑白）
    }
 
 
-2. socket.io emitter.setMaxListeners()
+3. socket.io emitter.setMaxListeners()
+4. 点击程序图标，则将程序加入到runningApp中，通过watch等方式监控runningApp的变化，如果发生改变，则在遮罩层添加或移除变化部分的应用
+如何将app展示到div#runningApps中去呢
 
 FIXME
 
 1. main.ts中的apollo是否可以去掉
-2. 试试
+2. 如果不断开socket链接，会有多个相同的socket绑定在同一个shell上，每次发送和回显命令都是重复的
 
 BUG
 

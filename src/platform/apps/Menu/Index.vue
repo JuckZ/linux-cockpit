@@ -115,7 +115,7 @@ export default {
   left: 0px;
   background-color: rgba(255, 255, 255, 0.6);
   width: 200px;
-  height: 550px;
+  height: 96%;
   li {
     padding: 4px 0px;
     a {

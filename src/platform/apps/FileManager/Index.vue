@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-11 13:09:15
+ * @LastEditTime: 2020-04-11 13:37:33
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\Index.vue
@@ -12,8 +12,14 @@
     <a-table :columns="columns" :dataSource="data" :rowSelection="rowSelection" />
   </div>
 </template>
-<style lang="sass">
-
+<style lang="scss">
+#fileManager {
+  top: 100px;
+  left: 300px;
+  width: 800px;
+  position: fixed;
+  background: white;
+}
 </style>
 <script>
 
