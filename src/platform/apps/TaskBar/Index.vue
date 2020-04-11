@@ -1,7 +1,16 @@
+<!--
+ * @Author: Juck
+ * @Date: 2020-04-01 21:28:32
+ * @LastEditTime: 2020-04-11 13:06:42
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\platform\apps\TaskBar\Index.vue
+ * @Juck is coding...
+ -->
 <template>
   <div id="taskbar" ref="taskbar">
     <div id="startMenu">
-      <a @click="toggleMenu" href="javascript:void(0)">
+      <a @click="toggleMenu">
         <img src="/assets/win7/win.svg" />
       </a>
     </div>

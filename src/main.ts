@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-10 16:38:01
+ * @LastEditTime: 2020-04-11 13:10:05
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -15,9 +15,9 @@ import ApolloClient from 'apollo-boost'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import animate from 'animate.css'
 
 // 导入自定义组件
+import NotFound from '@/platform/apps/NotFound/Index.vue'
 
 // 导入antDesign组件
 import {
@@ -34,14 +34,14 @@ import {
   Switch,
   Col,
   Row,
-  Upload
+  Upload,
+  Table
 } from 'ant-design-vue'
 
 Vue.prototype.$notification = notification
 Vue.prototype.$message = message
 Vue.use(VueApollo)
 Vue.use(VueAxios, axios)
-Vue.use(animate)
 // Vue.use(
 //   Button,
 //   Form,
@@ -56,6 +56,8 @@ Vue.use(animate)
 //   Col,
 //   Upload
 // )
+
+// 注册antD组件
 Vue.component('a-input', Input)
 Vue.component('a-icon', Icon)
 Vue.component('a-button', Button)
@@ -69,6 +71,10 @@ Vue.component('a-input-group', Input.Group)
 Vue.component('a-row', Row)
 Vue.component('a-col', Col)
 Vue.component('a-upload', Upload)
+Vue.component('a-table', Table)
+
+// 注册自定义组件
+Vue.component('my-notFound', NotFound)
 Vue.config.productionTip = false
 // 产生apollo客户端实例对象
 const apolloClient = new ApolloClient({

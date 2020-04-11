@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-10 17:02:23
+ * @LastEditTime: 2020-04-11 10:39:52
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\router\index.ts
@@ -9,8 +9,7 @@
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Login from '@/platform/apps/Login/Index.vue'
-
+import Login from '@/platform/apps/Login/Index.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -64,7 +63,7 @@ const routes = [
         meta: {
           keepAlive: true
         },
-      },
+      }
     ],
   },
   // {
@@ -89,16 +88,15 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes,
+  routes
 })
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: any, from: any, next: any) => {
   // TODO:怎样获取Login组件的isLogined状态，并以此验证登录
   // if(to.path === '/login' && )
   // 如果需要验证并且未登录，则提示该操作需要先登录，然后跳转到登录页面
   // localStorage存储登录状态
-  if(to.meta.requireAuth === true && !sessionStorage.getItem('isLogined')) {
-    console.log('需要验证的页面');
-    
+  if(to.meta.requireAuth == true && !sessionStorage.getItem('isLogined')) {
+    alert('需要登录的页面')
     next('/login')
   }
   // 其他情况默认跳转即可

@@ -1,14 +1,14 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-15 12:46:16
- * @LastEditTime: 2020-04-10 17:13:59
+ * @LastEditTime: 2020-04-11 08:20:45
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\koa-app.js
  * @Juck is coding...
  */
-// 获取koa请求参数的3种方法
-// ctx.query ctx.params ctx.request.body
+// 获取koa请求参数的几种方法
+// ctx.query ctx.params ctx.request.body ctx.request.query ctx.request.params ctx.request.header
 
 const Koa = require('koa');
 const path = require('path')

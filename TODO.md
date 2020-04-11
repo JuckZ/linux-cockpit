@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-10 17:12:52
+ * @LastEditTime: 2020-04-11 10:39:03
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -9,6 +9,12 @@
  -->
 
 # Hello
+
+点击程序图标，则将程序加入到runningApp中，通过watch等方式监控runningApp的变化，如果发生改变，则在遮罩层添加或移除变化部分的应用
+
+全屏应用背景不要透明，默认加一个背景颜色
+
+如何将app展示到div#runningApps中去呢
 
 TODO
 
@@ -30,25 +36,22 @@ BUG
 Desktop组件销毁后使用vuex销毁io链接
 electron跨域问题，尽量使用proxy方式，而不是cors方式
 
-1. 路由守卫 用于验证页面的跳转，如果访问了需要验证的页面则提示需要登录并跳转到登录页面  // 将登录状态存到cookie或者session中或者localStorage
-2. 对apps的打开状态、位置信息、窗口大小等信息进行保存，并且点击桌面空白时进行收起主菜单等
-3. history模式的路由
+TAG TODO now
+
+1. 修改应用的显示方式为弹出层，而不是路由方式。（那怎么验证呢）
+   思路：
+   在desktop的wallpaper之上的图层加入一个遮罩层，用于防止routerview，容纳运行中的应用。（使用多个routerview，外包一层div，设置div的z-index值可以将focus状态的应用置顶）
+2. token问题 jwt  iframe 第三方页面怎么嵌入进来
+3. 应用运行时需要在任务栏可以看到。
 4. relative absolute fixed flex
 5. 写论文 paperfree查询论文重复率
-6. 全局BUS 用于绑定事件通知、绑定router或者vuex或者axios等
 
 vuex中增加一个application的状态值，用于记录是否需要重新渲染
 所有api相关的、获取数据的操作都放入到vuex中去
 
 vue slot
-路由transition 
+路由transition
 JWT
-
-## 跨域问题
-
-jsonp 淘汰
-cors 后端解决方案
-http proxy前端解决方案
 
 ## 应用
 
@@ -57,7 +60,7 @@ http proxy前端解决方案
 
 ## 样式
 
-1. ??
+1. 对于尺寸不合适的图标进行p图
 2. 首先要知道，vuex中的状态一旦页面刷新，就不再存在。所以为了实现在刷新页面时，仍然展现出用户头像，就需要从sessionStorage种提取状态再传值给vuex。
 
 ## 功能
@@ -86,7 +89,7 @@ http proxy前端解决方案
 2. 退格边界,以及退格到上一行
 3. 组件化
 4. 加密传输
-5. 组合键
+5. 组合键 vue修饰键
 6. 未退出的客户端处理（销毁）
 
 ## 其他场景
@@ -106,6 +109,7 @@ http proxy前端解决方案
 5. README.md完善
 6. js文件转ts文件
 7. Decorator重构Koa路由策略
+8. 窗口最小化后应该到托盘中
 
 ## 已解决问题
 
@@ -114,15 +118,6 @@ http proxy前端解决方案
 
 ## 图标
 
-1. 终端
-2. 文件管理器（包括上传下载，拖动，批量操作等）
-3. 用户头像
-4. 用户管理
-5. 进程管理
-6. 系统内存等状态
-7. 网络管理
-8. 天气
-9. 微信
-10. PS
-11. 应用商店
-12. 防火墙
+1. 用户管理
+2. 网络管理
+3. 防火墙

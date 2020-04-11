@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-10 16:53:22
+ * @LastEditTime: 2020-04-10 18:15:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\.eslintrc.js
@@ -21,7 +21,7 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'off' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'quotes': ['error', 'single']
   }

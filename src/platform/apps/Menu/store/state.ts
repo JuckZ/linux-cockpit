@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:56:42
- * @LastEditTime: 2020-04-10 11:42:26
+ * @LastEditTime: 2020-04-10 18:23:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Menu\store\state.ts
@@ -15,7 +15,7 @@ export default {
     {
       id: 1,
       name: '应用市场',
-      imgSrc: '/assets/apps/ApplicationMarket/logo.png',
+      imgSrc: '/assets/apps/AppStore/logo.png',
     },
     {
       id: 2,

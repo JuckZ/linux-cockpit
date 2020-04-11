@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-10 16:57:33
+ * @LastEditTime: 2020-04-11 09:43:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -38,7 +38,7 @@ export default {
   // 配置app，管理app的状态（安装或者卸载等）
   apps: [
     {
-      id:'1',
+      id:1,
       name: 'shell',
       path: '@/platform/apps/Shell',
       imgSrc: '/assets/apps/Shell/logo.png',
@@ -49,13 +49,17 @@ export default {
         // 窗口显示状态：minimize，fullScreen，customize, default
         window: 'minimize',
         // 是否正在运行状态
-        running: false
+        running: false,
+        position: {
+          x: 0,
+          y:0
+        }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:'2',
+      id:2,
       name: 'fileManager',
       path: '@/platform/apps/FileManager',
       imgSrc: '/assets/apps/FileManager/logo.png',
@@ -64,13 +68,17 @@ export default {
         installed: true,
         focus: false,
         window: 'minimize',
-        running: false
+        running: false,
+        position: {
+          x: 0,
+          y:0
+        }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:'3',
+      id:3,
       name: 'taskManager',
       path: '@/platform/apps/TaskManager',
       imgSrc: '/assets/apps/TaskManager/logo.png',
@@ -79,10 +87,21 @@ export default {
         installed: true,
         focus: false,
         window: 'minimize',
-        running: false
+        running: false,
+        position: {
+          x: 0,
+          y:0
+        }
       },
       version: 'V0.0.1',
       author: 'Juck'
     }
   ],
+  // 运行中的app
+  runningApps: [
+    {
+      name: 'Login',
+      id: 1
+    }
+  ]
 }
