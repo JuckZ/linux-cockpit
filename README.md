@@ -1,12 +1,13 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-14 09:46:58
- * @LastEditTime: 2020-04-11 08:45:35
+ * @LastEditTime: 2020-04-12 11:47:17
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\README.md
  * @Juck is coding...
  -->
+
 # linux-cockpit
 
 ## 项目介绍
@@ -20,42 +21,42 @@
 WebSockets 无需任何配置即可通过大多数防火墙。
 良好的安全模式（基于原始的安全模式）。
 
-作者：江不知
-链接：https://juejin.im/post/5d0b1381e51d455a694f9544
-来源：掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
+获取linux系统的反馈，以及脚本的植入和运行，权限和安全，网速和效率
 装逼  平时的命令不用记住  
 节省环境配置成本（时间/金钱）  
 帮助新手快速搭建环境 有限时间内进行快速开发  
 
 ## Project setup
+
 ```
 yarn install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 yarn serve
 ```
 
 ### Compiles and minifies for production
+
 ```
 yarn build
 ```
 
 ### Lints and fixes files
+
 ```
 yarn lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## 项目创建步骤
 
 // 工具 nodemon http-server 等 可以在测试时候使用
-yarn global add typescript @vue/cli
 vue create linux-cockpit
 // 注意less版本一定是2.x.x，不然会报错，也可以使用3，但是需要配置
 yarn add less@2.7.3 less-loader node-sass sass-loader electron babel-plugin-import -D //babel-plugin-import 是一个用于按需加载组件代码和样式的 babel 插件

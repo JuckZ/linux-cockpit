@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-11 19:32:40
+ * @LastEditTime: 2020-04-16 10:17:04
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -12,25 +12,20 @@
 
 TODO
 
+!!! 封装一个函数，在调用mapAction中的设置app状态时，存储前后变化的情况，然后进行逻辑操作
 1. 文件管理器：
    目录部分可以制作下拉菜单，点击下拉菜单触发请求。
    data中存储文件名和绝对路径，可取属性（时间，pwd拼接绝对路径，所属组和用户，大小）
-2. 增加全局样式定义
-   {
-       blurWindow: // 窗口未被focus时添加的效果（黑白）
-   }
-
-3. socket.io emitter.setMaxListeners()
-4. socket.setMaxListeners(1)
-5. io.sockets.setMaxListeners(1)
-6. 点击程序图标，则将程序加入到runningApp中，通过watch等方式监控runningApp的变化，如果发生改变，则在遮罩层添加或移除变化部分的应用
-如何将app展示到div#runningApps中去呢
-7. 通知栏（比如安装软件成功，卸载成功等）
+2. socket.io emitter.setMaxListeners()
+3. socket.setMaxListeners(1)
+4. io.sockets.setMaxListeners(1)
+5. 通知栏（比如安装软件成功，卸载成功等）也是通过mapAction获取返回值（异步，因为服务端安装成功后回显需要时间），然后。。。
 
 FIXME
 
 1. main.ts中的apollo是否可以去掉
 2. 如果不断开socket链接，会有多个相同的socket绑定在同一个shell上，每次发送和回显命令都是重复的
+3. 向任务栏添加运行的程序时，后运行的程序应该将图标放置到最后，（解决办法，可以按照打开顺序设置PID，按照PID的大小排列图标即可）
 
 BUG
 
@@ -39,20 +34,12 @@ electron跨域问题，尽量使用proxy方式，而不是cors方式
 
 TAG TODO now
 
-1. 修改应用的显示方式为弹出层，而不是路由方式。（那怎么验证呢）
-   思路：
-   在desktop的wallpaper之上的图层加入一个遮罩层，用于防止routerview，容纳运行中的应用。（使用多个routerview，外包一层div，设置div的z-index值可以将focus状态的应用置顶）
+1. watch 监控vuex的值变化（或者computed中值得变化）
 2. token问题 jwt  iframe 第三方页面怎么嵌入进来
-3. 应用运行时需要在任务栏可以看到。
-4. relative absolute fixed flex
-5. 写论文 paperfree查询论文重复率
+3. relative absolute fixed flex
+4. 写论文 paperfree查询论文重复率
 
-vuex中增加一个application的状态值，用于记录是否需要重新渲染
-所有api相关的、获取数据的操作都放入到vuex中去
-
-vue slot
 路由transition
-JWT
 
 ## 应用
 
@@ -62,9 +49,12 @@ JWT
 ## 样式
 
 1. 对于尺寸不合适的图标进行p图
-2. 首先要知道，vuex中的状态一旦页面刷新，就不再存在。所以为了实现在刷新页面时，仍然展现出用户头像，就需要从sessionStorage种提取状态再传值给vuex。
+2. 毛玻璃效果
 
 ## 功能
+
+集成一些线上的功能，如Uzer.me上的东西，在线的PS，在线的office编辑功能等等  
+充分运用curl
 
 1. isLogined登录状态持久化存储，app退出后依然可以设置
 2. 回收站
@@ -111,6 +101,7 @@ JWT
 6. js文件转ts文件
 7. Decorator重构Koa路由策略
 8. 窗口最小化后应该到托盘中
+9. 框架间更好的整合，electron-forge、vue-electron
 
 ## 已解决问题
 

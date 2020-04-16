@@ -1,5 +1,14 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-04-02 11:16:32
+ * @LastEditTime: 2020-04-16 09:49:05
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\store\state.ts
+ * @Juck is coding...
+ */
 export default {
-  token: '',
+  token: 'tok',
   isLogined: false,
   socket: null,
   settings: {

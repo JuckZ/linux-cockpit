@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-11 13:10:05
+ * @LastEditTime: 2020-04-12 16:43:17
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -83,9 +83,16 @@ const apolloClient = new ApolloClient({
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
-new Vue({
+const myVue = new Vue({
   apolloProvider,
   router,
   store,
   render: h => h(App),
-}).$mount('#app')
+});
+myVue.$mount('#app')
+
+// TODO 挂载vue实例到window中，方便调试,需要删除
+declare global {
+  interface Window { myVue: any }
+}
+window.myVue = myVue

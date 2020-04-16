@@ -1,14 +1,14 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-11 20:21:51
+ * @LastEditTime: 2020-04-12 17:09:46
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
  * @Juck is coding...
  */
 export default {
-      // 默认配置 TODO: 可以考虑存入数据库，从而实现界面可视化动态配置
+  // 默认配置 TODO: 可以考虑存入数据库，从而实现界面可视化动态配置
   settings: {
     wallpaper: {
       // 壁纸来源方式 application | network | server
@@ -53,6 +53,8 @@ export default {
    *    position {
    *      x: 窗口的横坐标
    *      y: 窗口的纵坐标
+   *      width: 窗口宽度
+   *      height: 窗口高度
    *    }
    *    version: app的版本号
    *    author: app的作者
@@ -60,7 +62,7 @@ export default {
    */
   apps: [
     {
-      id:0,
+      id: 0,
       name: 'shell',
       chineseName: '终端',
       path: '@/platform/apps/Shell',
@@ -75,14 +77,16 @@ export default {
         running: false,
         position: {
           x: 0,
-          y:0
+          y: 0,
+          width: 800,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:1,
+      id: 1,
       name: 'fileManager',
       chineseName: '文件管理器',
       path: '@/platform/apps/FileManager',
@@ -96,15 +100,17 @@ export default {
         window: 'minimize',
         running: false,
         position: {
-          x: 0,
-          y:0
+          x: 10,
+          y: 0,
+          width: 800,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:2,
+      id: 2,
       name: 'taskManager',
       chineseName: '任务管理器',
       path: '@/platform/apps/TaskManager',
@@ -118,15 +124,17 @@ export default {
         window: 'minimize',
         running: false,
         position: {
-          x: 0,
-          y:0
+          x: 20,
+          y: 0,
+          width: 400,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:3,
+      id: 3,
       name: 'appStore',
       chineseName: '应用市场',
       path: '@/platform/apps/AppStore',
@@ -141,14 +149,16 @@ export default {
         running: false,
         position: {
           x: 0,
-          y:0
+          y: 0,
+          width: 800,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:4,
+      id: 4,
       name: 'personalCenter',
       chineseName: '个人中心',
       path: '@/platform/apps/PersonalCenter',
@@ -163,14 +173,16 @@ export default {
         running: false,
         position: {
           x: 0,
-          y:0
+          y: 0,
+          width: 800,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:5,
+      id: 5,
       name: 'systemSettings',
       path: '@/platform/apps/SystemSettings',
       chineseName: '系统设置',
@@ -185,15 +197,17 @@ export default {
         running: false,
         position: {
           x: 0,
-          y:0
+          y: 0,
+          width: 800,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:6,
-      name: 'shell',
+      id: 6,
+      name: 'weather',
       chineseName: '今日天气',
       path: '@/platform/apps/Weather',
       imgSrc: '/assets/apps/Weather/logo.png',
@@ -206,15 +220,17 @@ export default {
         window: 'minimize',
         running: false,
         position: {
-          x: 0,
-          y:0
+          x: 30,
+          y: 0,
+          width: 600,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:7,
+      id: 7,
       name: 'weChat',
       chineseName: '微信',
       path: '@/platform/apps/weChat',
@@ -228,15 +244,17 @@ export default {
         window: 'minimize',
         running: false,
         position: {
-          x: 0,
-          y:0
+          x: 50,
+          y: 0,
+          width: 400,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:8,
+      id: 8,
       name: 'iClock',
       chineseName: '时钟',
       path: '@/platform/apps/iClock',
@@ -250,15 +268,17 @@ export default {
         window: 'minimize',
         running: false,
         position: {
-          x: 0,
-          y:0
+          x: 60,
+          y: 20,
+          width: 200,
+          height: 200
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     },
     {
-      id:9,
+      id: 9,
       name: 'aMap',
       chineseName: '高德地图',
       path: '@/platform/apps/Amap',
@@ -272,29 +292,23 @@ export default {
         window: 'minimize',
         running: false,
         position: {
-          x: 0,
-          y:0
+          x: 60,
+          y: 60,
+          width: 400,
+          height: 400
         }
       },
       version: 'V0.0.1',
       author: 'Juck'
     }
   ],
-  // 运行中的app
-  runningApps: [
-    {
-      name: 'shell',
-      id: 0,
-      imgSrc: '/assets/apps/Shell/logo.png'
-    }
-  ],
-    // 用户头像等信息
-    avatar: {
-      username: 'juck',
-      usergroup: 'root',
-      avatarSrc: '/assets/win7/avatar.png',
-    },
-     // 菜单右侧 - 其他信息
+  // 用户头像等信息
+  avatar: {
+    username: 'juck',
+    usergroup: 'root',
+    avatarSrc: '/assets/win7/avatar.png',
+  },
+  // 菜单右侧 - 其他信息
   otherInfo: [
     { id: 1, name: 'admin', path: '' },
     { id: 2, name: '个人中心', path: '' },
@@ -302,11 +316,11 @@ export default {
     { id: 4, name: '系统设置', path: '' },
     { id: 5, name: 'GitHub', path: '' },
   ],
-    // appInfo
-    appInfo: {
-      Name: 'linux-cockpit',
-      Author: 'Juck',
-      Version: '0.0.1',
-      SourceCode: 'https://github.com/JuckZ/linux-cockpit',
-    },
+  // appInfo
+  appInfo: {
+    Name: 'linux-cockpit',
+    Author: 'Juck',
+    Version: '0.0.1',
+    SourceCode: 'https://github.com/JuckZ/linux-cockpit',
+  },
 }

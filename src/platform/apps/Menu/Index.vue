@@ -29,7 +29,7 @@
     <!-- 按钮，用于关机、重启等 -->
     <ul id="btnGroup" ref="btnGroup">
       <li v-for="item in btnGroup" :key="item.id">
-        <a @click="targetHandler($event, item.target)">
+        <a @click="btnTargetHandler($event, item.target)">
           <a-icon style="color: rgba(0,0,0,1);" :type="item.type" />
         </a>
       </li>
@@ -84,8 +84,16 @@ export default {
       setAppStatus: 'config/setAppStatus'
     }),
     targetHandler(e, payload) {
+      console.log(payload);
+      console.log('---------------');
+      
+      
       this.setAppStatus(payload)
+      
       // if (this.$route.path !== target) this.$router.push(target)
+    },
+    btnTargetHandler(e, target) {
+      alert(target)
     },
   },
 }

@@ -1,14 +1,14 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-11 17:28:57
+ * @LastEditTime: 2020-04-12 16:03:53
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div class="appContainer" v-show="show" id="appContainer">
+  <div class="appContainer">
     <div class="appTitleBar">
       <a-icon type="minus" />
       <a-icon type="fullscreen" />
@@ -16,12 +16,12 @@
       <!-- <a-icon type="fullscreen-exit" /> -->
       <a-icon type="close" />
     </div>
-  <!-- slot用于防止app的真正内容 -->
-  <slot/>
+    <!-- app的内容 -->
+    <slot />
   </div>
 </template>
 <style lang="scss">
-#appContainer {
+.appContainer {
   border-radius: 6px;
   position: fixed;
   top: 0;
@@ -58,18 +58,10 @@ export default {
     }
   },
   computed:{
-    show: () => {
-      return true
-    }
+
   },
   method: {
-    setShow() {
-if(this.$route.path === '/') {
-      this.show = false
-    } else {
-      this.show = true
-    }
-    }
+
   }
 }
 </script>

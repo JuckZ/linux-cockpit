@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 21:28:32
- * @LastEditTime: 2020-04-11 17:17:26
+ * @LastEditTime: 2020-04-12 09:30:02
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\TaskBar\Index.vue
@@ -15,13 +15,20 @@
       </a>
     </div>
     <div id="tasks">
-      <slot/>
+      <!-- 如果app.status.running为true则显示在任务栏中 -->
+      <ul>
+        <li v-for="app in apps" v-show="app.status.running" :key="app.id">
+          <a>
+            <img :src="app.imgSrc" :alt="app.name">
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -30,6 +37,11 @@ export default {
   },
   created() {
     //
+  },
+  computed: {
+    ...mapState('config', {
+      apps: 'apps'
+    })
   },
   methods: {
     ...mapActions({
@@ -51,6 +63,7 @@ export default {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   #startMenu {
     display: inline-block;
+    width: 40px;
     a {
       display: inline-block;
       img {
@@ -63,13 +76,19 @@ export default {
   }
   #tasks {
     display: inline-block;
-    a {
+    li {
       display: inline-block;
-      background: rgba(255, 255, 255, 0.4);
-      img {
-        height: 40px;
+      a {
+        display: inline-block;
+        :hover {
+          background: rgba(255, 255, 255, 0.4);
+        }
+        img {
+          height: 40px;
+        }
       }
     }
+
   }
 }
 </style>
