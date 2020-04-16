@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-16 11:23:58
+ * @LastEditTime: 2020-04-16 14:59:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -55,7 +55,7 @@ export default {
   mounted(){
   // 
   BUS.$on('SetAppStatus', (res) => {
-    console.info(res)
+    // console.info(res)
   })
   },
   methods: {

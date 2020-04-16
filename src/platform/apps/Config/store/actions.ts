@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-16 13:34:20
+ * @LastEditTime: 2020-04-16 15:28:43
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
@@ -15,11 +15,8 @@ export default {
         // console.log(context.state.apps[8].status.running);
         /* eslint-disable */
         // let tt = context
-        console.log(context);
-        
-        // console.log(tt.state.apps);
-        // console.log(tt.state.apps[8].status.running);
-        
+        // TAG 对象拷贝问题（此处需要深拷贝）
+        let oldVal = JSON.parse(JSON.stringify(context.state.apps))
         // 如果app需要验证登录并且用户未登录则给予提示
         if(payload.requiredAuth === true ) {
             alert('需要验证')
@@ -29,8 +26,8 @@ export default {
             context.commit('setAppStatus', payload)
             // 触发setAppStatus钩子
             const res = {
-                // oldVal: oldVal,
-                newVal: context.state.apps
+                oldVal: oldVal,
+                newVal: JSON.parse(JSON.stringify(context.state.apps))
             }
             BUS.$emit('SetAppStatus', res)
         }

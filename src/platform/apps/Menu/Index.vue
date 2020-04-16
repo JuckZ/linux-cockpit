@@ -84,8 +84,8 @@ export default {
       setAppStatus: 'config/setAppStatus'
     }),
     targetHandler(e, payload) {
-      console.log(payload);
-      console.log('---------------');
+      // console.log(payload);
+      // console.log('---------------');
       
       
       this.setAppStatus(payload)

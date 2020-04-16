@@ -1,13 +1,14 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-12 17:09:46
+ * @LastEditTime: 2020-04-16 15:01:58
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
  * @Juck is coding...
  */
 export default {
+  count: 0,
   // 默认配置 TODO: 可以考虑存入数据库，从而实现界面可视化动态配置
   settings: {
     wallpaper: {
@@ -69,12 +70,12 @@ export default {
       imgSrc: '/assets/apps/Shell/logo.png',
       inDesktop: true,
       inStartMenu: true,
-      requiredAuth: true,
+      requiredAuth: false,
       status: {
         installed: true,
         focus: false,
         window: 'minimize',
-        running: false,
+        running: 0,
         position: {
           x: 0,
           y: 0,
