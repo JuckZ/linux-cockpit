@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-11 20:33:29
- * @LastEditTime: 2020-04-12 08:29:57
+ * @LastEditTime: 2020-04-16 16:12:04
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\DesktopIcons\Index.vue
@@ -11,7 +11,7 @@
   <ul id="desktopIcons">
     <!-- 如果app.inDesktop为true时才显示在桌面 -->
     <li v-for="app in apps" v-show="app.inDesktop" :key="app.id">
-      <a @dblclick="targetHandler($event, app)"
+      <a @dblclick="targetHandler($event, {type: 'running', app: app})"
         ><img :src="app.imgSrc" :alt="app.name"
       /></a>
     </li>

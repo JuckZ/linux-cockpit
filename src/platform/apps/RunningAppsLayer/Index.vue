@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-16 14:59:29
+ * @LastEditTime: 2020-04-23 11:34:16
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -9,9 +9,34 @@
  -->
 <template>
   <ul id="runningAppsLayer">
-    <li v-for="app in apps" v-show="app.status.running" :key="app.id">
-      {{app.name}}
-      <AppContainer :style="`left:${app.status.position.x}px;top:${app.status.position.y}px;width:${app.status.position.width}px;height:${app.status.position.height}px`" :id="`${app.name}${app.id}`">
+    <li
+      v-for="app in runningApps"
+      :id="`${app.name}${app.id}`"
+      v-show="app.status.running"
+      :key="app.id"
+    >
+      <AppContainer :currentApp="app">
+        <!-- app真正的内容 -->
+        <!-- app标题栏 -->
+        <template v-slot:titleText>
+          <!-- app标题 -->
+          <span>{{ app.name }}</span>
+          <!-- FIXME: 点击窗口按钮时可能触发点击事件的target不是预期的 -->
+          <!-- 窗口按钮 -->
+          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="minus" src="/assets/apps/AppContainer/minus.svg" alt="最小化"></a>
+          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="fullscreen" v-show="app.status.window!=='fullscreen'" src="/assets/apps/AppContainer/fullscreen.svg" alt="全屏"></a>
+          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="fullscreen-exit" v-show="app.status.window=='fullscreen'" src="/assets/apps/AppContainer/fullscreen-exit.svg" alt="退出全屏"></a>
+          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="close" src="/assets/apps/AppContainer/close.svg" alt="关闭"></a>
+          <!-- <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" type="minus" />
+          <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" v-show="app.status.window!=='fullscreen'" type="fullscreen" />
+          <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" v-show="app.status.window=='fullscreen'" type="fullscreen-exit" />
+          <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" type="close" /> -->
+        </template>
+        <!-- app组件 -->
+        <template v-slot:appComponent>
+          <component :is="app.componentName"></component>
+        </template>
+
         <!-- <my-notFound></my-notFound> -->
         <!-- 动态添加app -->
       </AppContainer>
@@ -40,29 +65,43 @@ export default {
   data() {
     return {
       oldApps: this.apps,
-      newApps: ''
+      newApps: '',
     }
   },
   name: 'runningAppsLayer',
   components: {
-    AppContainer
+    AppContainer,
   },
   computed: {
     ...mapState('config', {
-      apps: 'apps'
-    })
+      apps: 'apps',
+    }),
+    runningApps: function(){
+      return this.apps.filter((app) => {
+        return app.status.running
+      })
+    }
   },
-  mounted(){
-  // 
-  BUS.$on('SetAppStatus', (res) => {
-    // console.info(res)
-  })
+  mounted() {
+    // 监听setAppStatus事件
+    BUS.$on('setAppStatus', (res) => {
+      console.info(res)
+    })
   },
   methods: {
     ...mapActions({
       // 修改app运行状态
-      setAppStatus: 'config/setAppStatus'
+      setAppStatus: 'config/setAppStatus',
     }),
-  }
+    handleSetWindow(event, payload) {
+      // 获取按钮的type值
+      // const btnType = event.target.attributes[2].nodeValue;
+      const btnType = event.target.attributes.btnType.value;
+      this.setAppStatus({
+        btnType,
+        ...payload
+      })
+    }
+  },
 }
 </script>

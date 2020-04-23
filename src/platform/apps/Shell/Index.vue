@@ -41,7 +41,8 @@ export default {
     const ele = document.getElementById('terminal')
     terminal.open(ele)
     terminal.focus()
-    fitAddon.fit()
+    // FIXME
+    // fitAddon.fit()
     // socket部分
     // 检查登录状态，如果已经是登录状态才可以建立socket连接
     if (this.isLogined == true) {
@@ -58,8 +59,7 @@ export default {
     } else {
       // this 指的是webssh
       // 提示您尚未登录，然后跳转到登录页面
-      this.$parent.$message.error('您尚未登录')
-      this.$parent.$parent.$router.push('/login')
+      this.$parent.$message.error('来自shell的提醒：您尚未登录')
     }
     let printable = false
     // 保存当前输入的命令

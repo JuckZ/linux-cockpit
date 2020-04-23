@@ -1,3 +1,12 @@
+<!--
+ * @Author: Juck
+ * @Date: 2020-04-01 14:06:22
+ * @LastEditTime: 2020-04-16 16:14:18
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\platform\apps\Wallpaper\Index.vue
+ * @Juck is coding...
+ -->
 <template>
   <div
     id="wallpaper"
@@ -13,9 +22,6 @@ export default {
     return {
       imgSrc: '',
     }
-  },
-  props: {
-    // msg1: String,
   },
   mounted() {
     // 设置背景图片链接地址

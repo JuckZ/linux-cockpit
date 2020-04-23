@@ -1,14 +1,13 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-16 15:01:58
+ * @LastEditTime: 2020-04-23 09:29:45
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
  * @Juck is coding...
  */
 export default {
-  count: 0,
   // 默认配置 TODO: 可以考虑存入数据库，从而实现界面可视化动态配置
   settings: {
     wallpaper: {
@@ -41,15 +40,17 @@ export default {
    * id: app的唯一标识
    * name: app的英文名称
    * chineseName: app的中文名称
+   * componentName: app注册组件所用名称,
    * path: app组件的路径
    * imgSrc: app图标路径
    * inDesktop: 图标是否在桌面显示
    * inStartMenu: 图标是否在开始菜单中显示
    * requireAuth: 是否需要验证才能访问
    * status {  
+   *    show: 是否显示
    *    installed: 是否已经安装
    *    focus: 是否为置顶聚焦状态
-   *    window: 窗口的显示状态（minimize，fullScreen，customize, tray, default）
+   *    window: 窗口的显示状态（minimize, fullscreen, tray, default）
    *    running: 是否正在运行
    *    position {
    *      x: 窗口的横坐标
@@ -66,16 +67,18 @@ export default {
       id: 0,
       name: 'shell',
       chineseName: '终端',
+      componentName: 'Shell',
       path: '@/platform/apps/Shell',
       imgSrc: '/assets/apps/Shell/logo.png',
       inDesktop: true,
       inStartMenu: true,
-      requiredAuth: false,
+      requiredAuth: true,
       status: {
+        show: false,
         installed: true,
         focus: false,
         window: 'minimize',
-        running: 0,
+        running: false,
         position: {
           x: 0,
           y: 0,
@@ -90,6 +93,7 @@ export default {
       id: 1,
       name: 'fileManager',
       chineseName: '文件管理器',
+      componentName: 'FileManager',
       path: '@/platform/apps/FileManager',
       imgSrc: '/assets/apps/FileManager/logo.png',
       inDesktop: true,
@@ -114,6 +118,7 @@ export default {
       id: 2,
       name: 'taskManager',
       chineseName: '任务管理器',
+      componentName: 'TaskManager',
       path: '@/platform/apps/TaskManager',
       imgSrc: '/assets/apps/TaskManager/logo.png',
       inDesktop: true,
@@ -138,6 +143,7 @@ export default {
       id: 3,
       name: 'appStore',
       chineseName: '应用市场',
+      componentName: 'AppStore',
       path: '@/platform/apps/AppStore',
       imgSrc: '/assets/apps/AppStore/logo.png',
       inDesktop: true,
@@ -162,6 +168,7 @@ export default {
       id: 4,
       name: 'personalCenter',
       chineseName: '个人中心',
+      componentName: 'PersonalCenter',
       path: '@/platform/apps/PersonalCenter',
       imgSrc: '/assets/apps/PersonalCenter/logo.png',
       inDesktop: false,
@@ -185,8 +192,9 @@ export default {
     {
       id: 5,
       name: 'systemSettings',
-      path: '@/platform/apps/SystemSettings',
       chineseName: '系统设置',
+      componentName: 'SystemSettings',
+      path: '@/platform/apps/SystemSettings',
       imgSrc: '/assets/apps/SystemSettings/logo.png',
       inDesktop: false,
       inStartMenu: true,
@@ -210,6 +218,7 @@ export default {
       id: 6,
       name: 'weather',
       chineseName: '今日天气',
+      componentName: 'Weather',
       path: '@/platform/apps/Weather',
       imgSrc: '/assets/apps/Weather/logo.png',
       inDesktop: false,
@@ -234,8 +243,9 @@ export default {
       id: 7,
       name: 'weChat',
       chineseName: '微信',
-      path: '@/platform/apps/weChat',
-      imgSrc: '/assets/apps/weChat/logo.png',
+      componentName: 'WeChat',
+      path: '@/platform/apps/WeChat',
+      imgSrc: '/assets/apps/WeChat/logo.png',
       inDesktop: false,
       inStartMenu: true,
       requiredAuth: false,
@@ -258,8 +268,9 @@ export default {
       id: 8,
       name: 'iClock',
       chineseName: '时钟',
-      path: '@/platform/apps/iClock',
-      imgSrc: '/assets/apps/iClock/logo.png',
+      componentName: 'IClock',
+      path: '@/platform/apps/IClock',
+      imgSrc: '/assets/apps/IClock/logo.png',
       inDesktop: false,
       inStartMenu: true,
       requiredAuth: false,
@@ -282,10 +293,36 @@ export default {
       id: 9,
       name: 'aMap',
       chineseName: '高德地图',
-      path: '@/platform/apps/Amap',
-      imgSrc: '/assets/apps/Amap/logo.png',
+      componentName: 'AMap',
+      path: '@/platform/apps/AMap',
+      imgSrc: '/assets/apps/AMap/logo.png',
       inDesktop: false,
       inStartMenu: true,
+      requiredAuth: false,
+      status: {
+        installed: true,
+        focus: false,
+        window: 'minimize',
+        running: false,
+        position: {
+          x: 60,
+          y: 60,
+          width: 400,
+          height: 400
+        }
+      },
+      version: 'V0.0.1',
+      author: 'Juck'
+    },
+    {
+      id: 10,
+      name: 'login',
+      chineseName: '登录',
+      componentName: 'Login',
+      path: '@/platform/apps/Login',
+      imgSrc: '/assets/apps/Login/logo.png',
+      inDesktop: false,
+      inStartMenu: false,
       requiredAuth: false,
       status: {
         installed: true,

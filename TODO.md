@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-16 10:17:04
+ * @LastEditTime: 2020-04-22 11:40:48
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -12,7 +12,6 @@
 
 TODO
 
-!!! 封装一个函数，在调用mapAction中的设置app状态时，存储前后变化的情况，然后进行逻辑操作
 1. 文件管理器：
    目录部分可以制作下拉菜单，点击下拉菜单触发请求。
    data中存储文件名和绝对路径，可取属性（时间，pwd拼接绝对路径，所属组和用户，大小）
@@ -34,10 +33,9 @@ electron跨域问题，尽量使用proxy方式，而不是cors方式
 
 TAG TODO now
 
-1. watch 监控vuex的值变化（或者computed中值得变化）
-2. token问题 jwt  iframe 第三方页面怎么嵌入进来
-3. relative absolute fixed flex
-4. 写论文 paperfree查询论文重复率
+1. token问题 jwt  iframe 第三方页面怎么嵌入进来
+2. relative absolute fixed flex
+3. 写论文 paperfree查询论文重复率
 
 路由transition
 
@@ -102,6 +100,7 @@ TAG TODO now
 7. Decorator重构Koa路由策略
 8. 窗口最小化后应该到托盘中
 9. 框架间更好的整合，electron-forge、vue-electron
+10. watch监控computed中mapState中的变化
 
 ## 已解决问题
 

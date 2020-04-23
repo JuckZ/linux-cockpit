@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-12 09:43:41
+ * @LastEditTime: 2020-04-23 09:27:53
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -10,7 +10,7 @@
 <template>
   <div id="desktop">
     <!-- 壁纸模块 -->
-    <Wallpaper msg1="1111" />
+    <Wallpaper />
     <!-- 桌面快捷方式 -->
     <DesktopIcons />
     <!-- 状态栏 -->
@@ -31,7 +31,6 @@ import TaskBar from '@/platform/apps/TaskBar/Index.vue'
 import Menu from '@/platform/apps/Menu/Index.vue'
 import DesktopIcons from '@/platform/apps/DesktopIcons/Index.vue'
 import RunningAppsLayer from '@/platform/apps/RunningAppsLayer/Index.vue'
-import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {}
@@ -46,24 +45,14 @@ export default {
     DesktopIcons
   },
   computed: {
-    ...mapState('config', {
-      apps: 'apps'
-    })
+// 
   },
   mounted() {
     //
     console.log(process.env.NODE_ENV)
   },
   methods: {
-    ...mapActions({
-      // 修改app运行状态
-      setAppStatus: 'config/setAppStatus'
-    }),
-    // 处理点击桌面图标的事件
-    targetHandler(e, payload) {
-      this.setAppStatus(payload)
-      // if (this.$route.path !== target) this.$router.push(target)
-    },
+    // 
   }
 }
 </script>

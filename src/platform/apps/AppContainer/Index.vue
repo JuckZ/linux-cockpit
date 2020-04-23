@@ -1,67 +1,104 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-12 16:03:53
+ * @LastEditTime: 2020-04-23 11:18:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div class="appContainer">
-    <div class="appTitleBar">
-      <a-icon type="minus" />
-      <a-icon type="fullscreen" />
-      <!-- 恢复到全屏之前 -->
-      <!-- <a-icon type="fullscreen-exit" /> -->
-      <a-icon type="close" />
+  <VueDragResize
+    :isActive="true"
+    :isDraggable="true"
+    :isResizable="true"
+    :class="{ fullscreen: currentApp.status.window == 'fullscreen'}"
+    :x="currentApp.status.position.x"
+    :y="currentApp.status.position.y"
+    :w="currentApp.status.position.width"
+    :h="currentApp.status.position.height"
+  >
+    <div class="appContainer">
+      <div class="appTitleBar">
+        <span>
+          <!-- 标题文字 -->
+          <slot name="titleText" />
+        </span>
+      </div>
+      <!-- app组件本身 -->
+      <!-- <h3>Hello World!</h3>
+      <p>{{ top }} х {{ left }}</p>
+      <p>{{ width }} х {{ height }}</p> -->
+      <div class="appContent">
+        <slot name="appComponent" />
+      </div>
     </div>
-    <!-- app的内容 -->
-    <slot />
-  </div>
+  </VueDragResize>
 </template>
 <style lang="scss">
-.appContainer {
-  border-radius: 6px;
+.fullscreen {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  padding: 6px 6px;
-  width: 800px;
-  height: 400px;
-  min-width: 300px;
-  background: rgba(255, 255, 255, .8);
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+.appContainer {
+  height: 100%;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.8);
   .appTitleBar {
+    width: 100%;
     text-align: end;
-    padding-bottom: 6px;
-    border-bottom: 2px solid rgba(255, 255, 255, .8);
+    position: absolute;
+    z-index: 99;
+    border-bottom: 2px solid rgba(255, 255, 255, 1);
     // a-icon的样式
-  i {
-    font-size: 30px;
-    color: #08c;
-    :hover {
-      cursor: pointer;
-      background: rgba($color: #000000, $alpha: .5);
+    img {
+      height: 20px;
+      color: blue;
+      :hover {
+        cursor: pointer;
+        background: rgba($color: #000000, $alpha: 0.5);
+      }
     }
   }
+  .appContent {
+    padding-top: 24px;
   }
+
 }
+  
 </style>
 <script>
+import VueDragResize from 'vue-drag-resize'
 export default {
+  name: 'appContainer',
+  components: {
+    VueDragResize,
+  },
+  props: ['currentApp'],
   data() {
     return {
-      // 
+      //
+      width: 0,
+      height: 0,
+      top: 0,
+      left: 0,
     }
   },
-  computed:{
-
-  },
+  computed: {},
   method: {
+    onResizing() {
+      console.log('resize')
 
-  }
+      // this.width = newRect.width;
+      // this.height = newRect.height;
+      // this.top = newRect.top;
+      // this.left = newRect.left;
+    },
+  },
 }
 </script>

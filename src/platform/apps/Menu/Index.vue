@@ -6,7 +6,7 @@
     <!-- 左侧菜单 app列表 -->
     <ul id="appList" ref="appList">
       <li v-for="item in apps" v-show="item.inStartMenu" :key="item.id">
-        <a @click="targetHandler($event, item)">
+        <a @click="targetHandler($event, {type: 'running', app: item})">
           <img :src="item.imgSrc" /><span>{{ item.name }}</span>
         </a>
       </li>
@@ -76,7 +76,6 @@ export default {
   },
   mounted() {
     //
-    // this.test = require(this.avatar.avatarSrc)
   },
   methods: {
     ...mapActions({
@@ -84,15 +83,21 @@ export default {
       setAppStatus: 'config/setAppStatus'
     }),
     targetHandler(e, payload) {
-      // console.log(payload);
-      // console.log('---------------');
-      
-      
+      // TAG此处如果直接打印payload也是不行的，因为展开对象的时候payload对象已经被修改了
+      // 应该打印JSON.parse(JSON.stringify(payload))
       this.setAppStatus(payload)
-      
-      // if (this.$route.path !== target) this.$router.push(target)
     },
     btnTargetHandler(e, target) {
+      switch(target) {
+        case 'poweroff':
+          // uploadCommand(target)
+          break
+        case 'login':
+          // this.apps[10]指的是login模块app
+          this.setAppStatus({type: 'running', app: this.apps[10]})
+          break
+        
+      }
       alert(target)
     },
   },
