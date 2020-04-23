@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-22 11:40:48
+ * @LastEditTime: 2020-04-23 13:54:55
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -11,6 +11,8 @@
 # Hello
 
 TODO
+
+shell连接，销毁
 
 1. 文件管理器：
    目录部分可以制作下拉菜单，点击下拉菜单触发请求。

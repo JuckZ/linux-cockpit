@@ -34,7 +34,6 @@ export default {
     }),
   },
   mounted() {
-    console.log('mounted')
     const terminal = new Terminal()
     const fitAddon = new FitAddon()
     terminal.loadAddon(fitAddon)

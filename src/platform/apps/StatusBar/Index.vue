@@ -1,17 +1,20 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-11 12:33:58
- * @LastEditTime: 2020-04-11 13:02:09
+ * @LastEditTime: 2020-04-23 14:51:54
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\StatusBar\Index.vue
  * @Juck is coding...
  -->
 <template>
+<!-- 状态栏 -->
   <div id="statusBar" ref="statusBar">
+    <!-- 日期 -->
     <span id="date">
       {{d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"}}
     </span>
+    <!-- 时间 -->
     <span id="time">
       {{d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()}}
     </span>

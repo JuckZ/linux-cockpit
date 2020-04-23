@@ -1,4 +1,11 @@
 {
+  "@typescript-eslint/no-this-alias": [
+    "info",
+    {
+      "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
+      "allowedNames": ["self"] // Allow `const self = this`; `[]` by default
+    }
+  ],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",

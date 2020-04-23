@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-23 09:27:53
+ * @LastEditTime: 2020-04-23 14:20:20
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+// 导入桌面的小组件
 import Wallpaper from '@/platform/apps/Wallpaper/Index.vue'
 import StatusBar from '@/platform/apps/StatusBar/Index.vue'
 import TaskBar from '@/platform/apps/TaskBar/Index.vue'
@@ -45,14 +47,26 @@ export default {
     DesktopIcons
   },
   computed: {
-// 
+    ...mapState('login', {
+      isLogined: 'isLogined',
+      userInfo: 'userInfo'
+    })
   },
   mounted() {
-    //
+    // 每次刷新后vuex的值会清除掉，因此在这里将登录状态从sessionStorage中恢复到vuex中
+    if(sessionStorage.getItem('isLogined')) {
+      // 修改login值
+      // 修改userInfo
+      this.login(sessionStorage.getItem('userInfo'))
+    }
     console.log(process.env.NODE_ENV)
   },
   methods: {
     // 
+    ...mapActions({
+      login: 'login/login',
+      changeLoginType: 'login/changeLoginType'
+    }),
   }
 }
 </script>

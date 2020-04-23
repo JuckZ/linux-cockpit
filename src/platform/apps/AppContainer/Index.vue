@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-23 11:18:29
+ * @LastEditTime: 2020-04-23 14:43:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -12,7 +12,9 @@
     :isActive="true"
     :isDraggable="true"
     :isResizable="true"
-    :class="{ fullscreen: currentApp.status.window == 'fullscreen'}"
+    :class="{ 
+      fullscreen: currentApp.status.window == 'fullscreen',
+      minimize: currentApp.status.window == 'minimize'}"
     :x="currentApp.status.position.x"
     :y="currentApp.status.position.y"
     :w="currentApp.status.position.width"
@@ -44,6 +46,9 @@
   right: 0 !important;
   width: 100% !important;
   height: 100% !important;
+}
+.minimize {
+  display: none;
 }
 .appContainer {
   height: 100%;

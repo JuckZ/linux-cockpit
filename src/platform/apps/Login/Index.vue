@@ -132,7 +132,6 @@ export default {
     if (sessionStorage.getItem('isLogined')===true) {
       // 设置vuex的值（因为刷新页面后session未清空，但是vuex清空了）
       // this.login(sessionStorage.getItem('userInfo'))
-      this.$parent.$router.push('/')
     }
     // 初始化登录参数
     this.form.setFieldsValue({
@@ -194,21 +193,19 @@ export default {
               // 存储登录信息
               sessionStorage.setItem('isLogined', true)
               sessionStorage.setItem('userInfo', values)
-              this.$router.push('/')
+              // TODO 隐藏login 
             }
           })
         }
       })
     },
     skipLogin() {
-      this.$router.push('/')
+      // TODO
     }
   }
 }
 </script>
 <style>
-
 #login {
-
 }
 </style>

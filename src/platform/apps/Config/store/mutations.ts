@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-21 17:18:40
+ * @LastEditTime: 2020-04-23 15:08:54
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -26,12 +26,12 @@ export default {
                     state.apps[payload.app.id].status.show = true
                     state.apps[payload.app.id].status.focus = true
                     break
-                case 'minus':
+                case 'minimize':
                     state.apps[payload.app.id].status.window = 'minimize'
                     state.apps[payload.app.id].status.show = false
                     state.apps[payload.app.id].status.focus = false
                     break
-                case 'fullscreen-exit':
+                case 'default':
                     state.apps[payload.app.id].status.window = 'default'
                     state.apps[payload.app.id].status.show = true
                     state.apps[payload.app.id].status.focus = true

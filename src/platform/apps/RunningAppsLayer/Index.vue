@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-23 11:34:16
+ * @LastEditTime: 2020-04-23 15:10:47
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -23,22 +23,15 @@
           <span>{{ app.name }}</span>
           <!-- FIXME: 点击窗口按钮时可能触发点击事件的target不是预期的 -->
           <!-- 窗口按钮 -->
-          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="minus" src="/assets/apps/AppContainer/minus.svg" alt="最小化"></a>
+          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="minimize" src="/assets/apps/AppContainer/minimize.svg" alt="最小化"></a>
           <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="fullscreen" v-show="app.status.window!=='fullscreen'" src="/assets/apps/AppContainer/fullscreen.svg" alt="全屏"></a>
-          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="fullscreen-exit" v-show="app.status.window=='fullscreen'" src="/assets/apps/AppContainer/fullscreen-exit.svg" alt="退出全屏"></a>
+          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="default" v-show="app.status.window=='fullscreen'" src="/assets/apps/AppContainer/default.svg" alt="退出全屏"></a>
           <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="close" src="/assets/apps/AppContainer/close.svg" alt="关闭"></a>
-          <!-- <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" type="minus" />
-          <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" v-show="app.status.window!=='fullscreen'" type="fullscreen" />
-          <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" v-show="app.status.window=='fullscreen'" type="fullscreen-exit" />
-          <a-icon @click="handleSetWindow($event, {type: 'setWindow', app: app })" type="close" /> -->
-        </template>
+         </template>
         <!-- app组件 -->
         <template v-slot:appComponent>
           <component :is="app.componentName"></component>
         </template>
-
-        <!-- <my-notFound></my-notFound> -->
-        <!-- 动态添加app -->
       </AppContainer>
     </li>
   </ul>

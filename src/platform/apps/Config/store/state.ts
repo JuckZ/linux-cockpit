@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-23 09:29:45
+ * @LastEditTime: 2020-04-23 14:45:08
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -77,7 +77,7 @@ export default {
         show: false,
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 0,
@@ -102,7 +102,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 10,
@@ -127,7 +127,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 20,
@@ -152,7 +152,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 0,
@@ -177,7 +177,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 0,
@@ -202,7 +202,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 0,
@@ -227,7 +227,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 30,
@@ -252,7 +252,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 50,
@@ -277,7 +277,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 60,
@@ -302,7 +302,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 60,
@@ -327,7 +327,7 @@ export default {
       status: {
         installed: true,
         focus: false,
-        window: 'minimize',
+        window: 'default',
         running: false,
         position: {
           x: 60,
@@ -360,5 +360,5 @@ export default {
     Author: 'Juck',
     Version: '0.0.1',
     SourceCode: 'https://github.com/JuckZ/linux-cockpit',
-  },
+  }
 }
