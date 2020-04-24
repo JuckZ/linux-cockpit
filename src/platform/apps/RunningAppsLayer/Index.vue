@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-23 15:10:47
+ * @LastEditTime: 2020-04-23 21:32:20
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -23,11 +23,59 @@
           <span>{{ app.name }}</span>
           <!-- FIXME: 点击窗口按钮时可能触发点击事件的target不是预期的 -->
           <!-- 窗口按钮 -->
-          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="minimize" src="/assets/apps/AppContainer/minimize.svg" alt="最小化"></a>
-          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="fullscreen" v-show="app.status.window!=='fullscreen'" src="/assets/apps/AppContainer/fullscreen.svg" alt="全屏"></a>
-          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="default" v-show="app.status.window=='fullscreen'" src="/assets/apps/AppContainer/default.svg" alt="退出全屏"></a>
-          <a @click="handleSetWindow($event, {type: 'setWindow', app: app })" ><img btnType="close" src="/assets/apps/AppContainer/close.svg" alt="关闭"></a>
-         </template>
+          <a
+            @click="
+              setAppMinimize({
+                options: {},
+                app: app,
+              })
+            "
+          >
+            <img
+              btnType="minimize"
+              src="/assets/apps/AppContainer/minimize.svg"
+              alt="最小化"
+            />
+          </a>
+          <a
+            @click="
+              setAppFullscreen({
+                options: {},
+                app: app,
+              })
+            "
+            ><img
+              btnType="fullscreen"
+              v-show="app.status.window !== 'fullscreen'"
+              src="/assets/apps/AppContainer/fullscreen.svg"
+              alt="全屏"
+          /></a>
+          <a
+            @click="
+              setAppDefault({
+                options: {},
+                app: app,
+              })
+            "
+            ><img
+              btnType="default"
+              v-show="app.status.window == 'fullscreen'"
+              src="/assets/apps/AppContainer/default.svg"
+              alt="退出全屏"
+          /></a>
+          <a
+            @click="
+              shutdownApp({
+                options: {},
+                app: app,
+              })
+            "
+            ><img
+              btnType="close"
+              src="/assets/apps/AppContainer/close.svg"
+              alt="关闭"
+          /></a>
+        </template>
         <!-- app组件 -->
         <template v-slot:appComponent>
           <component :is="app.componentName"></component>
@@ -69,11 +117,11 @@ export default {
     ...mapState('config', {
       apps: 'apps',
     }),
-    runningApps: function(){
+    runningApps: function() {
       return this.apps.filter((app) => {
         return app.status.running
       })
-    }
+    },
   },
   mounted() {
     // 监听setAppStatus事件
@@ -85,16 +133,20 @@ export default {
     ...mapActions({
       // 修改app运行状态
       setAppStatus: 'config/setAppStatus',
+      setAppFullscreen: 'config/setAppFullscreen',
+      setAppMinimize: 'config/setAppMinimize',
+      setAppDefault: 'config/setAppDefault',
+      shutdownApp: 'config/shutdownApp',
     }),
     handleSetWindow(event, payload) {
       // 获取按钮的type值
       // const btnType = event.target.attributes[2].nodeValue;
-      const btnType = event.target.attributes.btnType.value;
+      const btnType = event.target.attributes.btnType.value
       this.setAppStatus({
         btnType,
-        ...payload
+        ...payload,
       })
-    }
+    },
   },
 }
 </script>

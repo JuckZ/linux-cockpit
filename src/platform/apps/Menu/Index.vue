@@ -5,17 +5,21 @@
     </a>
     <!-- 左侧菜单 app列表 -->
     <ul id="appList" ref="appList">
-      <li v-for="item in apps" v-show="item.inStartMenu" :key="item.id">
-        <a @click="targetHandler($event, {type: 'running', app: item})">
-          <img :src="item.imgSrc" /><span>{{ item.name }}</span>
+      <li v-for="app in apps" v-show="app.inStartMenu" :key="app.id">
+        <a @click="
+        runApp({
+          app: app
+        })
+        ">
+          <img :src="app.imgSrc" /><span>{{ app.name }}</span>
         </a>
       </li>
     </ul>
     <!-- 菜单右侧选项卡 -->
     <ul id="otherInfoList" ref="otherInfoList">
-      <li v-for="item in otherInfo" :key="item.id">
+      <li v-for="app in otherInfo" :key="app.id">
         <a>
-          {{ item.name }}
+          {{ app.name }}
         </a>
       </li>
     </ul>
@@ -28,9 +32,9 @@
     </div>
     <!-- 按钮，用于关机、重启等 -->
     <ul id="btnGroup" ref="btnGroup">
-      <li v-for="item in btnGroup" :key="item.id">
-        <a @click="btnTargetHandler($event, item.target)">
-          <a-icon style="color: rgba(0,0,0,1);" :type="item.type" />
+      <li v-for="app in btnGroup" :key="app.id">
+        <a @click="btnTargetHandler($event, app.target)">
+          <a-icon style="color: rgba(0,0,0,1);" :type="app.type" />
         </a>
       </li>
     </ul>
@@ -80,7 +84,8 @@ export default {
   methods: {
     ...mapActions({
       // 修改app运行状态
-      setAppStatus: 'config/setAppStatus'
+      setAppStatus: 'config/setAppStatus',
+      runApp: 'config/runApp'
     }),
     targetHandler(e, payload) {
       // TAG此处如果直接打印payload也是不行的，因为展开对象的时候payload对象已经被修改了

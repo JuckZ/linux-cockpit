@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-11 20:33:29
- * @LastEditTime: 2020-04-16 16:12:04
+ * @LastEditTime: 2020-04-23 21:32:27
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\DesktopIcons\Index.vue
@@ -11,7 +11,12 @@
   <ul id="desktopIcons">
     <!-- 如果app.inDesktop为true时才显示在桌面 -->
     <li v-for="app in apps" v-show="app.inDesktop" :key="app.id">
-      <a @dblclick="targetHandler($event, {type: 'running', app: app})"
+      <a
+        @dblclick="
+          runApp({
+            app: app,
+          })
+        "
         ><img :src="app.imgSrc" :alt="app.name"
       /></a>
     </li>
@@ -22,14 +27,12 @@
 import { mapState, mapActions } from 'vuex'
 export default {
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     ...mapState('config', {
       apps: 'apps',
-    })
+    }),
   },
   mounted() {
     //
@@ -38,12 +41,9 @@ export default {
   methods: {
     ...mapActions({
       // 修改app运行状态
-      setAppStatus: 'config/setAppStatus'
+      setAppStatus: 'config/setAppStatus',
+      runApp: 'config/runApp',
     }),
-    targetHandler(e, payload) {
-      this.setAppStatus(payload)
-      // if (this.$route.path !== target) this.$router.push(target)
-    },
   },
 }
 </script>

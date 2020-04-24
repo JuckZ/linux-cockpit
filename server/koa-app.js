@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-15 12:46:16
- * @LastEditTime: 2020-04-11 14:13:53
+ * @LastEditTime: 2020-04-23 17:34:09
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\koa-app.js
@@ -30,9 +30,11 @@ const {
     initSocket
 } = require('./utils/shell.js')
 
-
+// io.of
 io.on('connection', (socket) => {
     console.log('++++++++++++++ io connection ++++++++++++++')
+    // console.log(io.sockets.clients().sockets);
+    
     // 将socket对象共享到shell.js中
     initSocket(socket)
     socket.on('uploadCommand', (command) => {

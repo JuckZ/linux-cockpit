@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-23 14:20:20
+ * @LastEditTime: 2020-04-23 16:39:02
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -26,6 +26,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+// 导入事件BUS
+import BUS from '@/platform/bus'
 // 导入桌面的小组件
 import Wallpaper from '@/platform/apps/Wallpaper/Index.vue'
 import StatusBar from '@/platform/apps/StatusBar/Index.vue'
@@ -49,22 +51,38 @@ export default {
   computed: {
     ...mapState('login', {
       isLogined: 'isLogined',
-      userInfo: 'userInfo'
+      userInfo: 'userInfo',
+      socket: 'socket'
     })
   },
   mounted() {
+    // 监听isLogined，如果为true，则给socket绑定监听事件，控制销毁
+    BUS.$on('socketInitialized', () => {
+      console.log('socketInitialized');
+      this.socket.on('disconnect', () => {
+    // socket.open();
+      console.log('socket disconnect');
+    });
+    })
+    
     // 每次刷新后vuex的值会清除掉，因此在这里将登录状态从sessionStorage中恢复到vuex中
     if(sessionStorage.getItem('isLogined')) {
       // 修改login值
-      // 修改userInfo
-      this.login(sessionStorage.getItem('userInfo'))
+      // 将sessionStorage中的userInfo用于登录，本质是存入
+      this.restoreLogin(sessionStorage.getItem('userInfo'))
     }
     console.log(process.env.NODE_ENV)
+  },
+  destroyed() {
+    // FIXME似乎刷新触发得了destoryed但没有时间执行
+    alert('des')
+    console.log('destoryed');
+    
   },
   methods: {
     // 
     ...mapActions({
-      login: 'login/login',
+      restoreLogin: 'login/restoreLogin',
       changeLoginType: 'login/changeLoginType'
     }),
   }

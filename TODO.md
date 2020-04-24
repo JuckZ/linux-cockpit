@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-23 13:54:55
+ * @LastEditTime: 2020-04-23 15:36:15
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -12,7 +12,7 @@
 
 TODO
 
-shell连接，销毁
+shell连接，销
 
 1. 文件管理器：
    目录部分可以制作下拉菜单，点击下拉菜单触发请求。
@@ -93,16 +93,17 @@ TAG TODO now
 
 ## 完善
 
-1. 注解
-2. 清理console.log等开发时使用的调试语句
-3. doc完善
-4. 脚本完善
-5. README.md完善
-6. js文件转ts文件
-7. Decorator重构Koa路由策略
-8. 窗口最小化后应该到托盘中
-9. 框架间更好的整合，electron-forge、vue-electron
-10. watch监控computed中mapState中的变化
+1. VueDragResize美化
+2. 注解
+3. 清理console.log等开发时使用的调试语句
+4. doc完善
+5. 脚本完善
+6. README.md完善
+7. js文件转ts文件
+8. Decorator重构Koa路由策略
+9. 窗口最小化后应该到托盘中
+10. 框架间更好的整合，electron-forge、vue-electron
+11. watch监控computed中mapState中的变化
 
 ## 已解决问题
 

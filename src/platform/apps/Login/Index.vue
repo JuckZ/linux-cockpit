@@ -105,6 +105,8 @@
 </template>
 
 <script>
+// 导入事件BUS
+import BUS from '@/platform/bus'
 import { mapState, mapActions } from 'vuex'
 export default {
   data() {
@@ -149,7 +151,10 @@ export default {
   methods: {
     ...mapActions({
       login: 'login/login',
-      changeLoginType: 'login/changeLoginType'
+      changeLoginType: 'login/changeLoginType',
+      setAppStatus: 'config/setAppStatus',
+      runApp: 'config/runApp',
+      shutdownApp: 'config/shutdownApp'
     }),
     // 上传私钥
     uploadPrivateKey(info) {
@@ -194,6 +199,14 @@ export default {
               sessionStorage.setItem('isLogined', true)
               sessionStorage.setItem('userInfo', values)
               // TODO 隐藏login 
+              this.shutdownApp({
+                app: {
+                  id: 10
+                }
+              })
+              // this.setApp()
+              // 触发socketInitialized事件
+              BUS.$emit('socketInitialized')
             }
           })
         }

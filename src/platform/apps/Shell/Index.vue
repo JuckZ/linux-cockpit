@@ -22,7 +22,7 @@ import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { attach } from 'xterm-addon-attach'
 import { search } from 'xterm-addon-search'
-
+let terminal = null
 export default {
   data() {
     return {}
@@ -33,15 +33,24 @@ export default {
       isLogined: 'isLogined',
     }),
   },
+  created() {
+    console.log('terminal created');
+  },
+  destroyed() {
+    console.log('terminal destoryed');
+    terminal.dispose()
+    // this.socket.close()
+  },
   mounted() {
-    const terminal = new Terminal()
+    console.log('terminal mounted');
+    terminal = new Terminal()
     const fitAddon = new FitAddon()
     terminal.loadAddon(fitAddon)
+    // FIXME
+    // fitAddon.fit()
     const ele = document.getElementById('terminal')
     terminal.open(ele)
     terminal.focus()
-    // FIXME
-    // fitAddon.fit()
     // socket部分
     // 检查登录状态，如果已经是登录状态才可以建立socket连接
     if (this.isLogined == true) {
@@ -50,9 +59,11 @@ export default {
       })
       this.socket.on('commandRes', (commandRes) => {
         terminal.write(commandRes)
+        // TODO 判断当输入exit，commandRes为logout时，关闭shell app
+        // TAG 换种方式，监听shell是否结束，然后再执行响应操作
       })
       this.socket.on('disconnect', function () {
-        console.log('client disconnect')
+        console.log('client-- disconnect')
         console.log(this.socket)
       })
     } else {

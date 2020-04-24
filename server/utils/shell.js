@@ -1,3 +1,12 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-14 11:30:18
+ * @LastEditTime: 2020-04-23 18:07:07
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\server\utils\shell.js
+ * @Juck is coding...
+ */
 /**
  * TODO:端口号自定义
  * 登录验证工具
@@ -20,7 +29,7 @@ const timeToLogin = 3000
 const timeToCommand = 3000
 const timeToLoginEvent = new events.EventEmitter();
 const timeToCommandEvent = new events.EventEmitter();
-let timeToCommandTimer = () => {}
+const timeToCommandTimer = () => {}
 let timeToLoginTimer = () => {}
 
 const initSocket = socket => {
@@ -32,6 +41,7 @@ const initSocket = socket => {
   stream.on('close', function () {
     // conn.end();
   }).on('data', function (data) {
+    // mySocket.emit('commandRes',data.toString())
     mySocket.emit('commandRes',data.toString())
   });
   conn.on('uploadCommand',(command) => {

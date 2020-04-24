@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 20:24:01
- * @LastEditTime: 2020-04-10 13:06:04
+ * @LastEditTime: 2020-04-23 15:43:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Login\store\actions.ts
@@ -28,12 +28,29 @@ export default {
         },
       })
       .then((res: any) => {
-        context.commit('setIsLogined', res)
+        context.commit('setIsLogined', {
+          userInfo: formData,
+          ...res
+        })
         // 创建socket对象
         const socket = io('http://localhost')
         context.commit('setSocket', socket)
         return res
       })
+  },
+  // 恢复登录状态
+  restoreLogin: ( context: any, formData: any) => {
+    context.commit('setIsLogined', {
+      userInfo: formData,
+      data: {
+        login: {
+          code: 200
+        }
+      }
+    })
+    // 创建socket对象
+    const socket = io('http://localhost')
+    context.commit('setSocket', socket)
   },
   // createSocket: async (context: any, socket: any) => {
   //   context.commit('setSocket', socket)
