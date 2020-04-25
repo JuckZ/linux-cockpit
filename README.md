@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-14 09:46:58
- * @LastEditTime: 2020-04-24 16:58:49
+ * @LastEditTime: 2020-04-25 09:11:54
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\README.md
@@ -86,9 +86,9 @@ module.exports = {
 
 1. 天气查询
   i.tianqi.com/index.php?c=code&id=55
-2. bing每日壁纸
+2. bing每日壁纸 //TODO 后台定时，自动下载壁纸备用
   https://bing.biturl.top/
-3. 
+3. 微信网页版 //TODO 组件中嵌入iframe
 
 ## 图层
 
