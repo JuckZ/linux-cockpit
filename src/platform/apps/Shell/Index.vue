@@ -34,43 +34,29 @@ export default {
     }),
   },
   created() {
-    console.log('terminal created');
+    // 
   },
   destroyed() {
-    console.log('terminal destoryed');
+    // 每次销毁要清除commandRes事件监听器
+    this.socket.removeAllListeners(['commandRes'])
     terminal.dispose()
     // this.socket.close()
   },
   mounted() {
-    console.log('terminal mounted');
     terminal = new Terminal()
     const fitAddon = new FitAddon()
     terminal.loadAddon(fitAddon)
-    // FIXME
-    // fitAddon.fit()
+    // FIXME shell窗口高度调节
+    fitAddon.fit()
     const ele = document.getElementById('terminal')
     terminal.open(ele)
     terminal.focus()
     // socket部分
-    // 检查登录状态，如果已经是登录状态才可以建立socket连接
-    if (this.isLogined == true) {
-      this.socket.on('connect', function () {
-        console.log('client connect')
-      })
-      this.socket.on('commandRes', (commandRes) => {
-        terminal.write(commandRes)
-        // TODO 判断当输入exit，commandRes为logout时，关闭shell app
-        // TAG 换种方式，监听shell是否结束，然后再执行响应操作
-      })
-      this.socket.on('disconnect', function () {
-        console.log('client-- disconnect')
-        console.log(this.socket)
-      })
-    } else {
-      // this 指的是webssh
-      // 提示您尚未登录，然后跳转到登录页面
-      this.$parent.$message.error('来自shell的提醒：您尚未登录')
-    }
+    this.socket.on('commandRes', (commandRes) => {
+      terminal.write(commandRes)
+      // TODO 判断当输入exit，commandRes为logout时，关闭shell app
+      // TAG 换种方式，监听shell是否结束，然后再执行响应操作
+    })
     let printable = false
     // 保存当前输入的命令
     let command = ''

@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 21:28:32
- * @LastEditTime: 2020-04-23 15:07:28
+ * @LastEditTime: 2020-04-26 10:37:11
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\TaskBar\Index.vue
@@ -19,7 +19,11 @@
       <ul>
         <li v-for="app in apps" v-show="app.status.running" :key="app.id">
           <a :class="{focusIcon: app.status.focus}">
-            <img :btnType="app.status.window == 'minimize'?'default':'minimize'" @click="handleSetWindow($event, {type: 'setWindow', app: app })" :src="app.imgSrc" :alt="app.name">
+            <img :btnType="app.status.window == 'minimize'?'default':'minimize'" @click="
+            setAppDefault({
+              app: app
+            })
+            " :src="app.imgSrc" :alt="app.name">
           </a>
         </li>
       </ul>
@@ -46,20 +50,8 @@ export default {
   methods: {
     ...mapActions({
       toggleMenu: 'menu/toggleMenu',
-      setAppStatus: 'config/setAppStatus',
-    }),
-    handleSetWindow(event, payload) {
-      // 获取按钮的type值
-      // const btnType = event.target.attributes[2].nodeValue;
-      
-      
-      const btnType = event.target.attributes.btnType.value;
-      console.log(btnType);
-      this.setAppStatus({
-        btnType,
-        ...payload
-      })
-    }
+      setAppDefault: 'config/setAppDefault',
+    })
   },
 }
 </script>

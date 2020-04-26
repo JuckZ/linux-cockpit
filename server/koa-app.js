@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-15 12:46:16
- * @LastEditTime: 2020-04-23 17:34:09
+ * @LastEditTime: 2020-04-26 09:35:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\koa-app.js
@@ -9,7 +9,6 @@
  */
 // 获取koa请求参数的几种方法
 // ctx.query ctx.params ctx.request.body ctx.request.query ctx.request.params ctx.request.header
-
 const Koa = require('koa');
 const path = require('path')
 const serve = require('koa-static')
@@ -21,7 +20,9 @@ const router = new Router()
 const {
     server
 } = require('./utils/graphql')
-
+const {
+    myBUS
+} = require('./utils/BUS')
 // 整合socket和Koa
 const serverWithSocket = require('http').createServer(app.callback());
 const io = require('socket.io')(serverWithSocket)
@@ -29,27 +30,27 @@ const {
     commandSSH,
     initSocket
 } = require('./utils/shell.js')
-
-// io.of
+const connections = []
+let socketID = 0
 io.on('connection', (socket) => {
     console.log('++++++++++++++ io connection ++++++++++++++')
-    // console.log(io.sockets.clients().sockets);
-    
     // 将socket对象共享到shell.js中
+    socketID++
+    connections.push({
+        socketID,
+        socket
+    })
     initSocket(socket)
     socket.on('uploadCommand', (command) => {
         commandSSH(command)
     })
     socket.on('disconnect', () => {
+        // 断开之后应该触发一个事件，销毁ssh连接
+        myBUS.emit('disconnect')
         console.log('断开连接');
         socket.disconnect();
-        // 广播
-        // socket.broadcast.emit(...)
     })
 })
-
-// 广播
-// io.emit('xxx',()={})
 
 //  错误处理中间件
 const errorHandle = async (ctx, next) => {

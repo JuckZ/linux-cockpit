@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-23 21:19:08
+ * @LastEditTime: 2020-04-25 21:34:51
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -37,6 +37,8 @@ export default {
   },
   // 当前运行的appID
   focusAppID: -1,
+  // 登录之后应该启动的app（数组）
+  toRunApps: [],
   // 配置app，管理app的状态（安装或者卸载等）
   /**
    * id: app的唯一标识

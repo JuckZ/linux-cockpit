@@ -9,7 +9,7 @@
     <a-form-item>
       <a-input
         v-decorator="[
-          'IP',
+          'domainOrIP',
           {
             rules: [
               {
@@ -137,7 +137,7 @@ export default {
     }
     // 初始化登录参数
     this.form.setFieldsValue({
-      IP: 'juck.site',
+      domainOrIP: 'juck.site',
       userName: 'root',
       password: 'Zc1998zc'
     })
@@ -145,7 +145,8 @@ export default {
   computed: {
     ...mapState('login', {
       isLogined: 'isLogined',
-      userInfo: 'userInfo'
+      userInfo: 'userInfo',
+      socket: 'socket'
     })
   },
   methods: {
@@ -154,7 +155,8 @@ export default {
       changeLoginType: 'login/changeLoginType',
       setAppStatus: 'config/setAppStatus',
       runApp: 'config/runApp',
-      shutdownApp: 'config/shutdownApp'
+      shutdownApp: 'config/shutdownApp',
+      runToRunApps: 'config/runToRunApps'
     }),
     // 上传私钥
     uploadPrivateKey(info) {
@@ -195,16 +197,11 @@ export default {
             this.openNotification(res.data.login)
             // 登录成功则跳转到首页，否则不作任何操作
             if (res.data.login.code === 200) {
-              // 存储登录信息
+              // 存储登录信息(isLogined,userInfo)
               sessionStorage.setItem('isLogined', true)
-              sessionStorage.setItem('userInfo', values)
-              // TODO 隐藏login 
-              this.shutdownApp({
-                app: {
-                  id: 10
-                }
-              })
-              // this.setApp()
+              sessionStorage.setItem('userInfo', JSON.stringify(values))
+              // 隐藏login，并运行toRunApps中的app
+              this.runToRunApps()
               // 触发socketInitialized事件
               BUS.$emit('socketInitialized')
             }

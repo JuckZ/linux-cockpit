@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-23 15:36:15
+ * @LastEditTime: 2020-04-25 22:30:35
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -104,6 +104,7 @@ TAG TODO now
 9. 窗口最小化后应该到托盘中
 10. 框架间更好的整合，electron-forge、vue-electron
 11. watch监控computed中mapState中的变化
+12. 多个SHELL支持（socket命名空间、多个socket连接）
 
 ## 已解决问题
 

@@ -1,13 +1,12 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-23 21:42:10
+ * @LastEditTime: 2020-04-26 10:35:11
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
  * @Juck is coding...
  */
-import BUS from '../../../bus'
 export default {
     // 将app窗口最大化
     setAppFullscreen: (context: any, payload: any) => {
@@ -17,7 +16,7 @@ export default {
     setAppMinimize: (context: any, payload: any) => {
         context.commit('setAppMinimize', payload)
     },
-    // 将app退出全屏，即设置为default
+    // 将app设置为default
     setAppDefault: (context: any, payload: any) => {
         context.commit('setAppDefault', payload)
     },
@@ -27,25 +26,34 @@ export default {
     },
     // 运行app
     runApp: (context: any, payload: any) => {
-        const oldVal = JSON.parse(JSON.stringify(context.state.apps))
         if (
             payload.app.requiredAuth === true
             && !sessionStorage.getItem('isLogined')
         ) {
-            // 如果未验证则：显示登录界面
+            // 如果未验证则：1.将当前app加入到toRunApps；2.运行登录界面
+            context.commit('addToRunApps',{
+                app: payload.app
+            })
             context.commit('runApp', {
                 // 获取loginApp并作为参数传递
                 app: context.state.apps[10]
             })
         } else {
             context.commit('runApp', payload)
-            // 触发setAppStatus钩子
-            const res = {
-                oldVal: oldVal,
-                newVal: JSON.parse(JSON.stringify(context.state.apps))
-            }
-            BUS.$emit('setAppStatus', res)
         }
+    },
+    // （只有已经登录了才能运行这个方法）运行toRunApps中的app（先关闭login）
+    runToRunApps: (context: any, payload: any) => {
+        // 关闭login
+        context.commit('shutdownApp', {
+            app: context.state.apps[10]
+        })
+        // 运行toRunApps中的app
+        for(const item of context.state.toRunApps) {
+            context.commit('runApp', {
+                app: item.app
+            })
+          }
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-04-23 18:07:07
+ * @LastEditTime: 2020-04-26 09:41:06
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -18,11 +18,13 @@
  */
 const events = require('events')
 const Client = require('ssh2').Client;
-const conn = new Client();
+let conn = null;
 // 用于表示shell是否准备就绪
 let isReady = false
 // 存储socket对象
 let mySocket = null
+// 存储所有连接的socket对象
+const users = []
 // 自定义参数
 // 登录超时时间
 const timeToLogin = 3000
@@ -31,38 +33,41 @@ const timeToLoginEvent = new events.EventEmitter();
 const timeToCommandEvent = new events.EventEmitter();
 const timeToCommandTimer = () => {}
 let timeToLoginTimer = () => {}
+const {
+  myBUS
+} = require('./BUS')
 
 const initSocket = socket => {
   mySocket = socket
   // 创建shell
-  if(isReady)
-  conn.shell(function (err, stream) {
-  if (err) throw err;
-  stream.on('close', function () {
-    // conn.end();
-  }).on('data', function (data) {
-    // mySocket.emit('commandRes',data.toString())
-    mySocket.emit('commandRes',data.toString())
-  });
-  conn.on('uploadCommand',(command) => {
-    stream.write(command+'\n')
-  })
-});
-
+  if (isReady) {
+    conn.shell(function (err, stream) {
+      if (err) throw err;
+      stream.on('close', function () {
+        // conn.end();
+      }).on('data', function (data) {
+        // mySocket.emit('commandRes',data.toString())
+        mySocket.emit('commandRes', data.toString())
+      });
+      conn.on('uploadCommand', (command) => {
+        stream.write(command + '\n')
+      })
+    });
+  }
 }
 
 // 直接调用异步操作，然后await他的结果
 // privateKey: require('fs').readFileSync('/here/is/my/key')
-const connectSSH = async (IP, userName, password, remember) => {
+const connectSSH = async (domainOrIP, userName, password, remember) => {
+  conn = new Client();
   conn.connect({
-    host: IP,
+    host: domainOrIP,
     port: 22,
     username: userName,
     password: password
   })
-
   // 就绪处理
-  conn.on('ready', () => {
+  conn.once('ready', () => {
     isReady = true
     // 清除登录超时计时器，触发登录成功事件（即向客户端发送登录成功的响应）
     clearTimeout(timeToLoginTimer)
@@ -77,10 +82,9 @@ const connectSSH = async (IP, userName, password, remember) => {
 
   return await new Promise((resolve, reject) => {
     // 登录最多5秒，如果没有就绪即超时
-    timeToLoginEvent.on('timeToLoginRes', () => {
+    timeToLoginEvent.once('timeToLoginRes', () => {
       resolve({
-        isReady: isReady,
-        conn: conn
+        isReady: isReady
       })
     })
     timeToLoginTimer = setTimeout(() => {
@@ -92,9 +96,13 @@ const connectSSH = async (IP, userName, password, remember) => {
 
 const commandSSH = (command) => {
   // 触发命令上传的监听事件
-  conn.emit('uploadCommand',command)
+  conn.emit('uploadCommand', command)
 }
 
+// 断开连接时，清除conn的事件监听器等
+myBUS.on('disconnect',() => {
+  console.log('disconnect here');
+})
 
 module.exports = {
   connectSSH: connectSSH,

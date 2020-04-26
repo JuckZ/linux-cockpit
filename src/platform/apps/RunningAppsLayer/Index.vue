@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-23 21:32:20
+ * @LastEditTime: 2020-04-26 10:33:04
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -125,9 +125,6 @@ export default {
   },
   mounted() {
     // 监听setAppStatus事件
-    BUS.$on('setAppStatus', (res) => {
-      console.info(res)
-    })
   },
   methods: {
     ...mapActions({

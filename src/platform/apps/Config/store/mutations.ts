@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-23 21:25:39
+ * @LastEditTime: 2020-04-25 22:08:37
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -9,6 +9,10 @@
  */
 export default {
     // TODO change current focus window 修改当前聚焦窗口
+    // 添加待运行的app
+    addToRunApps: (state: any, payload: any) => {
+        state.toRunApps.push(payload)
+    },
     // 将app窗口最大化
     setAppFullscreen: (state: any, payload: any) => {
         state.apps[payload.app.id].status.window = 'fullscreen'
