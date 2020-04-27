@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-25 22:08:37
+ * @LastEditTime: 2020-04-27 10:35:42
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -12,6 +12,10 @@ export default {
     // 添加待运行的app
     addToRunApps: (state: any, payload: any) => {
         state.toRunApps.push(payload)
+    },
+    // 清空待运行的app数组
+    resetToRunApps: (state: any, payload: any) => {
+        state.toRunApps = payload
     },
     // 将app窗口最大化
     setAppFullscreen: (state: any, payload: any) => {

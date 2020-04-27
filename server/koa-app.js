@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-15 12:46:16
- * @LastEditTime: 2020-04-26 09:35:29
+ * @LastEditTime: 2020-04-27 10:03:43
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\koa-app.js
@@ -11,6 +11,7 @@
 // ctx.query ctx.params ctx.request.body ctx.request.query ctx.request.params ctx.request.header
 const Koa = require('koa');
 const path = require('path')
+const fs = require('fs')
 const serve = require('koa-static')
 const Router = require('@koa/router')
 const cors = require('@koa/cors')
@@ -26,6 +27,7 @@ const {
 // 整合socket和Koa
 const serverWithSocket = require('http').createServer(app.callback());
 const io = require('socket.io')(serverWithSocket)
+const ss = require('socket.io-stream')
 const {
     commandSSH,
     initSocket
@@ -40,9 +42,22 @@ io.on('connection', (socket) => {
         socketID,
         socket
     })
-    initSocket(socket)
+    // 登录
+    socket.on('login', (formData) => {
+        // 初始化socket
+        initSocket(socket)
+        // 登录成功
+        socket.emit('loginSuccess', 'loginSuccess! ')
+        // 登录失败
+        // socket.emit('loginFailed', 'loginFailed! ')
+    })
+    // 接收到命令
     socket.on('uploadCommand', (command) => {
         commandSSH(command)
+    })
+    // 接收到脚本文件
+    socket.on('uploadScript', function(payload) {
+        myBUS.emit('uploadScript', payload)
     })
     socket.on('disconnect', () => {
         // 断开之后应该触发一个事件，销毁ssh连接

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-23 09:30:36
+ * @LastEditTime: 2020-04-27 21:21:16
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -44,7 +44,13 @@ import {
   Col,
   Row,
   Upload,
-  Table
+  Table,
+  Layout,
+  Menu,
+  Breadcrumb,
+  Tabs,
+  Tag,
+  Modal
 } from 'ant-design-vue'
 
 Vue.prototype.$notification = notification
@@ -81,6 +87,21 @@ Vue.component('a-row', Row)
 Vue.component('a-col', Col)
 Vue.component('a-upload', Upload)
 Vue.component('a-table', Table)
+Vue.component('a-layout', Layout)
+Vue.component('a-layout-header', Layout.Header)
+Vue.component('a-layout-content', Layout.Content)
+Vue.component('a-layout-sider', Layout.Sider)
+Vue.component('a-layout-footer', Layout.Footer)
+Vue.component('a-breadcrumb', Breadcrumb)
+Vue.component('a-breadcrumb-item', Breadcrumb.Item)
+Vue.component('a-menu', Menu)
+Vue.component('a-menu-item', Menu.Item)
+Vue.component('a-sub-menu', Menu.SubMenu)
+Vue.component('a-tabs', Tabs)
+Vue.component('a-tab-pane', Tabs.TabPane)
+Vue.component('a-input-search', Input.Search)
+Vue.component('a-tag', Tag)
+Vue.component('a-modal', Modal)
 
 // 注册自定义组件
 Vue.component('NotFound', NotFound)

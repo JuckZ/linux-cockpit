@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 20:24:01
- * @LastEditTime: 2020-04-23 15:39:35
+ * @LastEditTime: 2020-04-27 09:05:22
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Login\store\mutations.ts
@@ -16,12 +16,14 @@ export default {
       state.isLogined = false
     }
   },
-  // 修改socket的值
-  setSocket: (state: any, socket: any) => {
+  // 修改socket的值和stream的值
+  setSocket: (state: any, payload: any) => {
     if (state.isLogined) {
-      state.socket = socket
+      state.socket = payload.socket
+      state.stream = payload.stream
     } else {
       state.socket = null
+      state.stream = null
     }
   },
   // 修改登录方式

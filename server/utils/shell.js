@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-04-26 09:41:06
+ * @LastEditTime: 2020-04-27 11:49:22
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -18,6 +18,8 @@
  */
 const events = require('events')
 const Client = require('ssh2').Client;
+const fs = require('fs')
+const path = require('path')
 let conn = null;
 // 用于表示shell是否准备就绪
 let isReady = false
@@ -59,6 +61,8 @@ const initSocket = socket => {
 // 直接调用异步操作，然后await他的结果
 // privateKey: require('fs').readFileSync('/here/is/my/key')
 const connectSSH = async (domainOrIP, userName, password, remember) => {
+  // 先清除conn的所有监听事件
+  // conn.removeAllListener([])
   conn = new Client();
   conn.connect({
     host: domainOrIP,
@@ -102,6 +106,40 @@ const commandSSH = (command) => {
 // 断开连接时，清除conn的事件监听器等
 myBUS.on('disconnect',() => {
   console.log('disconnect here');
+})
+// 监听脚本上传事件
+myBUS.on('uploadScript', payload => {
+  let script = 'cd blog'
+  // 同步读取文件
+  // script = require('fs').readFileSync('../public/scripts/FileManager/initialInformation.sh')
+  const scriptPath = path.join(__dirname, './', payload.script)
+  script = fs.readFileSync(scriptPath).toString()
+  conn.exec(script, function (err, stream) {
+    // stream.write('echo hello')
+    if (err) throw err;
+    stream.on('close', function () {
+      // conn.end();
+    }).on('data', function (data) {
+      mySocket.emit('scriptRes', {
+        chunk: data.toString(),
+        originPayload: payload
+      })
+      console.log('=====');
+      console.log(data.toString());
+    });
+  })
+  // conn.shell(function (err, stream) {
+  //   stream.write('echo hello')
+  //   if (err) throw err;
+  //   stream.on('close', function () {
+  //     // conn.end();
+  //   }).on('data', function (data) {
+  //     // mySocket.emit('scriptRes', data.toString())
+  //     console.log(data.toString());
+  //     console.log('-');
+  //   });
+  // });
+  
 })
 
 module.exports = {

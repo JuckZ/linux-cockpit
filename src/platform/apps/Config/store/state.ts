@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-25 21:34:51
+ * @LastEditTime: 2020-04-26 15:12:57
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -111,7 +111,7 @@ export default {
         position: {
           x: 10,
           y: 0,
-          width: 800,
+          width: 840,
           height: 400
         }
       },

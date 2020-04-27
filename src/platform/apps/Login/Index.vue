@@ -155,8 +155,7 @@ export default {
       changeLoginType: 'login/changeLoginType',
       setAppStatus: 'config/setAppStatus',
       runApp: 'config/runApp',
-      shutdownApp: 'config/shutdownApp',
-      runToRunApps: 'config/runToRunApps'
+      shutdownApp: 'config/shutdownApp'
     }),
     // 上传私钥
     uploadPrivateKey(info) {
@@ -200,10 +199,6 @@ export default {
               // 存储登录信息(isLogined,userInfo)
               sessionStorage.setItem('isLogined', true)
               sessionStorage.setItem('userInfo', JSON.stringify(values))
-              // 隐藏login，并运行toRunApps中的app
-              this.runToRunApps()
-              // 触发socketInitialized事件
-              BUS.$emit('socketInitialized')
             }
           })
         }

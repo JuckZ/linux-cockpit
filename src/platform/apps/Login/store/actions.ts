@@ -1,15 +1,17 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 20:24:01
- * @LastEditTime: 2020-04-26 08:37:07
+ * @LastEditTime: 2020-04-27 10:41:40
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Login\store\actions.ts
  * @Juck is coding...
  */
 import io from 'socket.io-client'
+import ss from 'socket.io-stream'
 import graphqlUtil from '@/utils/graphql'
 import gql from 'graphql-tag'
+import BUS from '@/platform/bus'
 export default {
   login: async (context: any, formData: any) => {
     return await graphqlUtil.$apollo
@@ -37,25 +39,22 @@ export default {
         if(res.data.login.code===200){
           // 如果ssh验证成功，则进行后续操作
           const socket = io('http://localhost')
-          context.commit('setSocket', socket)
+          const stream = ss.createStream()
+          socket.emit('login', formData)
+          socket.on('loginSuccess', (res: any) => {
+            context.commit('setSocket', {
+              socket,
+              stream
+            })
+            // 创建成功后再触发socketInitialized事件
+            BUS.$emit('socketInitialized')
+          })
+          socket.on('loginFailed', (res: any) => {
+            console.log(res);
+          })
         }
         return res
       })
-  },
-  // 刷新后恢复登录状态
-  restoreLogin: ( context: any, formData: any) => {
-    console.log('恢复登录');
-    context.commit('setIsLogined', {
-      userInfo: formData,
-      data: {
-        login: {
-          code: 200
-        }
-      }
-    })
-    // 新建socket对象
-    const socket = io('http://localhost')
-    context.commit('setSocket', socket)
   },
   // 修改登录方式
   changeLoginType: (context: any) => {

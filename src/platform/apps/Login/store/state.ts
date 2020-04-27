@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 20:24:01
- * @LastEditTime: 2020-04-26 07:55:37
+ * @LastEditTime: 2020-04-27 09:12:33
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Login\store\state.ts
@@ -32,5 +32,7 @@ export default {
    */
   // sockets: [],
   // socket信息
-  socket: null
+  socket: null,
+  // socketStream信息
+  stream: null
 }

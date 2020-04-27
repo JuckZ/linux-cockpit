@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-26 10:35:11
+ * @LastEditTime: 2020-04-27 10:34:34
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
@@ -53,7 +53,9 @@ export default {
             context.commit('runApp', {
                 app: item.app
             })
-          }
+        }
+        // 清空toRunApps中的app
+        context.commit('resetToRunApps', [])
     }
 }
 

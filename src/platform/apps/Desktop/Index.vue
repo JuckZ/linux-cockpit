@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-26 09:08:51
+ * @LastEditTime: 2020-04-27 10:42:38
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -59,6 +59,8 @@ export default {
     // 监听isLogined，如果为true，则给socket绑定监听事件，控制销毁
     BUS.$on('socketInitialized', () => {
       console.log('socketInitialized');
+      // 隐藏login，并运行toRunApps中的app
+      this.runToRunApps()
       this.socket.on('disconnect', () => {        
       console.log('socket disconnect');
     });
@@ -75,9 +77,6 @@ export default {
             if (res.data.login.code === 200) {
               // 存储登录信息(isLogined,userInfo)
               sessionStorage.setItem('isLogined', true)
-              // 隐藏login，并运行toRunApps中的app
-              // 触发socketInitialized事件
-              BUS.$emit('socketInitialized')
             }
           })
     }
@@ -90,8 +89,8 @@ export default {
     // 
     ...mapActions({
       login: 'login/login',
-      restoreLogin: 'login/restoreLogin',
-      changeLoginType: 'login/changeLoginType'
+      changeLoginType: 'login/changeLoginType',
+      runToRunApps: 'config/runToRunApps'
     }),
     openNotification(loginRes) {
       let message = ''
