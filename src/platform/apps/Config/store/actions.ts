@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-29 20:11:19
+ * @LastEditTime: 2020-04-29 22:35:08
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
@@ -28,6 +28,10 @@ export default {
     setAppDefault: (context: any, payload: any) => {
         context.commit('setAppDefault', payload)
     },
+    // 设置app的聚焦状态
+    setAppStatusFocus: (context: any, payload: any) => {
+        context.commit('setAppStatusFocus', payload)
+    },
     // 关闭app
     shutdownApp: (context: any, payload: any) => {
         context.commit('shutdownApp', payload)
@@ -44,7 +48,7 @@ export default {
             })
             context.commit('runApp', {
                 // 获取loginApp并作为参数传递
-                app: context.state.apps[10]
+                app: context.state.apps[0]
             })
         } else {
             context.commit('runApp', payload)
@@ -54,7 +58,7 @@ export default {
     runToRunApps: (context: any, payload: any) => {
         // 关闭login
         context.commit('shutdownApp', {
-            app: context.state.apps[10]
+            app: context.state.apps[0]
         })
         // 运行toRunApps中的app
         for(const item of context.state.toRunApps) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-29 21:57:33
+ * @LastEditTime: 2020-04-29 22:47:05
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -11,12 +11,13 @@
   <div
     :class="{
       appContainer: true,
+      isFocused: currentApp.status.focus == true,
       fullscreen: currentApp.status.window == 'fullscreen',
       minimize: currentApp.status.window == 'minimize',
     }"
     :style="{
-      left: currentApp.positionWithUnit.left,
-      top: currentApp.positionWithUnit.top,
+      'left': currentApp.positionWithUnit.left,
+      'top': currentApp.positionWithUnit.top,
       width: currentApp.positionWithUnit.width,
       height: currentApp.positionWithUnit.height,
       cursor: cursor,
@@ -48,10 +49,14 @@
 .minimize {
   display: none;
 }
+.isFocused {
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.9)!important;
+}
 .appContainer {
   position: fixed;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
   .appTitleBar {
     width: 100%;
     text-align: end;
@@ -110,18 +115,22 @@ export default {
       toggleMenu: 'menu/toggleMenu',
       setAppDefault: 'config/setAppDefault',
       setAppStatusPosition: 'config/setAppStatusPosition',
+      setAppStatusFocus: 'config/setAppStatusFocus'
     }),
     // 按下鼠标触发(不用弹起)
     setCurrentOperation(e, app) {
+      // 将当前元素focus
+      this.setAppStatusFocus({
+        app: app
+      })
       //获取目标元素
-      console.log('down')
       this.odiv = e.currentTarget
       //算出鼠标相对元素的位置
       this.pointerPositionWhenDown = {
         disX: e.clientX - this.odiv.offsetLeft,
         disY: e.clientY - this.odiv.offsetTop,
         clientX: e.clientX,
-        clientY: e.clientY,
+        clientY: e.clientY
       }
       // 设置当前准备执行的操作  拖动元素位置或者改变尺寸
       switch (this.cursor) {

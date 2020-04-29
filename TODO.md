@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-29 19:39:24
+ * @LastEditTime: 2020-04-29 22:48:44
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -39,8 +39,8 @@ TAG TODO now
 
 ## 样式
 
-1. 对于尺寸不合适的图标进行p图
-2. 毛玻璃效果
+1. 毛玻璃效果
+2. 图标尺寸优化
 
 ## 功能
 

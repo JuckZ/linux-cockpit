@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-29 20:11:57
+ * @LastEditTime: 2020-04-29 22:39:51
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -58,6 +58,12 @@ export default {
         state.apps[payload.app.id].status.running = true
         state.apps[payload.app.id].status.show = true
         state.focusAppID = payload.app.id
+        // 运行的同时修改focus的情况
+        if(state.currentFocusAppID != -1) {
+            state.apps[state.currentFocusAppID].status.focus = false
+        }
+        state.apps[payload.app.id].status.focus = true
+        state.currentFocusAppID = payload.app.id
     },
     // 设置app的窗口
     setAppStatusWindow: (state: any, payload: any) => {
@@ -68,12 +74,13 @@ export default {
     setAppStatusShow: (state: any, payload: any) => {
         state.apps[payload.appID].status.show = payload.expectedVal
     },
-    // 设置app是否聚焦
+    // 设置app聚焦
     setAppStatusFocus: (state: any, payload: any) => {
-        // TODO
-        // 清除其他app的聚焦状态
-        // 将所有show为true状态的app的foucs全部置为false，方便动态添加blur class的样式
-        state.apps[payload.appID].status.focus = payload.expectedVal
+        if(state.currentFocusAppID != -1) {
+            state.apps[state.currentFocusAppID].status.focus = false
+        }
+        state.apps[payload.app.id].status.focus = true
+        state.currentFocusAppID = payload.app.id
     },
     // 设置app是否安装
     setAppStatusInstalled: (state: any, payload: any) => {
