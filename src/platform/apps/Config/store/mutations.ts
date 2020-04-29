@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-29 16:15:35
+ * @LastEditTime: 2020-04-29 20:11:57
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -12,10 +12,13 @@ export default {
     initApps: (state: any, payload: any) => {
         state.apps = payload
     },
-    // 修改app的位置坐标信息
-    setAppStatusPositionCoordinate: (state: any, payload: any) => {
-        state.apps[payload.app.id].status.position.left = payload.options.left
-        state.apps[payload.app.id].status.position.top = payload.options.top
+    // 修改app的位置信息
+    // TODO 需要对尺寸和位置加以限制
+    setAppStatusPosition: (state: any, payload: any) => {
+        state.apps[payload.app.id].status.position.left = payload.options.position.left
+        state.apps[payload.app.id].status.position.top = payload.options.position.top
+        state.apps[payload.app.id].status.position.width = payload.options.position.width
+        state.apps[payload.app.id].status.position.height = payload.options.position.height
     },
     // TODO change current focus window 修改当前聚焦窗口
     // 添加待运行的app
@@ -71,10 +74,6 @@ export default {
         // 清除其他app的聚焦状态
         // 将所有show为true状态的app的foucs全部置为false，方便动态添加blur class的样式
         state.apps[payload.appID].status.focus = payload.expectedVal
-    },
-    // 设置app的位置
-    setAppStatusPosition: (state: any, payload: any) => {
-        // 
     },
     // 设置app是否安装
     setAppStatusInstalled: (state: any, payload: any) => {

@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-27 20:49:20
+ * @LastEditTime: 2020-04-29 19:39:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -10,17 +10,10 @@
 
 # Hello
 
-TODO
-
-shell连接，销
-
 1. 文件管理器：
    目录部分可以制作下拉菜单，点击下拉菜单触发请求。
    data中存储文件名和绝对路径，可取属性（时间，pwd拼接绝对路径，所属组和用户，大小）
-2. socket.io emitter.setMaxListeners()
-3. socket.setMaxListeners(1)
-4. io.sockets.setMaxListeners(1)
-5. 通知栏（比如安装软件成功，卸载成功等）也是通过mapAction获取返回值（异步，因为服务端安装成功后回显需要时间），然后。。。
+2. 通知栏（比如安装软件成功，卸载成功等）也是通过mapAction获取返回值（异步，因为服务端安装成功后回显需要时间），然后。。。
 
 FIXME
 
@@ -38,8 +31,6 @@ TAG TODO now
 1. token问题 jwt  iframe 第三方页面怎么嵌入进来
 2. relative absolute fixed flex
 3. 写论文 paperfree查询论文重复率
-
-路由transition
 
 ## 应用
 
@@ -127,8 +118,8 @@ TAG TODO now
 
 ### 其他
 
-1. VueDragResize美化
-2. 注解
+1. 注解
+2. flex布局
 3. 清理console.log等开发时使用的调试语句
 4. doc完善
 5. 脚本完善
@@ -142,6 +133,7 @@ TAG TODO now
 13. 文件管理器搜索功能、菜单收起功能、左侧菜单滚动效果
 14. 多个桌面
 15. 支持局域网nat，管理自己的服务器
+16. 自定义vue指令，实现拖拽和改变尺寸
 
 ## 已解决问题
 

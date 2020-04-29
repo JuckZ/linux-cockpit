@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-29 15:29:07
+ * @LastEditTime: 2020-04-29 20:11:19
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
@@ -12,9 +12,9 @@ export default {
     initApps: (context: any, payload: any) => {
         context.commit('initApps', payload)
     },
-    // 修改app的位置坐标
-    setAppStatusPositionCoordinate: (context: any, payload: any) => {
-        context.commit('setAppStatusPositionCoordinate', payload)
+    // 修改app的位置
+    setAppStatusPosition: (context: any, payload: any) => {
+        context.commit('setAppStatusPosition', payload)
     },
     // 将app窗口最大化
     setAppFullscreen: (context: any, payload: any) => {
