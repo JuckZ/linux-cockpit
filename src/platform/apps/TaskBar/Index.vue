@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 21:28:32
- * @LastEditTime: 2020-04-27 21:54:13
+ * @LastEditTime: 2020-04-29 23:04:22
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\TaskBar\Index.vue
@@ -18,7 +18,9 @@
       <!-- 如果app.status.running为true则显示在任务栏中 -->
       <ul>
         <li v-for="app in apps" v-show="app.status.running" :key="app.id">
-          <a :class="{focusIcon: app.status.focus}">
+          <a :class="{
+            isFocused: app.status.focus,
+            }">
             <img :btnType="app.status.window == 'minimize'?'default':'minimize'" @click="
             setAppDefault({
               app: app
@@ -78,9 +80,6 @@ export default {
     a:hover {
       background: rgba(255, 255, 255, 0.4);
     }
-    a.focusIcon {
-      background: rgba(255, 255, 255, 0.4);
-    }
   }
   #tasks {
     display: inline-block;
@@ -88,12 +87,15 @@ export default {
       display: inline-block;
       a {
         display: inline-block;
-        :hover {
-          background: rgba(255, 255, 255, 0.4);
-        }
         img {
           height: 40px;
         }
+      }
+      a:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+      a.isFocused {
+        background: rgba(255, 255, 255, 0.4);
       }
     }
 

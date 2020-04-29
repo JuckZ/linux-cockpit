@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-29 22:47:05
+ * @LastEditTime: 2020-04-29 22:53:25
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -37,7 +37,7 @@
     </div>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .fullscreen {
   top: 0 !important;
   left: 0 !important;

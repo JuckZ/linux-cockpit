@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-29 22:48:44
+ * @LastEditTime: 2020-04-29 22:52:32
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -10,27 +10,21 @@
 
 # Hello
 
-1. 文件管理器：
-   目录部分可以制作下拉菜单，点击下拉菜单触发请求。
-   data中存储文件名和绝对路径，可取属性（时间，pwd拼接绝对路径，所属组和用户，大小）
-2. 通知栏（比如安装软件成功，卸载成功等）也是通过mapAction获取返回值（异步，因为服务端安装成功后回显需要时间），然后。。。
+1. 通知栏（比如安装软件成功，卸载成功等）可以使用antD的抽屉
 
 FIXME
 
 1. main.ts中的apollo是否可以去掉
-2. 如果不断开socket链接，会有多个相同的socket绑定在同一个shell上，每次发送和回显命令都是重复的
-3. 向任务栏添加运行的程序时，后运行的程序应该将图标放置到最后，（解决办法，可以按照打开顺序设置PID，按照PID的大小排列图标即可）
+2. 向任务栏添加运行的程序时，后运行的程序应该将图标放置到最后，（解决办法，可以按照打开顺序设置PID，按照PID的大小排列图标即可）
 
 BUG
 
-Desktop组件销毁后使用vuex销毁io链接
 electron跨域问题，尽量使用proxy方式，而不是cors方式
 
 TAG TODO now
 
 1. token问题 jwt  iframe 第三方页面怎么嵌入进来
-2. relative absolute fixed flex
-3. 写论文 paperfree查询论文重复率
+2. 写论文 paperfree查询论文重复率
 
 ## 应用
 
