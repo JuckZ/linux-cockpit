@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-04-26 15:12:57
+ * @LastEditTime: 2020-04-29 10:22:06
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -57,16 +57,17 @@ export default {
    *    window: 窗口的显示状态（minimize, fullscreen, tray, default）
    *    running: 是否正在运行
    *    position {
-   *      x: 窗口的横坐标
-   *      y: 窗口的纵坐标
+   *      left: 窗口的横坐标
+   *      top: 窗口的纵坐标
    *      width: 窗口宽度
    *      height: 窗口高度
    *    }
+   * }
    *    version: app的版本号
    *    author: app的作者
-   * }
    */
-  apps: [
+  apps: [],
+  apps1: [
     {
       id: 0,
       name: 'shell',
@@ -84,8 +85,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 0,
-          y: 0,
+          left: 0,
+          top: 0,
           width: 800,
           height: 400
         }
@@ -109,8 +110,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 10,
-          y: 0,
+          left: 400,
+          top: 200,
           width: 840,
           height: 400
         }
@@ -134,9 +135,9 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 20,
-          y: 0,
-          width: 400,
+          left: 200,
+          top: 50,
+          width: 800,
           height: 400
         }
       },
@@ -159,8 +160,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 0,
-          y: 0,
+          left: 0,
+          top: 0,
           width: 800,
           height: 400
         }
@@ -184,8 +185,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 0,
-          y: 0,
+          left: 0,
+          top: 0,
           width: 800,
           height: 400
         }
@@ -209,8 +210,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 0,
-          y: 0,
+          left: 0,
+          top: 0,
           width: 800,
           height: 400
         }
@@ -234,8 +235,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 30,
-          y: 0,
+          left: 30,
+          top: 0,
           width: 600,
           height: 400
         }
@@ -259,8 +260,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 50,
-          y: 0,
+          left: 50,
+          top: 0,
           width: 400,
           height: 400
         }
@@ -284,8 +285,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 60,
-          y: 20,
+          left: 60,
+          top: 20,
           width: 200,
           height: 200
         }
@@ -309,8 +310,8 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 60,
-          y: 60,
+          left: 60,
+          top: 60,
           width: 400,
           height: 400
         }
@@ -334,10 +335,10 @@ export default {
         window: 'default',
         running: false,
         position: {
-          x: 60,
-          y: 60,
-          width: 400,
-          height: 400
+          left: '60px',
+          top: '60px',
+          width: '400px',
+          height: '400px'
         }
       },
       version: 'V0.0.1',

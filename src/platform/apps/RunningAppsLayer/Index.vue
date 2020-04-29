@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-26 10:33:04
+ * @LastEditTime: 2020-04-29 14:59:50
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -21,10 +21,9 @@
         <template v-slot:titleText>
           <!-- app标题 -->
           <span>{{ app.name }}</span>
-          <!-- FIXME: 点击窗口按钮时可能触发点击事件的target不是预期的 -->
           <!-- 窗口按钮 -->
           <a
-            @click="
+            @mousedown.stop="
               setAppMinimize({
                 options: {},
                 app: app,
@@ -38,7 +37,7 @@
             />
           </a>
           <a
-            @click="
+            @mousedown.stop="
               setAppFullscreen({
                 options: {},
                 app: app,
@@ -51,7 +50,7 @@
               alt="全屏"
           /></a>
           <a
-            @click="
+            @mousedown.stop="
               setAppDefault({
                 options: {},
                 app: app,
@@ -64,7 +63,7 @@
               alt="退出全屏"
           /></a>
           <a
-            @click="
+            @mousedown.stop="
               shutdownApp({
                 options: {},
                 app: app,

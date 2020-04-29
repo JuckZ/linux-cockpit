@@ -81,8 +81,9 @@
             </div>
           </div>
           <!-- 文件信息内容显示区 -->
-          <div
-            id="fileContainer"
+          <div id="fileContainer">
+            <div
+            id="fileContent"
             @contextmenu.prevent="toggleContextMenu($event, 'payload')"
           >
             <a-table
@@ -113,6 +114,7 @@
                   {{ contextMenuItem.text }}
                 </li>
               </ul>
+          </div>
           </div>
         </a-layout-content>
       </a-layout>
@@ -149,8 +151,11 @@
     cursor: pointer;
   }
 }
+#fileContainer {
+  position: relative;
+}
 #contextMenu {
-  position: fixed;
+  position: absolute;
   background: rgba(187, 187, 187,0.6);
   color: black;
   li {
@@ -327,6 +332,7 @@ const contextMenuForFile = [
   },
 ]
 export default {
+  props: ['position'],
   data() {
     return {
       //
@@ -371,7 +377,7 @@ export default {
       }
     },
   },
-  beforeMount() {
+  beforeMount() {    
     // 挂载前需要读取Linux服务器的目录情况
     this.socket.emit('uploadScript', {
       target: 'fileManager',
@@ -436,11 +442,9 @@ export default {
     toggleContextMenu(event, payload) {
       // console.log(event, payload)
       console.log(event);
-      
-      // TODO 设置contextMenu坐标，要减去当前元素的x，y值,absolute布局防止拖动不同步的问题
       this.contextMenu.position = {
-        x: event.pageX + 'px',
-        y: event.pageY + 'px',
+        x: event.layerX + 'px',
+        y: event.layerY + 'px',
       }
       // 在指定位置打开右键菜单
       this.contextMenu.visible = !this.contextMenu.visible

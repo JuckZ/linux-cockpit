@@ -1,13 +1,22 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-27 10:35:42
+ * @LastEditTime: 2020-04-29 16:15:35
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
  * @Juck is coding...
  */
 export default {
+    // initApps初始化所有的app
+    initApps: (state: any, payload: any) => {
+        state.apps = payload
+    },
+    // 修改app的位置坐标信息
+    setAppStatusPositionCoordinate: (state: any, payload: any) => {
+        state.apps[payload.app.id].status.position.left = payload.options.left
+        state.apps[payload.app.id].status.position.top = payload.options.top
+    },
     // TODO change current focus window 修改当前聚焦窗口
     // 添加待运行的app
     addToRunApps: (state: any, payload: any) => {

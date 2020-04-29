@@ -1,11 +1,6 @@
 // TODO:清理输入框默认值，修改滑块方式为下拉菜单
 <template>
-  <a-form
-    id="login"
-    :form="form"
-    class="login-form"
-    @submit="handleSubmit"
-  >
+  <a-form id="login" :form="form" class="login-form" @submit="handleSubmit">
     <a-form-item>
       <a-input
         v-decorator="[
@@ -14,10 +9,10 @@
             rules: [
               {
                 required: true,
-                message: 'Please input your server\'s ip address or domain!'
-              }
-            ]
-          }
+                message: 'Please input your server\'s ip address or domain!',
+              },
+            ],
+          },
         ]"
         placeholder="IP address or Domin"
       >
@@ -29,8 +24,8 @@
         v-decorator="[
           'userName',
           {
-            rules: [{ required: true, message: 'Please input your username!' }]
-          }
+            rules: [{ required: true, message: 'Please input your username!' }],
+          },
         ]"
         placeholder="Username"
       >
@@ -55,9 +50,12 @@
                 'password',
                 {
                   rules: [
-                    { required: true, message: 'Please input your Password!' }
-                  ]
-                }
+                    {
+                      required: true,
+                      message: 'Please input your Password!',
+                    },
+                  ],
+                },
               ]"
               type="password"
               placeholder="Password"
@@ -89,8 +87,8 @@
           'remember',
           {
             valuePropName: 'checked',
-            initialValue: true
-          }
+            initialValue: true,
+          },
         ]"
         >Remember me</a-checkbox
       >
@@ -119,7 +117,7 @@ export default {
     // 不过，你可以通过传一个回调给 next来访问组件实例。
     // 在导航被确认的时候执行回调，并且把组件实例作为回
     // 调方法的参数。
-    next(vm => {
+    next((vm) => {
       // 通过 `vm` 访问组件实例
       if (vm.isLogined) {
         vm.$router.push('/')
@@ -131,7 +129,7 @@ export default {
   },
   mounted() {
     // 如果已经登录则直接跳转
-    if (sessionStorage.getItem('isLogined')===true) {
+    if (sessionStorage.getItem('isLogined') === true) {
       // 设置vuex的值（因为刷新页面后session未清空，但是vuex清空了）
       // this.login(sessionStorage.getItem('userInfo'))
     }
@@ -139,14 +137,17 @@ export default {
     this.form.setFieldsValue({
       domainOrIP: 'juck.site',
       userName: 'root',
-      password: 'Zc1998zc'
+      password: 'Zc1998zc',
     })
   },
   computed: {
     ...mapState('login', {
       isLogined: 'isLogined',
       userInfo: 'userInfo',
-      socket: 'socket'
+      socket: 'socket',
+    }),
+    ...mapState('config', {
+      apps: 'apps',
     })
   },
   methods: {
@@ -155,7 +156,7 @@ export default {
       changeLoginType: 'login/changeLoginType',
       setAppStatus: 'config/setAppStatus',
       runApp: 'config/runApp',
-      shutdownApp: 'config/shutdownApp'
+      shutdownApp: 'config/shutdownApp',
     }),
     // 上传私钥
     uploadPrivateKey(info) {
@@ -184,14 +185,14 @@ export default {
       this.$notification.open({
         message: message,
         description: description,
-        icon: icon
+        icon: icon,
       })
     },
     handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.login(values).then(res => {
+          this.login(values).then((res) => {
             // 提示登录结果
             this.openNotification(res.data.login)
             // 登录成功则跳转到首页，否则不作任何操作
@@ -206,8 +207,8 @@ export default {
     },
     skipLogin() {
       // TODO
-    }
-  }
+    },
+  },
 }
 </script>
 <style>
