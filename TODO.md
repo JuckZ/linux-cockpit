@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-04-29 22:52:32
+ * @LastEditTime: 2020-04-30 08:35:40
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -10,7 +10,8 @@
 
 # Hello
 
-1. 通知栏（比如安装软件成功，卸载成功等）可以使用antD的抽屉
+1. 通知栏（比如安装软件成功，卸载成功等）
+2. 增加tray组件（点击关闭时，可以选择是否退出或在托盘运行，也可以保存当前选择，下次不再提醒）
 
 FIXME
 

@@ -1,14 +1,14 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-28 10:53:25
+ * @LastEditTime: 2020-04-30 08:48:33
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div id="desktop">
+  <div @click.self="closeMenu()" id="desktop">
     <!-- 壁纸模块 -->
     <Wallpaper />
     <!-- 桌面快捷方式 -->
@@ -19,6 +19,8 @@
     <TaskBar />
     <!-- 徽标菜单 -->
     <Menu />
+    <!-- 通知栏 -->
+    <Notification />
     <!-- 遮罩层，用于放置运行中的程序 -->
     <RunningAppsLayer />
   </div>
@@ -35,6 +37,7 @@ import TaskBar from '@/platform/apps/TaskBar/Index.vue'
 import Menu from '@/platform/apps/Menu/Index.vue'
 import DesktopIcons from '@/platform/apps/DesktopIcons/Index.vue'
 import RunningAppsLayer from '@/platform/apps/RunningAppsLayer/Index.vue'
+import Notification from '@/platform/apps/Notification/Index.vue'
 export default {
   data() {
     return {}
@@ -46,7 +49,8 @@ export default {
     TaskBar,
     RunningAppsLayer,
     Menu,
-    DesktopIcons
+    DesktopIcons,
+    Notification
   },
   computed: {
     ...mapState('login', {
@@ -90,7 +94,8 @@ export default {
     ...mapActions({
       login: 'login/login',
       changeLoginType: 'login/changeLoginType',
-      runToRunApps: 'config/runToRunApps'
+      runToRunApps: 'config/runToRunApps',
+      closeMenu: 'menu/closeMenu'
     }),
     openNotification(loginRes) {
       let message = ''

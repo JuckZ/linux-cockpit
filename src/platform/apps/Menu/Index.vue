@@ -9,7 +9,8 @@
         <a @click="
         runApp({
           app: app
-        })
+        });
+        closeMenu()
         ">
           <img :src="app.imgSrc" /><span>{{ app.name }}</span>
         </a>
@@ -85,7 +86,8 @@ export default {
     ...mapActions({
       // 修改app运行状态
       setAppStatus: 'config/setAppStatus',
-      runApp: 'config/runApp'
+      runApp: 'config/runApp',
+      closeMenu: 'menu/closeMenu'
     }),
     targetHandler(e, payload) {
       // TAG此处如果直接打印payload也是不行的，因为展开对象的时候payload对象已经被修改了

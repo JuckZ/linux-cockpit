@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-29 22:39:51
+ * @LastEditTime: 2020-04-30 08:11:00
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -63,7 +63,6 @@ export default {
             state.apps[state.currentFocusAppID].status.focus = false
         }
         state.apps[payload.app.id].status.focus = true
-        state.currentFocusAppID = payload.app.id
     },
     // 设置app的窗口
     setAppStatusWindow: (state: any, payload: any) => {

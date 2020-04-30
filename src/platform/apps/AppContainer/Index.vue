@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-29 22:53:25
+ * @LastEditTime: 2020-04-30 08:09:09
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -115,7 +115,8 @@ export default {
       toggleMenu: 'menu/toggleMenu',
       setAppDefault: 'config/setAppDefault',
       setAppStatusPosition: 'config/setAppStatusPosition',
-      setAppStatusFocus: 'config/setAppStatusFocus'
+      setAppStatusFocus: 'config/setAppStatusFocus',
+      closeMenu: 'menu/closeMenu'
     }),
     // 按下鼠标触发(不用弹起)
     setCurrentOperation(e, app) {
@@ -123,6 +124,8 @@ export default {
       this.setAppStatusFocus({
         app: app
       })
+      // 将菜单栏收起
+      this.closeMenu()
       //获取目标元素
       this.odiv = e.currentTarget
       //算出鼠标相对元素的位置

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-04-29 19:40:19
+ * @LastEditTime: 2020-04-30 08:28:15
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -50,7 +50,8 @@ import {
   Breadcrumb,
   Tabs,
   Tag,
-  Modal
+  Modal,
+  Drawer
 } from 'ant-design-vue'
 
 Vue.prototype.$notification = notification
@@ -102,6 +103,7 @@ Vue.component('a-tab-pane', Tabs.TabPane)
 Vue.component('a-input-search', Input.Search)
 Vue.component('a-tag', Tag)
 Vue.component('a-modal', Modal)
+Vue.component('a-drawer', Drawer)
 
 // 注册自定义组件
 Vue.component('NotFound', NotFound)

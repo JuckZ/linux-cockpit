@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-11 20:33:29
- * @LastEditTime: 2020-04-23 21:32:27
+ * @LastEditTime: 2020-04-30 08:12:56
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\DesktopIcons\Index.vue
@@ -15,7 +15,8 @@
         @dblclick="
           runApp({
             app: app,
-          })
+          });
+          closeMenu()
         "
         ><img :src="app.imgSrc" :alt="app.name"
       /></a>
@@ -43,6 +44,7 @@ export default {
       // 修改app运行状态
       setAppStatus: 'config/setAppStatus',
       runApp: 'config/runApp',
+      closeMenu: 'menu/closeMenu'
     }),
   },
 }
