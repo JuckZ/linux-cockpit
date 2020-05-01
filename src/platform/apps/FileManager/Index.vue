@@ -1,6 +1,7 @@
 <template>
-<!-- TODO 有很多事情要做 -->
+  <!-- TODO 有很多事情要做 -->
   <a-layout id="components-layout-demo-top-side">
+    <!-- TAG 搜索框 -->
     <a-layout-header class="header">
       <a-input-search
         class="searchBar"
@@ -8,31 +9,42 @@
         @search="onSearch"
         enterButton
       />
-      <a-menu
-        theme="dark"
-        mode="horizontal"
-        :defaultSelectedKeys="['1']"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">nav 1</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
-      </a-menu>
+      <!-- TAG 功能按钮区 -->
+      <span id="fileManagerBtnGroup">
+        <a-button type="primary" icon="upload">上传</a-button>
+        <a-button icon="download">下载</a-button>
+        <a-button icon="folder-add">新建文件夹</a-button>
+        <a-button icon="delete">删除</a-button>
+        <!-- TODO:z-index问题，不能点击 -->
+        <!-- 切换视图 -->
+        <div id="fileManagerChangeView">
+          <img src="/assets/apps/FileManager/list.svg" alt="列表" />
+          <img src="/assets/apps/FileManager/thumbnails.svg" alt="略缩图" />
+        </div>
+      </span>
     </a-layout-header>
     <a-layout-content style="padding: 0 50px">
       <a-layout style="height: 100px, padding: 24px 0; background: #fff">
         <!-- overflow: 'auto', height: '80%', width: 'auto', position: 'absolute', left: 0,  -->
         <a-layout-sider :style="{ background: '#fff' }">
+          <!-- FIXME 菜单收起按钮 -->
+          <a-button
+            type="primary"
+            style="margin-bottom: 16px"
+            @click="collapsed = !collapsed"
+          >
+            <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
+          </a-button>
           <a-menu
             mode="inline"
+            :inline-collapsed="collapsed"
             :defaultSelectedKeys="['1']"
-            :defaultOpenKeys="['sub1']"
             theme="light"
           >
-            <a-sub-menu key="sub1">
-              <span slot="title"><a-icon type="user" />家目录</span>
-              <a-menu-item key="1">option1</a-menu-item>
-            </a-sub-menu>
+            <a-menu-item key="1">
+              <a-icon type="user" />
+              <span>家目录</span>
+            </a-menu-item>
             <a-menu-item key="2">
               <a-icon type="laptop" />
               <span>根目录</span>
@@ -64,95 +76,85 @@
           </a-menu>
         </a-layout-sider>
         <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
-          <!-- TODO:完善面包屑 -->
-          <a-breadcrumb style="margin: 16px 0px">
-            <a-breadcrumb-item v-for="item in tabs[0].currentDir.split('/')" :key="item.length">{{item}}</a-breadcrumb-item>
-          </a-breadcrumb>
-          <!-- 功能按钮区 -->
-          <div id="fileManagerBtnGroup">
-            <a-button type="primary" icon="upload">上传</a-button>
-            <a-button icon="download">下载</a-button>
-            <a-button icon="folder-add">新建文件夹</a-button>
-            <a-button icon="delete">删除</a-button>
-            <!-- TODO:z-index问题，不能点击 -->
-            <!-- 切换视图 -->
-            <div id="fileManagerChangeView">
-              <img src="/assets/apps/FileManager/list.svg" alt="列表" />
-              <img src="/assets/apps/FileManager/thumbnails.svg" alt="略缩图" />
-            </div>
-          </div>
-          <!-- 文件信息内容显示区 -->
-          <div id="fileContainer">
-            <div
-            id="fileContent"
-          >
-          <!-- 加载动画 -->
-            <a-spin :spinning="!isLoaded" tip="Loading...">
-              <div v-show="!isLoaded" class="spin-content">
-                正在读取文件......
-              </div>
-            </a-spin>
-            <!-- 表格区显示文件 -->
-            <a-table
-              v-show="isLoaded"
-              :pagination="{
-                pageSize: 5,
-                position: 'bottom',
-              }"
-              size="middle"
-              :customRow="customClick"
-              :rowSelection="rowSelection"
-              :columns="columns"
-              :dataSource="tabs[0].files"
-              @change="onChange"
+          <!-- TAG 标签页 -->
+          <a-tabs v-model="activeKey" type="editable-card" @edit="onEdit">
+            <a-tab-pane
+              v-for="pane in panes"
+              :tab="pane.title"
+              :key="pane.key"
+              :closable="pane.closable"
             >
-
-            <!-- TODO根据不同类型显示不同样式，以及略缩图、不同操作等 -->
-              <span slot="icon" slot-scope="type">
-                {{type == 'd' ? '目录' : '普通文件'}}
-              </span>
-            </a-table>
-
-            <!-- 右键菜单 -->
-              <ul
-                id="contextMenu"
-                :style="{
-                  left: contextMenu.position.x,
-                  top: contextMenu.position.y,
-                }"
-              >
-                <li
-                  v-for="contextMenuItem in contextMenuForDir"
-                  :key="contextMenuItem.id"
-                  v-show="contextMenu.visible"
-                  @click="contextMenuItem.operation"
+              <!-- TAG 完善面包屑 -->
+              <a-breadcrumb style="margin: 16px 0px">
+                <a-breadcrumb-item
+                  v-for="item in tabs[0].currentDir.split('/')"
+                  :key="item.length"
+                  >{{ item }}</a-breadcrumb-item
                 >
-                  {{ contextMenuItem.text }}
-                </li>
-              </ul>
-          </div>
-          </div>
+              </a-breadcrumb>
+              <!-- 文件信息内容显示区 -->
+              <div id="fileContainer">
+                <div id="fileContent">
+                  <!-- 加载动画 -->
+                  <a-spin :spinning="!isLoaded" tip="Loading...">
+                    <div v-show="!isLoaded" class="spin-content">
+                      正在读取文件......
+                    </div>
+                  </a-spin>
+                  <!-- 表格区显示文件 -->
+                  <a-table
+                    v-show="isLoaded"
+                    :pagination="{
+                      pageSize: 5,
+                      position: 'bottom',
+                    }"
+                    :style="{
+                      cursor: 'pointer',
+                    }"
+                    size="middle"
+                    :customRow="customClick"
+                    :rowSelection="rowSelection"
+                    :columns="columns"
+                    :dataSource="tabs[0].files"
+                    @change="onChange"
+                  >
+                    <!-- TODO根据不同类型显示不同样式，以及略缩图、不同操作等 -->
+                    <span slot="icon" slot-scope="type">
+                      {{ type == 'd' ? '目录' : '普通文件' }}
+                    </span>
+                  </a-table>
+                  <!-- TAG右键菜单 -->
+                  <a-menu id="contextMenu" :style="menuStyle" v-if="contextMenu.visible">
+                    <a-menu-item v-for="menuItem in menuData" :key="menuItem.key">{{ menuItem.text }}</a-menu-item>
+                  </a-menu>
+                </div>
+              </div>
+            </a-tab-pane>
+          </a-tabs>
         </a-layout-content>
       </a-layout>
     </a-layout-content>
     <a-layout-footer style="text-align: center">
-      total size: {{ tabs[0].totalSize }} --- 共{{
-        tabs[0].files.length
-      }}个项目 --- 选中0项
+      total size: {{ tabs[0].totalSize }} --- 共{{ tabs[0].files.length }}个项目
+      --- 选中0项
     </a-layout-footer>
   </a-layout>
 </template>
 
 <style lang="scss" scoped>
-
 .spin-content {
   border: 1px solid #91d5ff;
   background-color: #e6f7ff;
   padding: 30px;
 }
-
+#contextMenu {
+  li {
+    height: 20px;
+    line-height: 20px;
+  }
+}
 #components-layout-demo-top-side .searchBar {
-  width: 120px;
+  width: 160px;
   height: 31px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px 28px 16px 0;
@@ -177,20 +179,6 @@
 #fileContainer {
   position: relative;
 }
-#contextMenu {
-  position: absolute;
-  background: rgba(187, 187, 187,0.6);
-  color: black;
-  li {
-    text-align: center;
-    padding: 4px 40px;
-    cursor: pointer;
-    border: 1px solid black;
-  }
-  li:hover {
-    background: rgba(255, 255, 255, .8);
-  }
-}
 </style>
 
 <script>
@@ -199,7 +187,7 @@ const columns = [
   {
     title: 'Type',
     dataIndex: 'type',
-    scopedSlots: { customRender: 'icon'},
+    scopedSlots: { customRender: 'icon' },
     filters: [
       {
         text: '普通文件',
@@ -357,6 +345,11 @@ const contextMenuForFile = [
     },
   },
 ]
+const panes = [
+  { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: false },
+  { title: 'Tab 2', content: 'Content of Tab 2', key: '2' },
+  { title: 'Tab 3', content: 'Content of Tab 3', key: '3' },
+]
 export default {
   props: ['position'],
   data() {
@@ -370,22 +363,71 @@ export default {
           y: 0,
         },
       },
+      panes,
+      activeKey: panes[0].key,
+      newTabIndex: 0,
+      collapsed: false,
+      menuData: [],
+      menuStyle: {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        border: '1px solid #eee',
+      },
       contextMenuForDir,
       contextMenuForFile,
       isLoaded: false,
-      customClick: record => {
-        console.log(record);
-      }
+      customClick: (record) => ({
+        on: {
+          contextmenu: (e) => {
+            e.preventDefault()
+            let fileExt = '' // 文件后缀
+            // 清空右键菜单
+            this.menuData = []
+            switch (record.type) {
+              case '-':
+                fileExt = record.name
+                  .split('.')
+                  .pop()
+                  .toLowerCase()
+                if (this.fileTypes[fileExt]) {
+                  this.menuData.push(
+                    ...this.defaultContextMenu,
+                    ...this.fileTypes[fileExt].specialContextMenu
+                  )
+                } else {
+                  this.menuData.push(...this.defaultContextMenu)
+                }
+                console.log('已知文件')
+                break
+              case 'd':
+                this.menuData.push(...this.defaultContextMenu, ...this.fileTypes.document.specialContextMenu)
+                console.log('文件夹')
+                break
+              default:
+                this.menuData.push(...this.defaultContextMenu)
+                console.log('其他文件')
+            }
+            this.contextMenu.visible = true
+            this.menuStyle.top = e.clientY + 'px'
+            this.menuStyle.left = e.clientX + 'px'
+            document.body.addEventListener('click', this.bodyClick)
+          },
+        },
+      }),
     }
   },
   computed: {
     ...mapState('fileManager', {
       tabs: 'tabs',
+      fileTypes: 'fileTypes',
+      defaultContextMenu: 'defaultContextMenu',
     }),
     ...mapState('login', {
       socket: 'socket',
       stream: 'stream',
     }),
+    // 行选择
     rowSelection() {
       const { selectedRowKeys } = this
       return {
@@ -405,19 +447,18 @@ export default {
       }
     },
   },
-  beforeMount() {    
+  beforeMount() {
     // 挂载前需要读取Linux服务器的目录情况
     this.execFileManagerOperation({
       options: {
         target: 'FileManager',
         operation: 'readDir',
-      }
+      },
     })
     this.socket.on('scriptRes', (payload) => {
       switch (payload.originPayload.options.operation) {
         case 'readDir':
-        case 'initialPictures':
-        {
+        case 'initialPictures': {
           const tab = {
             totalSize: '0K',
             currentDir: '/root',
@@ -450,12 +491,12 @@ export default {
             tab.files.push(fileItem)
           }
           // TODO 获取当前tab序列再设置tab
-          this.setTab({
+          this.initTab({
             options: {
               // FIXME
               tabID: 0,
-              tab: tab
-            }
+              tab: tab,
+            },
           })
           this.isLoaded = true
           break
@@ -468,7 +509,8 @@ export default {
   methods: {
     ...mapActions({
       setInitialInformation: 'fileManager/setInitialInformation',
-      setTab: 'fileManager/setTab'
+      addTab: 'fileManager/addTab',
+      initTab: 'fileManager/initTab',
     }),
     onSearch(val) {
       console.log(val)
@@ -476,17 +518,49 @@ export default {
     onChange(pagination, filters, sorter) {
       console.log('params', pagination, filters, sorter)
     },
-    toggleContextMenu(event, payload) {
-      this.contextMenu.position = {
-        x: event.layerX + 'px',
-        y: event.layerY + 'px',
-      }
-      // 在指定位置打开右键菜单
-      this.contextMenu.visible = !this.contextMenu.visible
-    },
     execFileManagerOperation(payload) {
       this.socket.emit('uploadScript', payload)
-    }
+    },
+    bodyClick() {
+      this.contextMenu.visible = false
+      document.body.removeEventListener('click', this.bodyClick)
+    },
+    callback(key) {
+      console.log(key)
+    },
+    onEdit(targetKey, action) {
+      this[action](targetKey)
+    },
+    add() {
+      const panes = this.panes
+      const activeKey = `newTab${this.newTabIndex++}`
+      panes.push({
+        title: 'New Tab',
+        content: 'Content of new Tab',
+        key: activeKey,
+      })
+      this.panes = panes
+      this.activeKey = activeKey
+    },
+    remove(targetKey) {
+      let activeKey = this.activeKey
+      let lastIndex
+      this.panes.forEach((pane, i) => {
+        if (pane.key === targetKey) {
+          lastIndex = i - 1
+        }
+      })
+      const panes = this.panes.filter((pane) => pane.key !== targetKey)
+      if (panes.length && activeKey === targetKey) {
+        if (lastIndex >= 0) {
+          activeKey = panes[lastIndex].key
+        } else {
+          activeKey = panes[0].key
+        }
+      }
+      this.panes = panes
+      this.activeKey = activeKey
+    },
   },
 }
 </script>

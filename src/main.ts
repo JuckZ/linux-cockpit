@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-01 11:34:34
+ * @LastEditTime: 2020-05-01 11:48:57
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -147,145 +147,134 @@ declare global {
 window.myVue = myVue
 
 // TAG实现拖拽移动位置和修改大小的功能的指令
-Vue.directive('drag', function(el,binding){
-        // console.log(el);
-        // console.log(binding.value);
-        //绑定默认样式
-        // el.style.zIndex = '9';
-        // el.style.backgroundColor = 'rgba(0,0,0,1)';
-        //如果为编辑状态
-        if (binding.value || binding.value === undefined) {
-          //定义该元素的 top left width height
-          let x: string, y: string, w: string, h: string;
-          //鼠标的起始和结束坐标
-          let cxStart: number, cyStart: number, cxEnd, cyEnd;
-          //判断鼠标样式
-          el.onmousemove = e => {
-            //获取鼠标当前位置
-            const cxNow = e.clientX;
-            const cyNow = e.clientY;
-            //获取div右下角相对浏览器的位置
-            const {
-              top: elTop,
-              left: elLeft,
-              width: elWidth,
-              height: elHeight
-            } = el.getBoundingClientRect();
-            const elBottomHeight = elTop + elHeight;
-            const elRightWidth = elLeft + elWidth;
-            //判断鼠标是否在div下边界
-            const mouseInBottom =
-              cyNow <= elBottomHeight + 5 && cyNow >= elBottomHeight - 5;
-            //判断鼠标是否在div右边界
-            const mouseInRight =
-              cxNow <= elRightWidth + 5 && cxNow >= elRightWidth - 5;
-            if (mouseInBottom && mouseInRight) {
-              el.style.cursor = 'se-resize';
-            } else if (mouseInRight) {
-              el.style.cursor = 'e-resize';
-            } else if (mouseInBottom) {
-              el.style.cursor = 's-resize';
-            } else {
-              el.style.cursor = 'move';
-            }
-          };
-          el.onmousedown = e => {
-            const mouse = el.style.cursor;
-            //更改默认样式
-            el.style.backgroundColor = 'rgba(0,0,0,.5)';
-            el.style.zIndex = '99';
-            //对象解构赋值
-            const { left: elX, top: elY, width: elW, height: elH } = window.getComputedStyle(el);
-            x = elX;
-            y = elY;
-            w = elW;
-            h = elH;
-            console.log(x,y,w,h)
-            cxStart = e.clientX;
-            cyStart = e.clientY;
-            //绑定移动事件
-            /**
-             * 操作DOM位置和大小方法
-             * @param direct 方向
-             * @param pos 尺寸/坐标
-             * @param move 拖动距离
-             * @param limit 限定范围
-             */
-            function handleDiv(direct: string | any[], pos: any[], move: number[], limit: number) {
-              for (let i = 0; i < direct.length; i++) {
-                let val = parseInt(pos[i]) + move[i];
-                val = val <= limit ? limit : val;
-                el.style[direct[i]] = val + 'px';
-              }
-            }
-            document.onmousemove = e => {
-              cxEnd = e.clientX;
-              cyEnd = e.clientY;
-              //默认左下方向配置
-              const xMove = cxEnd - cxStart;
-              const yMove = cyEnd - cyStart;
-              let direct = ['width', 'height'];
-              let pos = [w, h];
-              let move = [xMove, yMove];
-              let limit = 50;
-              //判断鼠标的类型进行对应的操作
-              switch (mouse) {
-                case 'e-resize':
-                  direct = ['width'];
-                  pos = [w];
-                  move = [xMove];
-                  break;
-                case 's-resize':
-                  direct = ['height'];
-                  pos = [h];
-                  move = [yMove];
-                  break;
-                case 'move':
-                  direct = ['left', 'top'];
-                  pos = [x, y];
-                  limit = 0;
-                  break;
-              }
-              handleDiv(direct, pos, move, limit);
-            };
-            //取消移动事件
-            document.onmouseup = e => {
-              //还原默认样式
-              el.style.zIndex = '9';
-              el.style.backgroundColor = 'rgba(0,0,0,1)';
-              document.onmousemove = null;
-            };
-          };
-        } else {
-          el.style.cursor = 'default';
-          //移除点击事件
-          el.onmousedown = null;
-          el.onmousemove = null;
+Vue.directive('drag', function (el, binding) {
+  //如果为编辑状态
+  if (binding.value || binding.value === undefined) {
+    //定义该元素的 top left width height
+    let x: string, y: string, w: string, h: string;
+    //鼠标的起始和结束坐标
+    let cxStart: number, cyStart: number, cxEnd, cyEnd;
+    //判断鼠标样式
+    el.onmousemove = e => {
+      //获取鼠标当前位置
+      const cxNow = e.clientX;
+      const cyNow = e.clientY;
+      //获取div右下角相对浏览器的位置
+      const {
+        top: elTop,
+        left: elLeft,
+        width: elWidth,
+        height: elHeight
+      } = el.getBoundingClientRect();
+      const elBottomHeight = elTop + elHeight;
+      const elRightWidth = elLeft + elWidth;
+      //判断鼠标是否在div下边界
+      const mouseInBottom =
+        cyNow <= elBottomHeight + 5 && cyNow >= elBottomHeight - 5;
+      //判断鼠标是否在div右边界
+      const mouseInRight =
+        cxNow <= elRightWidth + 5 && cxNow >= elRightWidth - 5;
+      if (mouseInBottom && mouseInRight) {
+        el.style.cursor = 'se-resize';
+      } else if (mouseInRight) {
+        el.style.cursor = 'e-resize';
+      } else if (mouseInBottom) {
+        el.style.cursor = 's-resize';
+      } else {
+        el.style.cursor = 'move';
+      }
+    };
+    el.onmousedown = e => {
+      const mouse = el.style.cursor;
+      //对象解构赋值
+      const { left: elX, top: elY, width: elW, height: elH } = window.getComputedStyle(el);
+      x = elX;
+      y = elY;
+      w = elW;
+      h = elH;
+      // console.log(x,y,w,h)
+      cxStart = e.clientX;
+      cyStart = e.clientY;
+      //绑定移动事件
+      /**
+       * 操作DOM位置和大小方法
+       * @param direct 方向
+       * @param pos 尺寸/坐标
+       * @param move 拖动距离
+       * @param limit 限定范围
+       */
+      function handleDiv(direct: string | any[], pos: any[], move: number[], limit: number) {
+        for (let i = 0; i < direct.length; i++) {
+          let val = parseInt(pos[i]) + move[i];
+          val = val <= limit ? limit : val;
+          el.style[direct[i]] = val + 'px';
         }
+      }
+      document.onmousemove = e => {
+        cxEnd = e.clientX;
+        cyEnd = e.clientY;
+        //默认左下方向配置
+        const xMove = cxEnd - cxStart;
+        const yMove = cyEnd - cyStart;
+        let direct = ['width', 'height'];
+        let pos = [w, h];
+        let move = [xMove, yMove];
+        let limit = 50;
+        //判断鼠标的类型进行对应的操作
+        switch (mouse) {
+          case 'e-resize':
+            direct = ['width'];
+            pos = [w];
+            move = [xMove];
+            break;
+          case 's-resize':
+            direct = ['height'];
+            pos = [h];
+            move = [yMove];
+            break;
+          case 'move':
+            direct = ['left', 'top'];
+            pos = [x, y];
+            limit = 0;
+            break;
+        }
+        handleDiv(direct, pos, move, limit);
+      };
+      //取消移动事件
+      document.onmouseup = e => {
+        document.onmousemove = null;
+      };
+    };
+  } else {
+    el.style.cursor = 'default';
+    //移除点击事件
+    el.onmousedown = null;
+    el.onmousemove = null;
+  }
 })
 
-// TAG 拖拽指令
-Vue.directive('drag2',function(el){
-  el.onmousedown=function(e){
+// TAG 拖拽指令 (暂未使用，可以用来学习)
+Vue.directive('drag2', function (el) {
+  el.onmousedown = function (e) {
     //获取鼠标点击处分别与div左边和上边的距离：鼠标位置-div位置
-    const disX=e.clientX-el.offsetLeft;
-    const disY=e.clientY-el.offsetTop;
-    console.log(disX,disY);
+    const disX = e.clientX - el.offsetLeft;
+    const disY = e.clientY - el.offsetTop;
+    console.log(disX, disY);
 
     //包含在onmousedown里面，表示点击后才移动，为防止鼠标移出div，使用document.onmousemove，点击后再移动
     //使用document.onmousemove，不要使用el.onmousemmove
     //在这个文档里出不去
-    document.onmousemove=function(e){
+    document.onmousemove = function (e) {
       //获取移动后div的位置：鼠标位置-disX/disY
-      const l=e.clientX-disX;
-      const t=e.clientY-disY;
-      el.style.left=l+'px';      //必须要有单位
-      el.style.top=t+'px';
+      const l = e.clientX - disX;
+      const t = e.clientY - disY;
+      el.style.left = l + 'px';      //必须要有单位
+      el.style.top = t + 'px';
     }
     //停止移动，鼠标弹起
-    document.onmouseup=function(e){
-      document.onmousemove=null;
-      document.onmouseup=null;
+    document.onmouseup = function (e) {
+      document.onmousemove = null;
+      document.onmouseup = null;
     }
   }
 });

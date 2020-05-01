@@ -1,20 +1,20 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-30 21:17:31
+ * @LastEditTime: 2020-05-01 18:51:16
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\store\state.ts
  * @Juck is coding...
  */
 export default {
-  // 当前左侧Tab
-  currentLeftTab: '',
   // 当前Tab
   currentTab: '',
   // 每个标签页的文件信息
   // tabs: [
   //   {
+  //     currentLeftTab: '', // 当前左侧Tab
+  //     currentDir: '',  // 当前目录
   //     currentDir: '/root', //当前所在路径
   //     totalSize: '50K', //当前路径下所有文件的总大小
   //     files: [
@@ -38,17 +38,61 @@ export default {
   //     ]
   //   }
   // ]
-  tabs: [],
+  tabs: [
+    {
+      currentLeftTab: '',
+      currentDir: '',
+      totalSize: '0K',
+      files: []
+    }
+  ],
   // 默认菜单项
   defaultContextMenu: [
-    '打开',
-    '打开方式',
-    '发送给',
-    '剪切',
-    '复制',
-    '重命名',
-    '创建快捷方式',
-    '移入回收站'
+    {
+      key: 'd1',
+      text: '打开',
+      operation: 'open'
+    },
+    {
+      key: 'd2',
+      text: '打开方式',
+      operation: 'openWith'
+    },
+    {
+      key: 'd3',
+      text: '发送给',
+      operation: 'sendTo'
+    },
+    {
+      key: 'd4',
+      text: '剪切',
+      operation: 'cut'
+    },
+    {
+      key: 'd5',
+      text: '复制',
+      operation: 'copy'
+    },
+    {
+      key: 'd6',
+      text: '重命名',
+      operation: 'rename'
+    },
+    {
+      key: 'd7',
+      text: '创建快捷方式',
+      operation: 'createShortcut'
+    },
+    {
+      key: 'd8',
+      text: '移入回收站',
+      operation: 'moveToTrash'
+    },
+    {
+      key: 'd9',
+      text: '属性',
+      operation: 'attributes'
+    },
   ],
   fileTypes: {
     document: {
@@ -61,9 +105,7 @@ export default {
       // 图标
       icon: '',
       // 特有菜单
-      specialContextMenu: [
-        
-      ],
+      specialContextMenu: [],
       // TODO鼠标悬浮信息
     },
     txt: {
@@ -77,8 +119,16 @@ export default {
       icon: '',
       // 特有菜单
       specialContextMenu: [
-        '编辑',
-        '打印'
+        {
+          key: 's1',
+          text: '编辑',
+          operation: 'edit'
+        },
+        {
+          key: 's2',
+          text: '打印',
+          operation: 'print'
+        }
       ],
       // TODO鼠标悬浮信息
     },
@@ -89,8 +139,16 @@ export default {
       ],
       icon: '',
       specialContextMenu: [
-        '编辑',
-        '打印'
+        {
+          key: 's1',
+          text: '编辑',
+          operation: 'edit'
+        },
+        {
+          key: 's2',
+          text: '打印',
+          operation: 'print'
+        }
       ],
     },
     mp3: {
@@ -100,8 +158,16 @@ export default {
       ],
       icon: '',
       specialContextMenu: [
-        '播放',
-        '加入到播放列表'
+        {
+          key: 's1',
+          text: '播放',
+          operation: 'play'
+        },
+        {
+          key: 's2',
+          text: '加入到播放列表',
+          operation: 'addToPlayList'
+        }
       ],
     },
     jpg: {
@@ -111,10 +177,26 @@ export default {
       ],
       icon: '',
       specialContextMenu: [
-        '打印',
-        '编辑',
-        '设为壁纸',
-        '加入到壁纸库'
+        {
+          key: 's1',
+          text: '编辑',
+          operation: 'edit'
+        },
+        {
+          key: 's2',
+          text: '打印',
+          operation: 'print'
+        },
+        {
+          key: 's3',
+          text: '设为壁纸',
+          operation: 'setAsWallpaper'
+        },
+        {
+          key: 's4',
+          text: '加入壁纸库',
+          operation: 'addToWallpaper'
+        }
       ],
       mp4: {
         previewer: 'VideoPlayer',
@@ -123,7 +205,11 @@ export default {
         ],
         icon: '',
         specialContextMenu: [
-          '播放'
+          {
+            key: 's1',
+            text: '播放',
+            operation: 'play'
+          },
         ],
       }
     }
