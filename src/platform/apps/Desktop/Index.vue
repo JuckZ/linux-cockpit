@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-04-30 08:48:33
+ * @LastEditTime: 2020-05-01 11:25:16
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue

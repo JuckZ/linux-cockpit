@@ -1,9 +1,9 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-29 22:15:50
+ * @LastEditTime: 2020-05-01 10:01:16
  * @LastEditors: Juck
- * @Description: 用于创建app等操作
+ * @Description: 用于创建app、配置登录信息等操作
  * @FilePath: \linux-cockpit\src\platform\apps\Config\Index.vue
  * @Juck is coding...
  -->
@@ -107,7 +107,7 @@ export default {
       [0, 'login', '登录', 'Login', '@/platform/apps/Login', '/assets/apps/Login/logo.png', true, false, false, false, true, false, 'default', false, 360, 60, 800, 400, 'V0.0.1', 'Juck'],
       [1, 'shell', '终端', 'Shell', '@/platform/apps/Shell', '/assets/apps/Shell/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 800, 500, 'V0.0.1', 'Juck'],
       [2, 'fileManager', '文件管理器', 'FileManager', '@/platform/apps/FileManager', '/assets/apps/FileManager/logo.png', true, true, true, false, true, false, 'default', false, 260, 60, 800, 620, 'V0.0.1', 'Juck'],
-      [3, 'taskManager', '任务管理器', 'TaskManager', '@/platform/apps/TaskManager', '/assets/apps/TaskManager/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [3, 'taskManager', '任务管理器', 'TaskManager', '@/platform/apps/TaskManager', '/assets/apps/TaskManager/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 600, 600, 'V0.0.1', 'Juck'],
       [4, 'appStore', '应用市场', 'AppStore', '@/platform/apps/AppStore', '/assets/apps/AppStore/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [5, 'personalCenter', '个人中心', 'PersonalCenter', '@/platform/apps/PersonalCenter', '/assets/apps/PersonalCenter/logo.png', false, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [6, 'systemSettings', '系统设置', 'SystemSettings', '@/platform/apps/SystemSettings', '/assets/apps/SystemSettings/logo.png', false, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],

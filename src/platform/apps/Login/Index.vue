@@ -135,9 +135,9 @@ export default {
     }
     // 初始化登录参数
     this.form.setFieldsValue({
-      domainOrIP: 'juck.site',
+      domainOrIP: '192.168.28.141',
       userName: 'root',
-      password: 'Zc1998zc',
+      password: '0000',
     })
   },
   computed: {

@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-11 12:33:58
- * @LastEditTime: 2020-04-23 14:51:54
+ * @LastEditTime: 2020-04-30 11:20:55
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\StatusBar\Index.vue
@@ -55,7 +55,7 @@ export default {
   top: 0;
   position: fixed;
   width: 100%;
-  height: 20px;
+  height: 24px;
   background-color: rgba(255, 255, 255, 0.6);
   border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-bottom: 2px solid rgba(255, 255, 255, 0.3);

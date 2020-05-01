@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-04-27 11:49:22
+ * @LastEditTime: 2020-05-01 09:17:17
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -109,37 +109,48 @@ myBUS.on('disconnect',() => {
 })
 // 监听脚本上传事件
 myBUS.on('uploadScript', payload => {
-  let script = 'cd blog'
-  // 同步读取文件
-  // script = require('fs').readFileSync('../public/scripts/FileManager/initialInformation.sh')
-  const scriptPath = path.join(__dirname, './', payload.script)
-  script = fs.readFileSync(scriptPath).toString()
-  conn.exec(script, function (err, stream) {
-    // stream.write('echo hello')
-    if (err) throw err;
-    stream.on('close', function () {
-      // conn.end();
-    }).on('data', function (data) {
-      mySocket.emit('scriptRes', {
-        chunk: data.toString(),
-        originPayload: payload
-      })
-      console.log('=====');
-      console.log(data.toString());
-    });
-  })
-  // conn.shell(function (err, stream) {
-  //   stream.write('echo hello')
+
+  let script = 'cd /'
+  switch(payload.options.operation) {
+    case 'readDir':
+    script = 'ls /root -lh'
+    // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'
+    conn.exec(script, function (err, stream) {
+      if (err) throw err;
+      stream.on('close', function () {
+        // conn.end();
+      }).on('data', function (data) {
+        mySocket.emit('scriptRes', {
+          chunk: data.toString(),
+          originPayload: payload
+        })
+        console.log('=====');
+        console.log(data.toString());
+      });
+    })
+    break
+    default:
+      console.log('no operation here');
+      
+  }
+
+
+  // let script = 'cd /'
+  // const scriptPath = path.join(__dirname, './scripts/FileManager', payload.options.script)
+  // script = fs.readFileSync(scriptPath).toString()
+  // conn.exec(script, function (err, stream) {
   //   if (err) throw err;
   //   stream.on('close', function () {
   //     // conn.end();
   //   }).on('data', function (data) {
-  //     // mySocket.emit('scriptRes', data.toString())
+  //     mySocket.emit('scriptRes', {
+  //       chunk: data.toString(),
+  //       originPayload: payload
+  //     })
+  //     console.log('=====');
   //     console.log(data.toString());
-  //     console.log('-');
   //   });
-  // });
-  
+  // })
 })
 
 module.exports = {

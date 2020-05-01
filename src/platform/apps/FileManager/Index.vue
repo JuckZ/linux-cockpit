@@ -1,4 +1,5 @@
 <template>
+<!-- TODO 有很多事情要做 -->
   <a-layout id="components-layout-demo-top-side">
     <a-layout-header class="header">
       <a-input-search
@@ -65,7 +66,7 @@
         <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
           <!-- TODO:完善面包屑 -->
           <a-breadcrumb style="margin: 16px 0px">
-            <a-breadcrumb-item v-for="item in currentDir.split('/')" :key="item.length">{{item}}</a-breadcrumb-item>
+            <a-breadcrumb-item v-for="item in tabs[0].currentDir.split('/')" :key="item.length">{{item}}</a-breadcrumb-item>
           </a-breadcrumb>
           <!-- 功能按钮区 -->
           <div id="fileManagerBtnGroup">
@@ -84,19 +85,34 @@
           <div id="fileContainer">
             <div
             id="fileContent"
-            @contextmenu.prevent="toggleContextMenu($event, 'payload')"
           >
+          <!-- 加载动画 -->
+            <a-spin :spinning="!isLoaded" tip="Loading...">
+              <div v-show="!isLoaded" class="spin-content">
+                正在读取文件......
+              </div>
+            </a-spin>
+            <!-- 表格区显示文件 -->
             <a-table
+              v-show="isLoaded"
               :pagination="{
                 pageSize: 5,
                 position: 'bottom',
               }"
               size="middle"
+              :customRow="customClick"
               :rowSelection="rowSelection"
               :columns="columns"
-              :dataSource="homeFiles.files"
+              :dataSource="tabs[0].files"
               @change="onChange"
-            />
+            >
+
+            <!-- TODO根据不同类型显示不同样式，以及略缩图、不同操作等 -->
+              <span slot="icon" slot-scope="type">
+                {{type == 'd' ? '目录' : '普通文件'}}
+              </span>
+            </a-table>
+
             <!-- 右键菜单 -->
               <ul
                 id="contextMenu"
@@ -120,14 +136,21 @@
       </a-layout>
     </a-layout-content>
     <a-layout-footer style="text-align: center">
-      total size: {{ this.homeFiles.totalSize }} --- 共{{
-        this.homeFiles.files.length
-      }}个项目 --- 选中?项
+      total size: {{ tabs[0].totalSize }} --- 共{{
+        tabs[0].files.length
+      }}个项目 --- 选中0项
     </a-layout-footer>
   </a-layout>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
+.spin-content {
+  border: 1px solid #91d5ff;
+  background-color: #e6f7ff;
+  padding: 30px;
+}
+
 #components-layout-demo-top-side .searchBar {
   width: 120px;
   height: 31px;
@@ -176,6 +199,7 @@ const columns = [
   {
     title: 'Type',
     dataIndex: 'type',
+    scopedSlots: { customRender: 'icon'},
     filters: [
       {
         text: '普通文件',
@@ -229,6 +253,7 @@ const columns = [
     sortDirections: ['descend', 'ascend'],
   },
 ]
+// FIXME
 const contextMenuForDir = [
   {
     id: 0,
@@ -273,6 +298,7 @@ const contextMenuForDir = [
     },
   },
 ]
+// FIXME
 const contextMenuForFile = [
   {
     id: 0,
@@ -346,13 +372,15 @@ export default {
       },
       contextMenuForDir,
       contextMenuForFile,
+      isLoaded: false,
+      customClick: record => {
+        console.log(record);
+      }
     }
   },
   computed: {
     ...mapState('fileManager', {
-      initialInformation: 'initialInformation',
-      homeFiles: 'homeFiles',
-      currentDir: 'currentDir'
+      tabs: 'tabs',
     }),
     ...mapState('login', {
       socket: 'socket',
@@ -379,21 +407,25 @@ export default {
   },
   beforeMount() {    
     // 挂载前需要读取Linux服务器的目录情况
-    this.socket.emit('uploadScript', {
-      target: 'fileManager',
-      operation: 'initialInformation',
-      script: 'initialInformation.sh',
+    this.execFileManagerOperation({
+      options: {
+        target: 'FileManager',
+        operation: 'readDir',
+      }
     })
     this.socket.on('scriptRes', (payload) => {
-      switch (payload.originPayload.operation) {
-        case 'initialInformation': {
-          const homeFiles = {
+      switch (payload.originPayload.options.operation) {
+        case 'readDir':
+        case 'initialPictures':
+        {
+          const tab = {
             totalSize: '0K',
+            currentDir: '/root',
             files: [],
           }
           // 处理结果
           const resultLines = payload.chunk.trim().split('\n')
-          homeFiles.totalSize = resultLines[0].split(' ')[1]
+          tab.totalSize = resultLines[0].split(' ')[1]
           // 先截取每一行到数组中，第一行到total变量中
           for (let i = 1; i < resultLines.length; i++) {
             // 将每个结果的数组表示push到数组中，形成二维数组
@@ -415,11 +447,17 @@ export default {
               },
               name: fileItemProperties[8],
             }
-            homeFiles.files.push(fileItem)
+            tab.files.push(fileItem)
           }
-          // 设置homeFiles和currentDir
-          this.setHomeFiles(homeFiles)
-          this.setCurrentDir('/'+JSON.parse(sessionStorage.getItem('userInfo')).userName)
+          // TODO 获取当前tab序列再设置tab
+          this.setTab({
+            options: {
+              // FIXME
+              tabID: 0,
+              tab: tab
+            }
+          })
+          this.isLoaded = true
           break
         }
         default:
@@ -430,8 +468,7 @@ export default {
   methods: {
     ...mapActions({
       setInitialInformation: 'fileManager/setInitialInformation',
-      setHomeFiles: 'fileManager/setHomeFiles',
-      setCurrentDir: 'fileManager/setCurrentDir'
+      setTab: 'fileManager/setTab'
     }),
     onSearch(val) {
       console.log(val)
@@ -440,8 +477,6 @@ export default {
       console.log('params', pagination, filters, sorter)
     },
     toggleContextMenu(event, payload) {
-      // console.log(event, payload)
-      console.log(event);
       this.contextMenu.position = {
         x: event.layerX + 'px',
         y: event.layerY + 'px',
@@ -449,6 +484,9 @@ export default {
       // 在指定位置打开右键菜单
       this.contextMenu.visible = !this.contextMenu.visible
     },
+    execFileManagerOperation(payload) {
+      this.socket.emit('uploadScript', payload)
+    }
   },
 }
 </script>
