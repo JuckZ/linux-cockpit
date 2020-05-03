@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 12:13:29
- * @LastEditTime: 2020-05-01 11:25:16
+ * @LastEditTime: 2020-05-02 20:19:30
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Desktop\Index.vue
@@ -72,7 +72,6 @@ export default {
     
     // 每次刷新后vuex的值会清除掉，因此在这里将登录状态从sessionStorage中恢复到vuex中
     if(sessionStorage.getItem('isLogined')) {
-      // this.restoreLogin(sessionStorage.getItem('userInfo'))
       const formData = JSON.parse(sessionStorage.getItem('userInfo'))
       this.login(formData).then(res => {
             // 提示登录结果

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-01 11:48:57
+ * @LastEditTime: 2020-05-03 10:48:33
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -58,8 +58,7 @@ import {
 
 Vue.prototype.$notification = notification
 Vue.prototype.$message = message
-Vue.use(VueApollo)
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios, VueApollo)
 // Vue.use(
 //   Button,
 //   Form,
@@ -125,26 +124,20 @@ Vue.component('Login', Login)
 
 
 Vue.config.productionTip = false
-// 产生apollo客户端实例对象
+// // 产生apollo客户端实例对象
 const apolloClient = new ApolloClient({
   uri: 'http://localhost:80/graphql',
 })
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
-const myVue = new Vue({
+const myVue: any = new Vue({
   apolloProvider,
   router,
   store,
   render: h => h(App),
 });
 myVue.$mount('#app')
-
-// TODO 挂载vue实例到window中，方便调试,需要删除
-declare global {
-  interface Window { myVue: any }
-}
-window.myVue = myVue
 
 // TAG实现拖拽移动位置和修改大小的功能的指令
 Vue.directive('drag', function (el, binding) {

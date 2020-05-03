@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-01 18:51:16
+ * @LastEditTime: 2020-05-01 21:30:51
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\store\state.ts
@@ -197,21 +197,50 @@ export default {
           text: '加入壁纸库',
           operation: 'addToWallpaper'
         }
+      ]
+    },
+    png: {
+      previewer: 'PictureViewer',
+      launchers: [
+        'PictureViewer'
       ],
-      mp4: {
-        previewer: 'VideoPlayer',
-        launchers: [
-          'VideoPlayer'
-        ],
-        icon: '',
-        specialContextMenu: [
-          {
-            key: 's1',
-            text: '播放',
-            operation: 'play'
-          },
-        ],
-      }
-    }
+      icon: '',
+      specialContextMenu: [
+        {
+          key: 's1',
+          text: '编辑',
+          operation: 'edit'
+        },
+        {
+          key: 's2',
+          text: '打印',
+          operation: 'print'
+        },
+        {
+          key: 's3',
+          text: '设为壁纸',
+          operation: 'setAsWallpaper'
+        },
+        {
+          key: 's4',
+          text: '加入壁纸库',
+          operation: 'addToWallpaper'
+        }
+      ]
+    },
+    mp4: {
+      previewer: 'VideoPlayer',
+      launchers: [
+        'VideoPlayer'
+      ],
+      icon: '',
+      specialContextMenu: [
+        {
+          key: 's1',
+          text: '播放',
+          operation: 'play'
+        },
+      ],
+    },
   }
 }

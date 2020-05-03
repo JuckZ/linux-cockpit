@@ -108,34 +108,17 @@ import BUS from '@/platform/bus'
 import { mapState, mapActions } from 'vuex'
 export default {
   data() {
-    return {}
-  },
-  beforeRouteEnter(to, from, next) {
-    // 在渲染该组件的对应路由被 confirm 前调用
-    // 不！能！获取组件实例 `this`
-    // 因为当守卫执行前，组件实例还没被创建
-    // 不过，你可以通过传一个回调给 next来访问组件实例。
-    // 在导航被确认的时候执行回调，并且把组件实例作为回
-    // 调方法的参数。
-    next((vm) => {
-      // 通过 `vm` 访问组件实例
-      if (vm.isLogined) {
-        vm.$router.push('/')
-      }
-    })
+    return {
+    }
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_login' })
   },
   mounted() {
-    // 如果已经登录则直接跳转
-    if (sessionStorage.getItem('isLogined') === true) {
-      // 设置vuex的值（因为刷新页面后session未清空，但是vuex清空了）
-      // this.login(sessionStorage.getItem('userInfo'))
-    }
     // 初始化登录参数
     this.form.setFieldsValue({
-      domainOrIP: '192.168.28.141',
+      // domainOrIP: '192.168.28.141',
+      domainOrIP: 'linux-cockpit',
       userName: 'root',
       password: '0000',
     })
@@ -206,7 +189,7 @@ export default {
       })
     },
     skipLogin() {
-      // TODO
+      // TODO 关闭登录窗口即可
     },
   },
 }

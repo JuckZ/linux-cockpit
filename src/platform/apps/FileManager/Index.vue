@@ -379,6 +379,39 @@ export default {
       isLoaded: false,
       customClick: (record) => ({
         on: {
+          // 双击事件
+          dblclick: (e) => {
+            let fileExt = '' // 文件后缀
+            switch (record.type) {
+              case '-':
+                fileExt = record.name
+                  .split('.')
+                  .pop()
+                  .toLowerCase()
+                if (this.fileTypes[fileExt]) {
+                  // 如果能够找到该后缀相关信息，则：
+                  this.menuData.push(
+                    ...this.defaultContextMenu,
+                    ...this.fileTypes[fileExt].specialContextMenu
+                  )
+                  console.log('用默认软件打开已知文件')
+                } else {
+                  // 未知后缀的文件
+                  this.menuData.push(...this.defaultContextMenu)
+                  console.log('暂不支持打开此类文件')
+                }
+                break
+              case 'd':
+                this.menuData.push(...this.defaultContextMenu, ...this.fileTypes.document.specialContextMenu)
+                console.log('准备打开文件夹')
+                // TODO 
+                break
+              default:
+                this.menuData.push(...this.defaultContextMenu)
+                console.log('暂不支持操作块文件、设备文件等');
+            }
+          },
+          // 右键事件
           contextmenu: (e) => {
             e.preventDefault()
             let fileExt = '' // 文件后缀
@@ -395,10 +428,12 @@ export default {
                     ...this.defaultContextMenu,
                     ...this.fileTypes[fileExt].specialContextMenu
                   )
+                  console.log('后缀已知的文件')
                 } else {
                   this.menuData.push(...this.defaultContextMenu)
+                  console.log('后缀未知的文件')
                 }
-                console.log('已知文件')
+                
                 break
               case 'd':
                 this.menuData.push(...this.defaultContextMenu, ...this.fileTypes.document.specialContextMenu)
@@ -406,7 +441,7 @@ export default {
                 break
               default:
                 this.menuData.push(...this.defaultContextMenu)
-                console.log('其他文件')
+                console.log('暂不支持操作块文件、设备文件等');
             }
             this.contextMenu.visible = true
             this.menuStyle.top = e.clientY + 'px'

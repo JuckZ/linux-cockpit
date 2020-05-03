@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-01 16:56:13
+ * @LastEditTime: 2020-05-03 09:09:50
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -150,6 +150,8 @@ TAG TODO now
 14. 多个桌面
 15. 支持局域网nat，管理自己的服务器
 16. 自定义vue指令，实现拖拽和改变尺寸
+17. 如何让组件保持生命
+18. vue监控数组变化、对象变化  computed watch
 
 ## 初始化centos做了哪些事
 

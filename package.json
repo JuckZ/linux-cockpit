@@ -84,6 +84,9 @@
           "javascriptEnabled": true
         }
       }
+    },
+    "configureWebpack": {
+      "devtool": "source-map"
     }
   }
 }

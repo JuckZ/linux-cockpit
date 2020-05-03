@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-04-04 19:01:09
- * @LastEditTime: 2020-04-22 11:36:01
+ * @LastEditTime: 2020-05-01 21:47:12
  * @LastEditors: Juck
  * @Description: In User Settings Edit
  * @FilePath: \linux-cockpit\src\platform\apps\WeChat\store\index.ts
