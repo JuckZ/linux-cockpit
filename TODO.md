@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-03 09:09:50
+ * @LastEditTime: 2020-05-03 10:53:57
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -16,6 +16,7 @@ FIXME
 
 1. main.ts中的apollo是否可以去掉
 2. 向任务栏添加运行的程序时，后运行的程序应该将图标放置到最后，（解决办法，可以按照打开顺序设置PID，按照PID的大小排列图标即可）
+3. 每次清空session登录时，appllo问题
 
 BUG
 

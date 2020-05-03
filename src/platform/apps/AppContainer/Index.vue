@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-01 11:52:11
+ * @LastEditTime: 2020-05-03 11:24:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -22,6 +22,20 @@
       width: currentApp.positionWithUnit.width,
       height: currentApp.positionWithUnit.height
     }"
+    @mousedown="setAppStatusFocus({
+      app: currentApp
+    })"
+    @mouseup.left="setAppStatusPosition({
+      app: currentApp,
+      options: {
+        position: {
+          top: $event.currentTarget.style.top.split(/px/)[0],
+          left: $event.currentTarget.style.left.split(/px/)[0],
+          width: $event.currentTarget.style.width.split(/px/)[0],
+          height: $event.currentTarget.style.height.split(/px/)[0]
+        }
+      }
+    })"
   >
     <div class="appTitleBar">
       <span>

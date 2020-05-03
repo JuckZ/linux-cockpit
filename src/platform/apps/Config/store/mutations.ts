@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-04-30 08:11:00
+ * @LastEditTime: 2020-05-03 11:22:55
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -15,6 +15,7 @@ export default {
     // 修改app的位置信息
     // TODO 需要对尺寸和位置加以限制
     setAppStatusPosition: (state: any, payload: any) => {
+        // Math.min(a,b)
         state.apps[payload.app.id].status.position.left = payload.options.position.left
         state.apps[payload.app.id].status.position.top = payload.options.position.top
         state.apps[payload.app.id].status.position.width = payload.options.position.width
