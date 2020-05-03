@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-01 21:28:32
- * @LastEditTime: 2020-04-30 08:45:23
+ * @LastEditTime: 2020-05-03 11:32:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\TaskBar\Index.vue
@@ -23,6 +23,9 @@
             }">
             <img :btnType="app.status.window == 'minimize'?'default':'minimize'" @click="
             setAppDefault({
+              app: app
+            })
+            setAppStatusFocus({
               app: app
             })
             " :src="app.imgSrc" :alt="app.name">
@@ -53,6 +56,7 @@ export default {
     ...mapActions({
       toggleMenu: 'menu/toggleMenu',
       setAppDefault: 'config/setAppDefault',
+      setAppStatusFocus: 'config/setAppStatusFocus'
     })
   },
 }
