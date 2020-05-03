@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-03 21:18:21
+ * @LastEditTime: 2020-05-04 00:27:01
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -57,6 +57,23 @@ function DownloadFile(remotePath, localPath, then){
         }
       })
     }
+  })
+}
+
+// 运行脚本
+function execUploadScript(script, originPayload) {
+  conn.exec(script, function (err, stream) {
+    if (err) throw err;
+    stream.on('close', function () {
+      // conn.end();
+    }).on('data', function (data) {
+      mySocket.emit('scriptRes', {
+        chunk: data.toString(),
+        originPayload: originPayload
+      })
+      console.log('=====');
+      console.log(data.toString());
+    });
   })
 }
 
@@ -131,33 +148,91 @@ myBUS.on('disconnect',() => {
 // 监听脚本上传事件
 myBUS.on('uploadScript', payload => {
   let script = 'cd /'
-  switch(payload.options.operation) {
+  switch (payload.options.operation) {
     case 'open':
-      // if(payload.options.target)
-    script = 'ls /root -lh'
-    // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'
-    conn.exec(script, function (err, stream) {
-      if (err) throw err;
-      stream.on('close', function () {
-        // conn.end();
-      }).on('data', function (data) {
-        mySocket.emit('scriptRes', {
-          chunk: data.toString(),
-          originPayload: payload
-        })
-        console.log('=====');
-        console.log(data.toString());
-      });
-    })
-    break
-    case 'downloadFile':
-      DownloadFile(...payload.options.params)
+      if (payload.currentStatus.targets.length == 0) {
+        console.log('没有操作对象')
+      } else if (payload.currentStatus.targets.length == 1) {
+        // 只有一个操作对象时
+        const target = payload.currentStatus.targets[0]
+        // 如果是普通文件，则用对应的预览器打开
+        if (target.type == '-') {
+          // 根据文件后缀用不同的预览器打开
+          // 先判断是否有相应可以使用的预览器
+          console.log('根据文件后缀用不同的预览器打开')
+          switch (
+            target.name
+              .split('.')
+              .pop()
+              .toLowerCase()
+          ) {
+            case 'txt':
+            case 'doc':
+              console.log('调用文本编辑器')
+              break
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'img':
+              console.log('调用图片浏览器')
+              break
+            case 'mp3':
+              console.log('调用音乐播放器')
+              break
+            case 'mp4':
+              console.log('调用视频播放器')
+              break
+            default:
+              console.log('暂时不支持此类型文件的预览')
+          }
+        } else if (target.type == 'd') {
+          // 如果是目录文件，则打开目录
+          // TODO target.name还需要加上当前路径srcDir
+          console.log('打开目录'+payload.currentStatus.srcDir+target.name)
+          script = 'cd '+payload.currentStatus.srcDir+target.name + '&& ls -lh'
+          execUploadScript(script, payload)
+        } else {
+          // 如果是块设备文件等，则不进行操作
+          console.log('暂不支持打开块设备')
+        }
+      }
+      break
+    case 'moveToTrash':
+      console.log('移入回收站')
+      break
+    case 'attributes':
+      console.log('属性')
       break
     default:
-      console.log('no operation here');
+      console.log('其他操作等待开发')
   }
-})
 
+  // switch(payload.options.operation) {
+  //   case 'open':
+  //     // if(payload.options.target)
+  //   script = 'ls /root -lh'
+  //   // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'
+  //   conn.exec(script, function (err, stream) {
+  //     if (err) throw err;
+  //     stream.on('close', function () {
+  //       // conn.end();
+  //     }).on('data', function (data) {
+  //       mySocket.emit('scriptRes', {
+  //         chunk: data.toString(),
+  //         originPayload: payload
+  //       })
+  //       console.log('=====');
+  //       console.log(data.toString());
+  //     });
+  //   })
+  //   break
+  //   case 'downloadFile':
+  //     DownloadFile(...payload.options.params)
+  //     break
+  //   default:
+  //     console.log('no operation here');
+  // }
+})
 
 module.exports = {
   connectSSH: connectSSH,

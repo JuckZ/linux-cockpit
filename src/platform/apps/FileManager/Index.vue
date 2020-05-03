@@ -263,8 +263,8 @@ export default {
       columns,
       currentStatus: {
         targets: [], // 当前操作的文件对象数组
-        srcDir: '', // 源路径（一般就是当前路径）
-        destDir: '', // 目的路径
+        srcDir: '/', // 源路径（一般就是当前路径）
+        destDir: '/', // 目的路径
         operation: '', // 当前操作
         selectedRows: [], //当前选中的数据行
       },
@@ -393,75 +393,15 @@ export default {
     })
     // TODO监听响应并处理响应
     this.socket.on('scriptRes', (payload) => {
-      // TODO根据响应对不同的tab进行数据设置
+      // TODO 处理响应
+      console.log(payload)
       switch (payload.originPayload.options.operation) {
-        case 'open': {
-          const tab = {
-            totalSize: '0K',
-            currentDir: '/root',
-            files: [],
-          }
-          // 处理结果
-          const resultLines = payload.chunk.trim().split('\n')
-          tab.totalSize = resultLines[0].split(' ')[1]
-          // 先截取每一行到数组中，第一行到total变量中
-          for (let i = 1; i < resultLines.length; i++) {
-            // 将每个结果的数组表示push到数组中，形成二维数组
-            const fileItemProperties = resultLines[i].split(/\s+/)
-            const fileItem = {
-              key: i - 1,
-              type: fileItemProperties[0].substr(0, 1),
-              ownerAuth: fileItemProperties[0].substr(1, 3),
-              groupAuth: fileItemProperties[0].substr(4, 3),
-              othersAuth: fileItemProperties[0].substr(7, 3),
-              linkCount: fileItemProperties[1],
-              owner: fileItemProperties[2],
-              group: fileItemProperties[3],
-              size: fileItemProperties[4],
-              lastModified: {
-                month: fileItemProperties[5],
-                day: fileItemProperties[6],
-                timeOrYear: fileItemProperties[7],
-              },
-              name: fileItemProperties[8],
-            }
-            tab.files.push(fileItem)
-          }
-          this.initTab({
-            options: {
-              tab: tab,
-            },
-          })
-          this.isLoaded = true
-          break
-        }
-        default:
-          console.log('default')
-      }
-    })
-  },
-  methods: {
-    ...mapActions({
-      setInitialInformation: 'fileManager/setInitialInformation',
-      addTab: 'fileManager/addTab',
-      initTab: 'fileManager/initTab',
-      runApp: 'config/runApp',
-    }),
-    onSearch(val) {
-      console.log(val)
-    },
-    //  页面修改时的函数
-    onPageChange(pagination, filters, sorter) {
-      console.log('params', pagination, filters, sorter)
-    },
-    execFileManagerOperation(payload) {
-      switch (payload.options.operation) {
         case 'open':
-          if (this.currentStatus.targets.length == 0) {
+          if (payload.originPayload.currentStatus.targets.length == 0) {
             console.log('没有操作对象')
-          } else if (this.currentStatus.targets.length == 1) {
+          } else if (payload.originPayload.currentStatus.targets.length == 1) {
             // 只有一个操作对象时
-            const target = this.currentStatus.targets[0]
+            const target = payload.originPayload.currentStatus.targets[0]
             // 如果是普通文件，则用对应的预览器打开
             if (target.type == '-') {
               // 根据文件后缀用不同的预览器打开
@@ -494,9 +434,11 @@ export default {
               }
             } else if (target.type == 'd') {
               // 如果是目录文件，则打开目录
-              console.log('打开目录')
-              // TODO
-              this.socket.emit('uploadScript', payload)
+              // TODO target.name还需要加上当前路径srcDir
+              console.log(
+                '打开目录' + payload.originPayload.currentStatus.srcDir + target.name
+              )
+              this.parseResponse(payload)
             } else {
               // 如果是块设备文件等，则不进行操作
               console.log('暂不支持打开块设备')
@@ -512,7 +454,67 @@ export default {
         default:
           console.log('其他操作等待开发')
       }
-      // this.socket.emit('uploadScript', payload)
+    })
+  },
+  methods: {
+    ...mapActions({
+      setInitialInformation: 'fileManager/setInitialInformation',
+      addTab: 'fileManager/addTab',
+      initTab: 'fileManager/initTab',
+      runApp: 'config/runApp',
+    }),
+    onSearch(val) {
+      console.log(val)
+    },
+    //  页面修改时的函数
+    onPageChange(pagination, filters, sorter) {
+      console.log('params', pagination, filters, sorter)
+    },
+    execFileManagerOperation(payload) {
+      this.socket.emit('uploadScript', {
+        ...payload,
+        currentStatus: this.currentStatus,
+      })
+    },
+    // 处理返回的结果
+    parseResponse(payload) {
+      const tab = {
+        totalSize: '0K',
+        currentDir: '/root',
+        files: [],
+      }
+      // 处理结果
+      const resultLines = payload.chunk.trim().split('\n')
+      tab.totalSize = resultLines[0].split(' ')[1]
+      // 先截取每一行到数组中，第一行到total变量中
+      for (let i = 1; i < resultLines.length; i++) {
+        // 将每个结果的数组表示push到数组中，形成二维数组
+        const fileItemProperties = resultLines[i].split(/\s+/)
+        const fileItem = {
+          key: i - 1,
+          type: fileItemProperties[0].substr(0, 1),
+          ownerAuth: fileItemProperties[0].substr(1, 3),
+          groupAuth: fileItemProperties[0].substr(4, 3),
+          othersAuth: fileItemProperties[0].substr(7, 3),
+          linkCount: fileItemProperties[1],
+          owner: fileItemProperties[2],
+          group: fileItemProperties[3],
+          size: fileItemProperties[4],
+          lastModified: {
+            month: fileItemProperties[5],
+            day: fileItemProperties[6],
+            timeOrYear: fileItemProperties[7],
+          },
+          name: fileItemProperties[8],
+        }
+        tab.files.push(fileItem)
+      }
+      this.initTab({
+        options: {
+          tab: tab,
+        },
+      })
+      this.isLoaded = true
     },
     bodyClick() {
       this.contextMenu.visible = false
@@ -532,7 +534,7 @@ export default {
       const activeKey = `${this.newTabIndex++}`
       console.log(activeKey)
       panes.push({
-        title: 'Tab '+ activeKey,
+        title: 'Tab ' + activeKey,
         content: 'Content of new Tab',
         key: activeKey,
       })
