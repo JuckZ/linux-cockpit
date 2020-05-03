@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-01 21:30:51
+ * @LastEditTime: 2020-05-03 11:50:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\store\state.ts
@@ -110,10 +110,10 @@ export default {
     },
     txt: {
       // 默认预览器
-      previewer: 'FileEditor',
+      previewer: 'TextEditor',
       // 运行器
       launchers: [
-        'FileEditor'
+        'TextEditor'
       ],
       // 图标
       icon: '',

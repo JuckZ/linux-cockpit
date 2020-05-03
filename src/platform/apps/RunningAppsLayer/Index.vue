@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-04-29 14:59:50
+ * @LastEditTime: 2020-05-03 17:29:34
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\RunningAppsLayer\Index.vue
@@ -77,7 +77,7 @@
         </template>
         <!-- app组件 -->
         <template v-slot:appComponent>
-          <component :is="app.componentName"></component>
+          <component :currentApp="app" :is="app.componentName"></component>
         </template>
       </AppContainer>
     </li>

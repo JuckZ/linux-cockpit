@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-03 11:24:24
+ * @LastEditTime: 2020-05-03 17:27:04
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -45,7 +45,7 @@
     </div>
     <!-- app组件本身 -->
     <div class="appContent">
-      <slot name="appComponent" />
+      <slot :currentApp='currentApp' name="appComponent" />
     </div>
   </div>
 </template>

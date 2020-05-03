@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-03 11:06:46
+ * @LastEditTime: 2020-05-03 12:04:07
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -16,6 +16,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 // 导入自定义组件
+import Login from '@/platform/apps/Login/Index.vue'
 import NotFound from '@/platform/apps/NotFound/Index.vue'
 import Shell from '@/platform/apps/Shell/Index.vue'
 import FileManager from '@/platform/apps/FileManager/Index.vue'
@@ -27,7 +28,8 @@ import Weather from '@/platform/apps/Weather/Index.vue'
 import WeChat from '@/platform/apps/WeChat/Index.vue'
 import IClock from '@/platform/apps/IClock/Index.vue'
 import AMap from '@/platform/apps/AMap/Index.vue'
-import Login from '@/platform/apps/Login/Index.vue'
+import TextEditor from '@/platform/apps/TextEditor/Index.vue'
+
 
 // 导入antDesign组件
 import {
@@ -109,6 +111,7 @@ Vue.component('a-spin', Spin)
 Vue.component('a-divider', Divider)
 
 // 注册自定义组件
+Vue.component('Login', Login)
 Vue.component('NotFound', NotFound)
 Vue.component('Shell', Shell)
 Vue.component('FileManager', FileManager)
@@ -120,7 +123,8 @@ Vue.component('Weather', Weather)
 Vue.component('WeChat', WeChat)
 Vue.component('IClock', IClock)
 Vue.component('AMap', AMap)
-Vue.component('Login', Login)
+Vue.component('TextEditor', TextEditor)
+
 
 
 Vue.config.productionTip = false

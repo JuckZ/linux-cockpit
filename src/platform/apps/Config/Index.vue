@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-05-01 21:50:33
+ * @LastEditTime: 2020-05-03 12:00:51
  * @LastEditors: Juck
  * @Description: 用于创建app、配置登录信息等操作
  * @FilePath: \linux-cockpit\src\platform\apps\Config\Index.vue
@@ -112,9 +112,10 @@ export default {
       [5, 'personalCenter', '个人中心', 'PersonalCenter', '@/platform/apps/PersonalCenter', '/assets/apps/PersonalCenter/logo.png', false, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [6, 'systemSettings', '系统设置', 'SystemSettings', '@/platform/apps/SystemSettings', '/assets/apps/SystemSettings/logo.png', false, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [7, 'weather', '天气', 'Weather', '@/platform/apps/Weather', '/assets/apps/Weather/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [8, 'weChat', '微信', 'WeChat', '@/platform/apps/Wechat', '/assets/apps/Wechat/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [8, 'weChat', '微信', 'WeChat', '@/platform/apps/WeChat', '/assets/apps/Wechat/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [9, 'iClock', '时钟', 'IClock', '@/platform/apps/IClock', '/assets/apps/IClock/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [10, 'aMap', '高德地图', 'AMap', '@/platform/apps/AMap', '/assets/apps/AMap/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [11, 'textEditor', '文本编辑器', 'TextEditor', '@/platform/apps/TextEditor', '/assets/apps/TextEditor/logo.png', false, true, false, false, true, false, 'default', false, 160, 60, 600, 400, 'V0.0.1', 'Juck'],
     ]
     for( const item of appsParameter) {
       apps.push(new App(...item))

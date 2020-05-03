@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO 有很多事情要做 -->
   <a-layout id="components-layout-demo-top-side">
     <!-- TAG 搜索框 -->
     <a-layout-header class="header">
@@ -15,7 +14,6 @@
         <a-button icon="download">下载</a-button>
         <a-button icon="folder-add">新建文件夹</a-button>
         <a-button icon="delete">删除</a-button>
-        <!-- TODO:z-index问题，不能点击 -->
         <!-- 切换视图 -->
         <div id="fileManagerChangeView">
           <img src="/assets/apps/FileManager/list.svg" alt="列表" />
@@ -95,7 +93,7 @@
               <!-- 文件信息内容显示区 -->
               <div id="fileContainer">
                 <div id="fileContent">
-                  <!-- 加载动画 -->
+                  <!-- TAG 加载动画 -->
                   <a-spin :spinning="!isLoaded" tip="Loading...">
                     <div v-show="!isLoaded" class="spin-content">
                       正在读取文件......
@@ -124,8 +122,17 @@
                     </span>
                   </a-table>
                   <!-- TAG右键菜单 -->
-                  <a-menu id="contextMenu" :style="menuStyle" v-if="contextMenu.visible">
-                    <a-menu-item v-for="menuItem in menuData" :key="menuItem.key">{{ menuItem.text }}</a-menu-item>
+                  <a-menu
+                    id="contextMenu"
+                    :style="menuStyle"
+                    v-if="contextMenu.visible"
+                  >
+                    <a-menu-item
+                      @click="contextMenuClick($event, currentItems)"
+                      v-for="menuItem in menuData"
+                      :key="menuItem.key"
+                      >{{ menuItem.text }}</a-menu-item
+                    >
                   </a-menu>
                 </div>
               </div>
@@ -241,121 +248,16 @@ const columns = [
     sortDirections: ['descend', 'ascend'],
   },
 ]
-// FIXME
-const contextMenuForDir = [
-  {
-    id: 0,
-    text: '打开',
-    operation: () => {
-      console.log('打开')
-    },
-  },
-  {
-    id: 1,
-    text: '重命名',
-    operation: () => {
-      console.log('重命名')
-    },
-  },
-  {
-    id: 2,
-    text: '剪切',
-    operation: () => {
-      console.log('剪切')
-    },
-  },
-  {
-    id: 3,
-    text: '删除',
-    operation: () => {
-      console.log('删除')
-    },
-  },
-  {
-    id: 4,
-    text: '复制',
-    operation: () => {
-      console.log('复制')
-    },
-  },
-  {
-    id: 5,
-    text: '属性',
-    operation: () => {
-      console.log('属性')
-    },
-  },
-]
-// FIXME
-const contextMenuForFile = [
-  {
-    id: 0,
-    text: '打开',
-    operation: () => {
-      console.log('打开')
-    },
-  },
-  {
-    id: 1,
-    text: '用指定软件打开',
-    operation: () => {
-      console.log('用指定软件打开')
-    },
-  },
-  {
-    id: 2,
-    text: '下载',
-    operation: () => {
-      console.log('下载')
-    },
-  },
-  {
-    id: 3,
-    text: '重命名',
-    operation: () => {
-      console.log('重命名')
-    },
-  },
-  {
-    id: 4,
-    text: '剪切',
-    operation: () => {
-      console.log('剪切')
-    },
-  },
-  {
-    id: 5,
-    text: '删除',
-    operation: () => {
-      console.log('删除')
-    },
-  },
-  {
-    id: 6,
-    text: '复制',
-    operation: () => {
-      console.log('复制')
-    },
-  },
-  {
-    id: 7,
-    text: '属性',
-    operation: () => {
-      console.log('属性')
-    },
-  },
-]
 const panes = [
   { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: false },
   { title: 'Tab 2', content: 'Content of Tab 2', key: '2' },
   { title: 'Tab 3', content: 'Content of Tab 3', key: '3' },
 ]
 export default {
-  props: ['position'],
   data() {
     return {
-      //
       columns,
+      currentItems: [], // 保存当前选中的项目，用于操作时作为参数传递给处理函数
       contextMenu: {
         visible: false,
         position: {
@@ -363,10 +265,6 @@ export default {
           y: 0,
         },
       },
-      panes,
-      activeKey: panes[0].key,
-      newTabIndex: 0,
-      collapsed: false,
       menuData: [],
       menuStyle: {
         position: 'fixed',
@@ -374,8 +272,10 @@ export default {
         left: '0',
         border: '1px solid #eee',
       },
-      contextMenuForDir,
-      contextMenuForFile,
+      panes,
+      activeKey: panes[0].key,
+      newTabIndex: 0,
+      collapsed: false,
       isLoaded: false,
       customClick: (record) => ({
         on: {
@@ -402,21 +302,25 @@ export default {
                 }
                 break
               case 'd':
-                this.menuData.push(...this.defaultContextMenu, ...this.fileTypes.document.specialContextMenu)
+                this.menuData.push(
+                  ...this.defaultContextMenu,
+                  ...this.fileTypes.document.specialContextMenu
+                )
                 console.log('准备打开文件夹')
-                // TODO 
+                // TODO
                 break
               default:
                 this.menuData.push(...this.defaultContextMenu)
-                console.log('暂不支持操作块文件、设备文件等');
+                console.log('暂不支持操作块文件、设备文件等')
             }
           },
           // 右键事件
           contextmenu: (e) => {
             e.preventDefault()
             let fileExt = '' // 文件后缀
-            // 清空右键菜单
-            this.menuData = []
+            this.currentItems = []
+            this.currentItems.push(record)
+            this.menuData = [] // 清空右键菜单
             switch (record.type) {
               case '-':
                 fileExt = record.name
@@ -433,15 +337,18 @@ export default {
                   this.menuData.push(...this.defaultContextMenu)
                   console.log('后缀未知的文件')
                 }
-                
+
                 break
               case 'd':
-                this.menuData.push(...this.defaultContextMenu, ...this.fileTypes.document.specialContextMenu)
+                this.menuData.push(
+                  ...this.defaultContextMenu,
+                  ...this.fileTypes.document.specialContextMenu
+                )
                 console.log('文件夹')
                 break
               default:
                 this.menuData.push(...this.defaultContextMenu)
-                console.log('暂不支持操作块文件、设备文件等');
+                console.log('暂不支持操作块文件、设备文件等')
             }
             this.contextMenu.visible = true
             this.menuStyle.top = e.clientY + 'px'
@@ -461,6 +368,9 @@ export default {
     ...mapState('login', {
       socket: 'socket',
       stream: 'stream',
+    }),
+    ...mapState('config', {
+      apps: 'apps'
     }),
     // 行选择
     rowSelection() {
@@ -546,6 +456,7 @@ export default {
       setInitialInformation: 'fileManager/setInitialInformation',
       addTab: 'fileManager/addTab',
       initTab: 'fileManager/initTab',
+      runApp: 'config/runApp'
     }),
     onSearch(val) {
       console.log(val)
@@ -595,6 +506,51 @@ export default {
       }
       this.panes = panes
       this.activeKey = activeKey
+    },
+    contextMenuClick(payload, currentItems) {
+      // TODO 暂时就当currentItems只有一个文件，处理多文件的逻辑后面做
+      // TAG暂时只做 txt png jpg mp3 mp4的预览功能即可
+      if (currentItems[0].type == '-' && payload.key == 'd1') {
+        // 期望操作：打开普通文件
+        switch (
+          currentItems[0].name
+            .split('.')
+            .pop()
+            .toLowerCase()
+        ) {
+          case 'txt':
+          case 'doc':
+            // 打开文本处理器，并传递数据过去
+            this.runApp({
+              app: this.apps[11],
+              options: {
+                initialData: currentItems
+              }
+              })
+            console.log('调用文本编辑器')
+            break
+          case 'png':
+          case 'jpg':
+          case 'jpeg':
+          case 'img':
+            console.log('调用图片浏览器')
+            break
+          case 'mp3':
+            console.log('调用音乐播放器');
+            break
+          case 'mp4':
+            console.log('调用视频播放器');
+            break
+          default:
+            console.log('暂时不支持此类型文件的预览');
+        }
+      } else if(currentItems[0].type == 'd' && payload.key == 'd1') {
+        // 期望操作：打开文件夹
+        console.log('打开文件夹');
+      } else if(currentItems[0].type != 'd' && currentItems[0].type != '-') {
+        // 期望操作： 对块设备、字符设备等操作
+        console.log('暂时不支持对块设备等文件的操作');
+      }
     },
   },
 }
