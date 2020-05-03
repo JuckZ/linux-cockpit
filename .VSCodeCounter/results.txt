@@ -1,0 +1,41 @@
+Date : 2020-05-03 20:37:07
+Directory : e:\wiki\Projects\linux-cockpit\server
+Total : 11 files,  360 codes, 218 comments, 39 blanks, all 617 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          8 |        300 |        217 |         38 |        555 |
+| HTML       |          1 |         58 |          1 |          1 |         60 |
+| XML        |          2 |          2 |          0 |          0 |          2 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                         | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                            |         11 |        360 |        218 |         39 |        617 |
+| assets                                                       |          3 |         60 |          1 |          1 |         62 |
+| assets\win7                                                  |          3 |         60 |          1 |          1 |         62 |
+| test                                                         |          1 |         40 |         25 |          9 |         74 |
+| utils                                                        |          4 |        166 |         64 |         16 |        246 |
++--------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                     | language   | code       | comment    | blank      | total      |
++--------------------------------------------------------------+------------+------------+------------+------------+------------+
+| e:\wiki\Projects\linux-cockpit\server\assets\win7\avatar.svg | XML        |          1 |          0 |          0 |          1 |
+| e:\wiki\Projects\linux-cockpit\server\assets\win7\index.html | HTML       |         58 |          1 |          1 |         60 |
+| e:\wiki\Projects\linux-cockpit\server\assets\win7\win.svg    | XML        |          1 |          0 |          0 |          1 |
+| e:\wiki\Projects\linux-cockpit\server\backForSocket.js       | JavaScript |          0 |         81 |          2 |         83 |
+| e:\wiki\Projects\linux-cockpit\server\electron-main.js       | JavaScript |         25 |         19 |          8 |         52 |
+| e:\wiki\Projects\linux-cockpit\server\koa-app.js             | JavaScript |         69 |         28 |          3 |        100 |
+| e:\wiki\Projects\linux-cockpit\server\test\ssh.js            | JavaScript |         40 |         25 |          9 |         74 |
+| e:\wiki\Projects\linux-cockpit\server\utils\BUS.js           | JavaScript |          5 |         10 |          1 |         16 |
+| e:\wiki\Projects\linux-cockpit\server\utils\graphql.js       | JavaScript |         48 |         11 |          5 |         64 |
+| e:\wiki\Projects\linux-cockpit\server\utils\router.js        | JavaScript |          0 |          0 |          1 |          1 |
+| e:\wiki\Projects\linux-cockpit\server\utils\shell.js         | JavaScript |        113 |         43 |          9 |        165 |
+| Total                                                        |            |        360 |        218 |         39 |        617 |
++--------------------------------------------------------------+------------+------------+------------+------------+------------+

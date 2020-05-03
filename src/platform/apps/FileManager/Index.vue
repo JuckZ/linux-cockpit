@@ -75,7 +75,12 @@
         </a-layout-sider>
         <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
           <!-- TAG 标签页 -->
-          <a-tabs v-model="activeKey" type="editable-card" @edit="onEdit">
+          <a-tabs
+            v-model="activeKey"
+            type="editable-card"
+            @change="onTabChange"
+            @edit="onEdit"
+          >
             <a-tab-pane
               v-for="pane in panes"
               :tab="pane.title"
@@ -85,7 +90,7 @@
               <!-- TAG 完善面包屑 -->
               <a-breadcrumb style="margin: 16px 0px">
                 <a-breadcrumb-item
-                  v-for="item in tabs[0].currentDir.split('/')"
+                  v-for="item in tabs[activeKey].currentDir.split('/')"
                   :key="item.length"
                   >{{ item }}</a-breadcrumb-item
                 >
@@ -113,8 +118,8 @@
                     :customRow="customClick"
                     :rowSelection="rowSelection"
                     :columns="columns"
-                    :dataSource="tabs[0].files"
-                    @change="onChange"
+                    :dataSource="tabs[activeKey].files"
+                    @change="onPageChange"
                   >
                     <!-- TODO根据不同类型显示不同样式，以及略缩图、不同操作等 -->
                     <span slot="icon" slot-scope="type">
@@ -128,7 +133,7 @@
                     v-if="contextMenu.visible"
                   >
                     <a-menu-item
-                      @click="contextMenuClick($event, currentItems)"
+                      @click="contextMenuClick($event, currentStatus)"
                       v-for="menuItem in menuData"
                       :key="menuItem.key"
                       >{{ menuItem.text }}</a-menu-item
@@ -142,8 +147,9 @@
       </a-layout>
     </a-layout-content>
     <a-layout-footer style="text-align: center">
-      total size: {{ tabs[0].totalSize }} --- 共{{ tabs[0].files.length }}个项目
-      --- 选中0项
+      total size: {{ tabs[activeKey].totalSize }} --- 共{{
+        tabs[activeKey].files.length
+      }}个项目 --- 选中0项
     </a-layout-footer>
   </a-layout>
 </template>
@@ -249,15 +255,19 @@ const columns = [
   },
 ]
 const panes = [
-  { title: 'Tab 1', content: 'Content of Tab 1', key: '1', closable: false },
-  { title: 'Tab 2', content: 'Content of Tab 2', key: '2' },
-  { title: 'Tab 3', content: 'Content of Tab 3', key: '3' },
+  { title: 'Tab 0', content: 'Content of Tab 0', key: 0, closable: false },
 ]
 export default {
   data() {
     return {
       columns,
-      currentItems: [], // 保存当前选中的项目，用于操作时作为参数传递给处理函数
+      currentStatus: {
+        targets: [], // 当前操作的文件对象数组
+        srcDir: '', // 源路径（一般就是当前路径）
+        destDir: '', // 目的路径
+        operation: '', // 当前操作
+        selectedRows: [], //当前选中的数据行
+      },
       contextMenu: {
         visible: false,
         position: {
@@ -265,7 +275,6 @@ export default {
           y: 0,
         },
       },
-      menuData: [],
       menuStyle: {
         position: 'fixed',
         top: '0',
@@ -273,83 +282,31 @@ export default {
         border: '1px solid #eee',
       },
       panes,
-      activeKey: panes[0].key,
-      newTabIndex: 0,
+      activeKey: panes[0].key, // 当前tabKey
+      newTabIndex: 1,
       collapsed: false,
       isLoaded: false,
       customClick: (record) => ({
         on: {
           // 双击事件
           dblclick: (e) => {
-            let fileExt = '' // 文件后缀
-            switch (record.type) {
-              case '-':
-                fileExt = record.name
-                  .split('.')
-                  .pop()
-                  .toLowerCase()
-                if (this.fileTypes[fileExt]) {
-                  // 如果能够找到该后缀相关信息，则：
-                  this.menuData.push(
-                    ...this.defaultContextMenu,
-                    ...this.fileTypes[fileExt].specialContextMenu
-                  )
-                  console.log('用默认软件打开已知文件')
-                } else {
-                  // 未知后缀的文件
-                  this.menuData.push(...this.defaultContextMenu)
-                  console.log('暂不支持打开此类文件')
-                }
-                break
-              case 'd':
-                this.menuData.push(
-                  ...this.defaultContextMenu,
-                  ...this.fileTypes.document.specialContextMenu
-                )
-                console.log('准备打开文件夹')
-                // TODO
-                break
-              default:
-                this.menuData.push(...this.defaultContextMenu)
-                console.log('暂不支持操作块文件、设备文件等')
-            }
+            // 置currentStatus.targets
+            this.currentStatus.targets = [record]
+            // 执行open操作
+            this.execFileManagerOperation({
+              options: {
+                operation: 'open',
+              },
+            })
           },
           // 右键事件
           contextmenu: (e) => {
             e.preventDefault()
-            let fileExt = '' // 文件后缀
-            this.currentItems = []
-            this.currentItems.push(record)
-            this.menuData = [] // 清空右键菜单
-            switch (record.type) {
-              case '-':
-                fileExt = record.name
-                  .split('.')
-                  .pop()
-                  .toLowerCase()
-                if (this.fileTypes[fileExt]) {
-                  this.menuData.push(
-                    ...this.defaultContextMenu,
-                    ...this.fileTypes[fileExt].specialContextMenu
-                  )
-                  console.log('后缀已知的文件')
-                } else {
-                  this.menuData.push(...this.defaultContextMenu)
-                  console.log('后缀未知的文件')
-                }
-
-                break
-              case 'd':
-                this.menuData.push(
-                  ...this.defaultContextMenu,
-                  ...this.fileTypes.document.specialContextMenu
-                )
-                console.log('文件夹')
-                break
-              default:
-                this.menuData.push(...this.defaultContextMenu)
-                console.log('暂不支持操作块文件、设备文件等')
+            // 先判断多选情况，如果多选为空，则设置currentStatus.targets并弹出右键菜单，否则直接弹出右键菜单
+            if (this.currentStatus.selectedRows.length == 0) {
+              this.currentStatus.targets = [record]
             }
+            // 显示右键菜单
             this.contextMenu.visible = true
             this.menuStyle.top = e.clientY + 'px'
             this.menuStyle.left = e.clientX + 'px'
@@ -370,40 +327,75 @@ export default {
       stream: 'stream',
     }),
     ...mapState('config', {
-      apps: 'apps'
+      apps: 'apps',
     }),
+    menuData() {
+      // 根据this.currentStatus.targets和this.currentStatus.selectedRows自动修改菜单项
+      if (this.currentStatus.targets.length == 0) {
+        return []
+      } else if (this.currentStatus.targets.length == 1) {
+        const target = this.currentStatus.targets[0]
+        let fileExt = ''
+        switch (target.type) {
+          case '-':
+            fileExt = target.name
+              .split('.')
+              .pop()
+              .toLowerCase()
+
+            if (this.fileTypes[fileExt]) {
+              // 如果后缀在state的fileTypes对象中找到了则：
+              return [
+                ...this.defaultContextMenu,
+                ...this.fileTypes[fileExt].specialContextMenu,
+              ]
+            } else {
+              return [...this.defaultContextMenu]
+            }
+          case 'd':
+            return [
+              ...this.defaultContextMenu,
+              ...this.fileTypes.document.specialContextMenu,
+            ]
+          default:
+            return [...this.defaultContextMenu]
+        }
+      } else {
+        // 多个文件
+        return [...this.defaultContextMenu]
+      }
+    },
     // 行选择
     rowSelection() {
       const { selectedRowKeys } = this
       return {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log(
-            `selectedRowKeys: ${selectedRowKeys}`,
-            'selectedRows: ',
-            selectedRows
-          )
+          this.currentStatus.selectedRows = selectedRows
         },
-        getCheckboxProps: (record) => ({
-          props: {
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name,
-          },
-        }),
       }
     },
   },
   beforeMount() {
     // 挂载前需要读取Linux服务器的目录情况
+    // 构造一个file对象（内容是home目录）
+    this.currentStatus.targets = [
+      {
+        key: 0,
+        type: 'd',
+        name: JSON.parse(sessionStorage.getItem('userInfo')).userName,
+      },
+    ]
+    // 打开根目录
     this.execFileManagerOperation({
       options: {
-        target: 'FileManager',
-        operation: 'readDir',
+        operation: 'open',
       },
     })
+    // TODO监听响应并处理响应
     this.socket.on('scriptRes', (payload) => {
+      // TODO根据响应对不同的tab进行数据设置
       switch (payload.originPayload.options.operation) {
-        case 'readDir':
-        case 'initialPictures': {
+        case 'open': {
           const tab = {
             totalSize: '0K',
             currentDir: '/root',
@@ -435,11 +427,8 @@ export default {
             }
             tab.files.push(fileItem)
           }
-          // TODO 获取当前tab序列再设置tab
           this.initTab({
             options: {
-              // FIXME
-              tabID: 0,
               tab: tab,
             },
           })
@@ -456,16 +445,74 @@ export default {
       setInitialInformation: 'fileManager/setInitialInformation',
       addTab: 'fileManager/addTab',
       initTab: 'fileManager/initTab',
-      runApp: 'config/runApp'
+      runApp: 'config/runApp',
     }),
     onSearch(val) {
       console.log(val)
     },
-    onChange(pagination, filters, sorter) {
+    //  页面修改时的函数
+    onPageChange(pagination, filters, sorter) {
       console.log('params', pagination, filters, sorter)
     },
     execFileManagerOperation(payload) {
-      this.socket.emit('uploadScript', payload)
+      switch (payload.options.operation) {
+        case 'open':
+          if (this.currentStatus.targets.length == 0) {
+            console.log('没有操作对象')
+          } else if (this.currentStatus.targets.length == 1) {
+            // 只有一个操作对象时
+            const target = this.currentStatus.targets[0]
+            // 如果是普通文件，则用对应的预览器打开
+            if (target.type == '-') {
+              // 根据文件后缀用不同的预览器打开
+              // 先判断是否有相应可以使用的预览器
+              console.log('根据文件后缀用不同的预览器打开')
+              switch (
+                target.name
+                  .split('.')
+                  .pop()
+                  .toLowerCase()
+              ) {
+                case 'txt':
+                case 'doc':
+                  console.log('调用文本编辑器')
+                  break
+                case 'png':
+                case 'jpg':
+                case 'jpeg':
+                case 'img':
+                  console.log('调用图片浏览器')
+                  break
+                case 'mp3':
+                  console.log('调用音乐播放器')
+                  break
+                case 'mp4':
+                  console.log('调用视频播放器')
+                  break
+                default:
+                  console.log('暂时不支持此类型文件的预览')
+              }
+            } else if (target.type == 'd') {
+              // 如果是目录文件，则打开目录
+              console.log('打开目录')
+              // TODO
+              this.socket.emit('uploadScript', payload)
+            } else {
+              // 如果是块设备文件等，则不进行操作
+              console.log('暂不支持打开块设备')
+            }
+          }
+          break
+        case 'moveToTrash':
+          console.log('移入回收站')
+          break
+        case 'attributes':
+          console.log('属性')
+          break
+        default:
+          console.log('其他操作等待开发')
+      }
+      // this.socket.emit('uploadScript', payload)
     },
     bodyClick() {
       this.contextMenu.visible = false
@@ -474,19 +521,34 @@ export default {
     callback(key) {
       console.log(key)
     },
+    onTabChange(activeKey) {
+      console.log('changeTO' + activeKey)
+    },
     onEdit(targetKey, action) {
       this[action](targetKey)
     },
     add() {
       const panes = this.panes
-      const activeKey = `newTab${this.newTabIndex++}`
+      const activeKey = `${this.newTabIndex++}`
+      console.log(activeKey)
       panes.push({
-        title: 'New Tab',
+        title: 'Tab '+ activeKey,
         content: 'Content of new Tab',
         key: activeKey,
       })
       this.panes = panes
       this.activeKey = activeKey
+      // 新增标签页到tabs中
+      // TODO获取对应的files之后再add这个tab
+      this.addTab({
+        options: {
+          tab: {
+            currentDir: '',
+            totalSize: '0K',
+            files: [],
+          },
+        },
+      })
     },
     remove(targetKey) {
       let activeKey = this.activeKey
@@ -507,50 +569,17 @@ export default {
       this.panes = panes
       this.activeKey = activeKey
     },
-    contextMenuClick(payload, currentItems) {
-      // TODO 暂时就当currentItems只有一个文件，处理多文件的逻辑后面做
-      // TAG暂时只做 txt png jpg mp3 mp4的预览功能即可
-      if (currentItems[0].type == '-' && payload.key == 'd1') {
-        // 期望操作：打开普通文件
-        switch (
-          currentItems[0].name
-            .split('.')
-            .pop()
-            .toLowerCase()
-        ) {
-          case 'txt':
-          case 'doc':
-            // 打开文本处理器，并传递数据过去
-            this.runApp({
-              app: this.apps[11],
-              options: {
-                initialData: currentItems
-              }
-              })
-            console.log('调用文本编辑器')
-            break
-          case 'png':
-          case 'jpg':
-          case 'jpeg':
-          case 'img':
-            console.log('调用图片浏览器')
-            break
-          case 'mp3':
-            console.log('调用音乐播放器');
-            break
-          case 'mp4':
-            console.log('调用视频播放器');
-            break
-          default:
-            console.log('暂时不支持此类型文件的预览');
-        }
-      } else if(currentItems[0].type == 'd' && payload.key == 'd1') {
-        // 期望操作：打开文件夹
-        console.log('打开文件夹');
-      } else if(currentItems[0].type != 'd' && currentItems[0].type != '-') {
-        // 期望操作： 对块设备、字符设备等操作
-        console.log('暂时不支持对块设备等文件的操作');
-      }
+    contextMenuClick(payload, currentStatus) {
+      // TODO now
+      // TODO 暂时就当currentStatus.targets只有一个文件，处理多文件的逻辑后面做
+      this.execFileManagerOperation({
+        options: {
+          operation: payload.key, // TODO根据菜单的key值确定菜单对应的operation
+          target: 'selected' || this.currentStatus.targets, // thisline进行判断，selected为空则赋值当前这个
+          destDir: this.currentStatus.destDir,
+          srcDir: this.currentStatus.srcDir,
+        },
+      })
     },
   },
 }

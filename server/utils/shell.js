@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-01 09:17:17
+ * @LastEditTime: 2020-05-03 21:18:21
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -38,6 +38,27 @@ let timeToLoginTimer = () => {}
 const {
   myBUS
 } = require('./BUS')
+
+
+/**
+* 描述：下载文件
+*/
+function DownloadFile(remotePath, localPath, then){
+	conn.sftp((err, stfp) => {
+    if(err) {
+      then(err)
+    } else {
+      stfp.fastGet(remotePath, localPath, (err, result) => {
+        if(err) {
+          then(err)
+        } else {
+          console.log(result);
+          then(err, result)
+        }
+      })
+    }
+  })
+}
 
 const initSocket = socket => {
   mySocket = socket
@@ -109,10 +130,10 @@ myBUS.on('disconnect',() => {
 })
 // 监听脚本上传事件
 myBUS.on('uploadScript', payload => {
-
   let script = 'cd /'
   switch(payload.options.operation) {
-    case 'readDir':
+    case 'open':
+      // if(payload.options.target)
     script = 'ls /root -lh'
     // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'
     conn.exec(script, function (err, stream) {
@@ -129,29 +150,14 @@ myBUS.on('uploadScript', payload => {
       });
     })
     break
+    case 'downloadFile':
+      DownloadFile(...payload.options.params)
+      break
     default:
       console.log('no operation here');
-      
   }
-
-
-  // let script = 'cd /'
-  // const scriptPath = path.join(__dirname, './scripts/FileManager', payload.options.script)
-  // script = fs.readFileSync(scriptPath).toString()
-  // conn.exec(script, function (err, stream) {
-  //   if (err) throw err;
-  //   stream.on('close', function () {
-  //     // conn.end();
-  //   }).on('data', function (data) {
-  //     mySocket.emit('scriptRes', {
-  //       chunk: data.toString(),
-  //       originPayload: payload
-  //     })
-  //     console.log('=====');
-  //     console.log(data.toString());
-  //   });
-  // })
 })
+
 
 module.exports = {
   connectSSH: connectSSH,

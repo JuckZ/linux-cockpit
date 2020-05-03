@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-03 12:41:51
+ * @LastEditTime: 2020-05-03 20:26:19
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -121,6 +121,10 @@ TAG TODO now
 1. 安装用户需要的环境（比如LAMP）
 2. docker等
 3. 常用环境自动配置（采用docker方式，端口映射等提前设置好，以及自定义代码文件夹等）
+
+### 便签
+
+### 滴答清单
 
 ### 音乐播放器
 

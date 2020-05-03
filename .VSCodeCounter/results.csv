@@ -1,0 +1,13 @@
+"filename", "language", "JavaScript", "XML", "HTML", "comment", "blank", "total"
+"e:\wiki\Projects\linux-cockpit\server\assets\win7\avatar.svg", "XML", 0, 1, 0, 0, 0, 1
+"e:\wiki\Projects\linux-cockpit\server\assets\win7\index.html", "HTML", 0, 0, 58, 1, 1, 60
+"e:\wiki\Projects\linux-cockpit\server\assets\win7\win.svg", "XML", 0, 1, 0, 0, 0, 1
+"e:\wiki\Projects\linux-cockpit\server\backForSocket.js", "JavaScript", 0, 0, 0, 81, 2, 83
+"e:\wiki\Projects\linux-cockpit\server\electron-main.js", "JavaScript", 25, 0, 0, 19, 8, 52
+"e:\wiki\Projects\linux-cockpit\server\koa-app.js", "JavaScript", 69, 0, 0, 28, 3, 100
+"e:\wiki\Projects\linux-cockpit\server\test\ssh.js", "JavaScript", 40, 0, 0, 25, 9, 74
+"e:\wiki\Projects\linux-cockpit\server\utils\BUS.js", "JavaScript", 5, 0, 0, 10, 1, 16
+"e:\wiki\Projects\linux-cockpit\server\utils\graphql.js", "JavaScript", 48, 0, 0, 11, 5, 64
+"e:\wiki\Projects\linux-cockpit\server\utils\router.js", "JavaScript", 0, 0, 0, 0, 1, 1
+"e:\wiki\Projects\linux-cockpit\server\utils\shell.js", "JavaScript", 113, 0, 0, 43, 9, 165
+"Total", "-", 300, 2, 58, 218, 39, 617

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-03 11:50:29
+ * @LastEditTime: 2020-05-03 23:15:09
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\store\state.ts
@@ -13,8 +13,6 @@ export default {
   // 每个标签页的文件信息
   // tabs: [
   //   {
-  //     currentLeftTab: '', // 当前左侧Tab
-  //     currentDir: '',  // 当前目录
   //     currentDir: '/root', //当前所在路径
   //     totalSize: '50K', //当前路径下所有文件的总大小
   //     files: [
@@ -40,7 +38,6 @@ export default {
   // ]
   tabs: [
     {
-      currentLeftTab: '',
       currentDir: '',
       totalSize: '0K',
       files: []
