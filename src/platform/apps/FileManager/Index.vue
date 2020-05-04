@@ -494,7 +494,18 @@ export default {
               ) {
                 case 'txt':
                 case 'doc':
-                  console.log('调用文本编辑器')
+                  // TODO使用axios下载文件并将内容作为initialData传递给文本编辑器组件
+                  this.axios.get(payload.fileSrc).then((res) => {
+                    this.runApp({
+                      app: this.apps.filter((app) => {
+                        return app.componentName == 'TextEditor'
+                      })[0],
+                      options: {
+                        initialData: res.data
+                      }
+                    })
+                  })
+
                   break
                 case 'png':
                 case 'jpg':
@@ -556,8 +567,6 @@ export default {
       console.log('aaaaaaa')
     },
     execFileManagerOperation(payload) {
-      console.log(payload)
-
       this.socket.emit('uploadScript', {
         options: {
           operation: payload.options.operation,

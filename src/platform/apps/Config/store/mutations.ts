@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-05-03 17:42:23
+ * @LastEditTime: 2020-05-04 23:40:18
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -66,7 +66,7 @@ export default {
         state.apps[payload.app.id].status.focus = true
         // TAG 将app初始数据传递给vuex中保存起来
         if(payload.options != undefined) {
-            state.apps[payload.app.id].status.initialData = payload.options.initialData || {}
+            state.apps[payload.app.id].status.initialData = payload.options.initialData
         }
     },
     // 设置app的窗口

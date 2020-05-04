@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-04 16:01:04
+ * @LastEditTime: 2020-05-04 23:13:50
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -43,7 +43,7 @@ const {
 /**
  * 描述：下载文件
  */
-function DownloadFile(remotePath, localPath, then) {
+function downloadFile(remotePath, localPath, then) {
   conn.sftp((err, stfp) => {
     if (err) {
       then(err)
@@ -52,7 +52,6 @@ function DownloadFile(remotePath, localPath, then) {
         if (err) {
           then(err)
         } else {
-          console.log(result);
           then(err, result)
         }
       })
@@ -158,9 +157,8 @@ myBUS.on('uploadScript', payload => {
         const target = payload.options.currentStatus.targets[0]
         // 如果是普通文件，则用对应的预览器打开
         if (target.type == '-') {
-          // 根据文件后缀用不同的预览器打开
-          // 先判断是否有相应可以使用的预览器
-          console.log('根据文件后缀用不同的预览器打开')
+          // 存储文件的本地路径
+          const localDir = path.join(__dirname, '../public/downloads/' + target.name)
           switch (
             target.name
             .split('.')
@@ -170,6 +168,13 @@ myBUS.on('uploadScript', payload => {
             case 'txt':
             case 'doc':
               console.log('调用文本编辑器')
+              // 将文件下载到server/public/downloads/下，并将访问路径传递给前端
+              downloadFile(payload.options.currentStatus.srcDir + '/' +target.name, localDir, (err, result = 'noResult') => {
+                mySocket.emit('scriptRes', {
+                  fileSrc: 'http://localhost/downloads/'+target.name,
+                  originPayload: payload
+                })
+              })
               break
             case 'png':
             case 'jpg':
@@ -194,7 +199,7 @@ myBUS.on('uploadScript', payload => {
           execUploadScript(script, payload)
         } else {
           // 如果是块设备文件等，则不进行操作
-          console.log('暂不支持打开块设备')
+          console.log('暂不支持打开块设备等')
         }
       }
       break
@@ -208,31 +213,8 @@ myBUS.on('uploadScript', payload => {
       console.log('其他操作等待开发')
   }
 
-  // switch(payload.options.operation) {
-  //   case 'open':
-  //     // if(payload.options.target)
-  //   script = 'ls /root -lh'
-  //   // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'
-  //   conn.exec(script, function (err, stream) {
-  //     if (err) throw err;
-  //     stream.on('close', function () {
-  //       // conn.end();
-  //     }).on('data', function (data) {
-  //       mySocket.emit('scriptRes', {
-  //         chunk: data.toString(),
-  //         originPayload: payload
-  //       })
-  //       console.log('=====');
-  //       console.log(data.toString());
-  //     });
-  //   })
-  //   break
-  //   case 'downloadFile':
-  //     DownloadFile(...payload.options.params)
-  //     break
-  //   default:
-  //     console.log('no operation here');
-  // }
+  // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'
+
 })
 
 module.exports = {
