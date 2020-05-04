@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-04 14:31:48
+ * @LastEditTime: 2020-05-04 16:01:37
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -92,7 +92,8 @@ TAG TODO now
 3. 菜单收起
 4. 视频，图片，各种文档等查看器 组件渲染进来iframe
 5. dplayer
-6. 后退按钮和前进按钮
+6. 回收站的清空和还原
+7. 添加和删除标签页
 
 ### SHELL终端
 

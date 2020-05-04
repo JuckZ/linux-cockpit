@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-04 09:53:40
+ * @LastEditTime: 2020-05-04 16:01:04
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -151,11 +151,11 @@ myBUS.on('uploadScript', payload => {
   let script = 'cd /'
   switch (payload.options.operation) {
     case 'open':
-      if (payload.currentStatus.targets.length == 0) {
+      if (payload.options.currentStatus.targets.length == 0) {
         console.log('没有操作对象')
-      } else if (payload.currentStatus.targets.length == 1) {
+      } else if (payload.options.currentStatus.targets.length == 1) {
         // 只有一个操作对象时
-        const target = payload.currentStatus.targets[0]
+        const target = payload.options.currentStatus.targets[0]
         // 如果是普通文件，则用对应的预览器打开
         if (target.type == '-') {
           // 根据文件后缀用不同的预览器打开
@@ -189,8 +189,8 @@ myBUS.on('uploadScript', payload => {
         } else if (target.type == 'd') {
           // 如果是目录文件，则打开目录
           // TODO target.name还需要加上当前路径srcDir
-          console.log('打开目录' + payload.currentStatus.srcDir + target.name)
-          script = 'cd ' + payload.currentStatus.srcDir + '/' + target.name + ' && ls -lh'
+          console.log('打开目录' + payload.options.currentStatus.srcDir + target.name)
+          script = 'cd ' + payload.options.currentStatus.srcDir + '/' + target.name + ' && ls -lh'
           execUploadScript(script, payload)
         } else {
           // 如果是块设备文件等，则不进行操作
