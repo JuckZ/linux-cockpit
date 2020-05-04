@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-04 00:27:01
+ * @LastEditTime: 2020-05-04 09:53:40
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -41,15 +41,15 @@ const {
 
 
 /**
-* 描述：下载文件
-*/
-function DownloadFile(remotePath, localPath, then){
-	conn.sftp((err, stfp) => {
-    if(err) {
+ * 描述：下载文件
+ */
+function DownloadFile(remotePath, localPath, then) {
+  conn.sftp((err, stfp) => {
+    if (err) {
       then(err)
     } else {
       stfp.fastGet(remotePath, localPath, (err, result) => {
-        if(err) {
+        if (err) {
           then(err)
         } else {
           console.log(result);
@@ -62,6 +62,7 @@ function DownloadFile(remotePath, localPath, then){
 
 // 运行脚本
 function execUploadScript(script, originPayload) {
+  console.log(script);
   conn.exec(script, function (err, stream) {
     if (err) throw err;
     stream.on('close', function () {
@@ -142,7 +143,7 @@ const commandSSH = (command) => {
 }
 
 // 断开连接时，清除conn的事件监听器等
-myBUS.on('disconnect',() => {
+myBUS.on('disconnect', () => {
   console.log('disconnect here');
 })
 // 监听脚本上传事件
@@ -162,9 +163,9 @@ myBUS.on('uploadScript', payload => {
           console.log('根据文件后缀用不同的预览器打开')
           switch (
             target.name
-              .split('.')
-              .pop()
-              .toLowerCase()
+            .split('.')
+            .pop()
+            .toLowerCase()
           ) {
             case 'txt':
             case 'doc':
@@ -188,8 +189,8 @@ myBUS.on('uploadScript', payload => {
         } else if (target.type == 'd') {
           // 如果是目录文件，则打开目录
           // TODO target.name还需要加上当前路径srcDir
-          console.log('打开目录'+payload.currentStatus.srcDir+target.name)
-          script = 'cd '+payload.currentStatus.srcDir+target.name + '&& ls -lh'
+          console.log('打开目录' + payload.currentStatus.srcDir + target.name)
+          script = 'cd ' + payload.currentStatus.srcDir + '/' + target.name + ' && ls -lh'
           execUploadScript(script, payload)
         } else {
           // 如果是块设备文件等，则不进行操作

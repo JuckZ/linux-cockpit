@@ -91,7 +91,8 @@
               <a-breadcrumb style="margin: 16px 0px">
                 <a-breadcrumb-item
                   v-for="item in tabs[activeKey].currentDir.split('/')"
-                  :key="item.length"
+                  :key="item"
+                   @click="onBreadcrumbClick"
                   >{{ item }}</a-breadcrumb-item
                 >
               </a-breadcrumb>
@@ -122,8 +123,15 @@
                     @change="onPageChange"
                   >
                     <!-- TODO根据不同类型显示不同样式，以及略缩图、不同操作等 -->
-                    <span slot="icon" slot-scope="type">
-                      {{ type == 'd' ? '目录' : '普通文件' }}
+                    <span slot="name" slot-scope="name, record">
+                      <img class="fileIcon" :src="getIcon(record.type,record.name.split('.').pop().toLowerCase())" />
+                      {{name}}
+                    </span>
+                    <span slot="lastModified" slot-scope="lastModified">
+                      {{lastModified.month}}
+                    </span>
+                    <span slot="type" slot-scope="type, record">
+                      {{getType(record.type,record.name.split('.').pop().toLowerCase())}}
                     </span>
                   </a-table>
                   <!-- TAG右键菜单 -->
@@ -149,7 +157,7 @@
     <a-layout-footer style="text-align: center">
       total size: {{ tabs[activeKey].totalSize }} --- 共{{
         tabs[activeKey].files.length
-      }}个项目 --- 选中0项
+      }}个项目 --- 选中{{currentStatus.selectedRows.length}}项
     </a-layout-footer>
   </a-layout>
 </template>
@@ -192,15 +200,18 @@
 #fileContainer {
   position: relative;
 }
+.fileIcon {
+  height: 20px;
+}
 </style>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 const columns = [
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    scopedSlots: { customRender: 'icon' },
+    {
+    title: 'Name',
+    dataIndex: 'name',
+    scopedSlots: { customRender: 'name' },
     filters: [
       {
         text: '普通文件',
@@ -234,15 +245,23 @@ const columns = [
     onFilter: (value, record) => {
       return record.type.indexOf(value) === 0
     },
-    sorter: (a, b) => a.type.length - b.type.length,
+    sorter: (a, b) => a.name.length - b.name.length,
     sortDirections: ['descend', 'ascend'],
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
-    // TODO 完善名字排序逻辑
-    sorter: (a, b) => a.name.length - b.name.length,
-    // TODO添加搜索
+    title: 'LastModified',
+    dataIndex: 'lastModified',
+    scopedSlots: { customRender: 'lastModified' },
+    sorter: (a, b) => {
+      // TODO完善比较修改日期的逻辑
+      return a.lastModified - b.lastModified
+    },
+    sortDirections: ['descend', 'ascend'],
+  },
+  {
+    title: 'Type',
+    dataIndex: 'type',
+    scopedSlots: { customRender: 'type' }
   },
   {
     title: 'Size',
@@ -263,8 +282,8 @@ export default {
       columns,
       currentStatus: {
         targets: [], // 当前操作的文件对象数组
-        srcDir: '/', // 源路径（一般就是当前路径）
-        destDir: '/', // 目的路径
+        srcDir: '', // 源路径（一般就是当前路径）
+        destDir: '', // 目的路径
         operation: '', // 当前操作
         selectedRows: [], //当前选中的数据行
       },
@@ -281,6 +300,7 @@ export default {
         left: '0',
         border: '1px solid #eee',
       },
+      initialized: false,
       panes,
       activeKey: panes[0].key, // 当前tabKey
       newTabIndex: 1,
@@ -393,8 +413,8 @@ export default {
     })
     // TODO监听响应并处理响应
     this.socket.on('scriptRes', (payload) => {
+      console.log('res');
       // TODO 处理响应
-      console.log(payload)
       switch (payload.originPayload.options.operation) {
         case 'open':
           if (payload.originPayload.currentStatus.targets.length == 0) {
@@ -434,11 +454,7 @@ export default {
               }
             } else if (target.type == 'd') {
               // 如果是目录文件，则打开目录
-              // TODO target.name还需要加上当前路径srcDir
-              console.log(
-                '打开目录' + payload.originPayload.currentStatus.srcDir + target.name
-              )
-              this.parseResponse(payload)
+              this.parseOpenDirRes(payload)
             } else {
               // 如果是块设备文件等，则不进行操作
               console.log('暂不支持打开块设备')
@@ -456,11 +472,16 @@ export default {
       }
     })
   },
+  destroyed() {
+    // 清除socket的监听器
+    this.socket.removeAllListeners(['scriptRes'])
+  },
   methods: {
     ...mapActions({
       setInitialInformation: 'fileManager/setInitialInformation',
       addTab: 'fileManager/addTab',
       initTab: 'fileManager/initTab',
+      setTab: 'fileManager/setTab',
       runApp: 'config/runApp',
     }),
     onSearch(val) {
@@ -470,23 +491,22 @@ export default {
     onPageChange(pagination, filters, sorter) {
       console.log('params', pagination, filters, sorter)
     },
+    // 点击面包屑
+    onBreadcrumbClick() {
+      console.log('aaaaaaa');
+      
+    },
     execFileManagerOperation(payload) {
       this.socket.emit('uploadScript', {
         ...payload,
         currentStatus: this.currentStatus,
       })
     },
-    // 处理返回的结果
-    parseResponse(payload) {
-      const tab = {
-        totalSize: '0K',
-        currentDir: '/root',
-        files: [],
-      }
+    // 处理打开目录的返回值结果
+    parseOpenDirRes(payload) {
       // 处理结果
       const resultLines = payload.chunk.trim().split('\n')
-      tab.totalSize = resultLines[0].split(' ')[1]
-      // 先截取每一行到数组中，第一行到total变量中
+      const files = []
       for (let i = 1; i < resultLines.length; i++) {
         // 将每个结果的数组表示push到数组中，形成二维数组
         const fileItemProperties = resultLines[i].split(/\s+/)
@@ -507,13 +527,33 @@ export default {
           },
           name: fileItemProperties[8],
         }
-        tab.files.push(fileItem)
+        files.push(fileItem)
       }
-      this.initTab({
-        options: {
-          tab: tab,
-        },
-      })
+      const tab = {
+        totalSize: resultLines[0].split(' ')[1],
+        currentDir: payload.originPayload.currentStatus.srcDir + '/' + payload.originPayload.currentStatus.targets[0].name,
+        files: files
+      }
+      
+      if (this.initialized) {
+        console.log('setTab');
+        
+        // FIXME vuex数组或者对象的值变化无法检测到
+        this.setTab({
+          options: {
+            tabID: this.activeKey,
+            tab: tab
+          }
+        })
+      } else {
+        this.initTab({
+          options: {
+            tab: tab,
+          },
+        })
+        this.initialized = true
+      }
+      this.currentStatus.srcDir = tab.currentDir
       this.isLoaded = true
     },
     bodyClick() {
@@ -572,17 +612,102 @@ export default {
       this.activeKey = activeKey
     },
     contextMenuClick(payload, currentStatus) {
-      // TODO now
-      // TODO 暂时就当currentStatus.targets只有一个文件，处理多文件的逻辑后面做
+      let operation = ''
+      for(const menuItem of this.menuData) {
+        if(menuItem.key == payload.key) {
+          operation = menuItem.operation
+        }
+      }
       this.execFileManagerOperation({
         options: {
-          operation: payload.key, // TODO根据菜单的key值确定菜单对应的operation
-          target: 'selected' || this.currentStatus.targets, // thisline进行判断，selected为空则赋值当前这个
-          destDir: this.currentStatus.destDir,
-          srcDir: this.currentStatus.srcDir,
+          operation: operation,
         },
       })
     },
+    getIcon(type, fileExt) {
+      let iconPath = '/assets/apps/FileManager/vscode-icons'
+      if(type == '-') {
+        iconPath += '/file_type_'
+        // TODO先判断是否有这样一个文件存在 普通文件file.svg
+        // FIXME 应该默认存在这样的图标，如果没有，则使用默认图标 onerror="this.src='默认图片的url地址'"
+        switch(fileExt) {
+          case 'txt':
+            return iconPath + 'text.svg'
+          case 'doc':
+          case 'docx':
+            return iconPath + 'text.svg'
+          case 'xlsx':
+          case 'xls':
+          case 'csv':
+            return iconPath + 'excel2.svg'
+          case 'pdf':
+            return iconPath + 'pdf.svg'
+          case 'mp3':
+          case 'wav':
+          case 'ape':
+          case 'flac':
+          case 'ogg':
+            return iconPath + 'audio.svg'
+          case 'mp4':
+          case 'rmvb':
+          case '3gp':
+          case 'rm':
+          case 'wmv':
+          case 'avi':
+          case 'm4v':
+          case 'mkv':
+          case 'flv':
+            return iconPath + 'video.svg'
+          case 'jpg':
+          case 'png':
+          case 'jpeg':
+          case 'ico':
+          case 'svg':
+          case 'gif':
+          case 'bmp':
+            return iconPath + 'image.svg'
+          default:
+            return '/assets/apps/FileManager/vscode-icons/default_file.svg'
+        }
+      } else if(type == 'd') {
+        iconPath += '/folder_type_'
+        switch (fileExt) {
+          case 'mp3':
+          case 'music':
+            return iconPath + 'audio.svg'
+          case 'videos':
+            return iconPath + 'video.svg'
+          case 'pictures':
+          return iconPath + 'images.svg'
+          case 'public':
+          return iconPath + 'public.svg'
+          case 'documents':
+          return iconPath + 'docs.svg'
+          default:
+            return '/assets/apps/FileManager/vscode-icons/default_folder.svg'
+        }
+      }
+    },
+    getType(type, fileExt) {
+      switch(type) {
+        case '-':
+          return fileExt + '文件'
+        case 'd':
+          return '文件夹'
+        case 'p':
+          return '管理文件'
+        case 'l':
+          return '链接文件'
+        case 'b':
+          return '块设备文件'
+        case 'c':
+          return '字符设备文件'
+        case 's':
+          return '套接字文件'
+        default:
+          '未知类型'
+      }
+    }
   },
 }
 </script>

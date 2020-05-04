@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-14 09:46:58
- * @LastEditTime: 2020-05-03 11:44:33
+ * @LastEditTime: 2020-05-04 10:42:03
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\README.md
@@ -100,3 +100,10 @@ z-index影响交互，暂不添加 壁纸除外
 app -2
 警告等弹窗 -1
 其他默认 -->
+
+## 文件管理器
+
+### 图标
+
+https://github.com/PKief/vscode-material-icon-theme
+https://github.com/vscode-icons/vscode-icons
