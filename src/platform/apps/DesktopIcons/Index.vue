@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-11 20:33:29
- * @LastEditTime: 2020-04-30 08:12:56
+ * @LastEditTime: 2020-05-05 22:41:12
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\DesktopIcons\Index.vue
@@ -59,7 +59,12 @@ export default {
 #desktopIcons {
   position: fixed;
   top: 30px;
-  a {
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  li {
+      a {
     display: inline-block;
     padding: 3px;
     :hover {
@@ -69,5 +74,7 @@ export default {
       height: 48px;
     }
   }
+  }
+
 }
 </style>

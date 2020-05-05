@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-05-05 22:02:29
+ * @LastEditTime: 2020-05-05 22:34:50
  * @LastEditors: Juck
  * @Description: 用于创建app、配置登录信息等操作
  * @FilePath: \linux-cockpit\src\platform\apps\Config\Index.vue
@@ -109,12 +109,12 @@ export default {
       [2, 'fileManager', '文件管理器', 'FileManager', '@/platform/apps/FileManager', '/assets/apps/FileManager/logo.png', true, true, true, false, true, false, 'default', false, 260, 60, 900, 620, 'V0.0.1', 'Juck'],
       [3, 'taskManager', '任务管理器', 'TaskManager', '@/platform/apps/TaskManager', '/assets/apps/TaskManager/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 600, 600, 'V0.0.1', 'Juck'],
       [4, 'appStore', '应用市场', 'AppStore', '@/platform/apps/AppStore', '/assets/apps/AppStore/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [5, 'personalCenter', '个人中心', 'PersonalCenter', '@/platform/apps/PersonalCenter', '/assets/apps/PersonalCenter/logo.png', false, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [6, 'systemSettings', '系统设置', 'SystemSettings', '@/platform/apps/SystemSettings', '/assets/apps/SystemSettings/logo.png', false, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [7, 'weather', '天气', 'Weather', '@/platform/apps/Weather', '/assets/apps/Weather/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [8, 'weChat', '微信', 'WeChat', '@/platform/apps/WeChat', '/assets/apps/Wechat/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [9, 'iClock', '时钟', 'IClock', '@/platform/apps/IClock', '/assets/apps/IClock/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
-      [10, 'aMap', '高德地图', 'AMap', '@/platform/apps/AMap', '/assets/apps/AMap/logo.png', false, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [5, 'personalCenter', '个人中心', 'PersonalCenter', '@/platform/apps/PersonalCenter', '/assets/apps/PersonalCenter/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [6, 'systemSettings', '系统设置', 'SystemSettings', '@/platform/apps/SystemSettings', '/assets/apps/SystemSettings/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [7, 'weather', '天气', 'Weather', '@/platform/apps/Weather', '/assets/apps/Weather/logo.png', true, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [8, 'weChat', '微信', 'WeChat', '@/platform/apps/WeChat', '/assets/apps/Wechat/logo.png', true, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [9, 'iClock', '时钟', 'IClock', '@/platform/apps/IClock', '/assets/apps/IClock/logo.png', true, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [10, 'aMap', '高德地图', 'AMap', '@/platform/apps/AMap', '/assets/apps/AMap/logo.png', true, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [11, 'textEditor', '文本编辑器', 'TextEditor', '@/platform/apps/TextEditor', '/assets/apps/TextEditor/logo.png', true, false, false, false, true, false, 'default', false, 160, 60, 600, 400, 'V0.0.1', 'Juck'],
       [12, 'officeOnline', '办公软件', 'OfficeOnline', '@/platform/apps/OfficeOnline', '/assets/apps/OfficeOnline/logo.png', true, false, false, false, true, false, 'fullscreen', false, 40, 40, 1200, 800, 'V0.0.1', 'Juck'],
       [13, 'pDFViewer', 'PDF预览器', 'PDFViewer', '@/platform/apps/PDFViewer', '/assets/apps/PDFViewer/logo.png', true, false, false, false, true, false, 'fullscreen', false, 40, 40, 1200, 800, 'V0.0.1', 'Juck'],
