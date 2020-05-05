@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-05 22:00:07
+ * @LastEditTime: 2020-05-05 23:44:16
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -64,20 +64,6 @@ import {
 Vue.prototype.$notification = notification
 Vue.prototype.$message = message
 Vue.use(VueAxios, axios, VueApollo, Viewer)
-// Vue.use(
-//   Button,
-//   Form,
-//   Input,
-//   Icon,
-//   Form,
-//   Checkbox,
-//   ConfigProvider,
-//   Select,
-//   Switch,
-//   Row,
-//   Col,
-//   Upload
-// )
 
 // 注册antD组件
 Vue.component('a-input', Input)
@@ -131,8 +117,6 @@ Vue.component('OfficeOnline', OfficeOnline)
 Vue.component('PDFViewer', PDFViewer)
 Vue.component('PictureViewer', PictureViewer)
 
-
-
 Vue.config.productionTip = false
 // // 产生apollo客户端实例对象
 const apolloClient = new ApolloClient({
@@ -169,6 +153,8 @@ Vue.directive('drag', function (el, binding) {
         width: elWidth,
         height: elHeight
       } = el.getBoundingClientRect();
+      // 设置title的高度
+      const elTitleHeight = 28;
       const elBottomHeight = elTop + elHeight;
       const elRightWidth = elLeft + elWidth;
       //判断鼠标是否在div下边界
@@ -177,14 +163,36 @@ Vue.directive('drag', function (el, binding) {
       //判断鼠标是否在div右边界
       const mouseInRight =
         cxNow <= elRightWidth + 5 && cxNow >= elRightWidth - 5;
+      //判断鼠标是否在div上边界
+      const mouseInTop =
+        cyNow >= elTop - 5 && cyNow <= elTop + 5;
+      //判断鼠标是否在div左边界
+      const mouseInLeft =
+        cxNow >= elLeft - 5 && cxNow <= elLeft + 5;
+      // 判断鼠标是否在标题栏
+      const mouseInTitle =
+        cxNow > elLeft + 5 && cxNow < elRightWidth - 5 && cyNow > elTop + 5 && cyNow < elTop + elTitleHeight + 5
+      // 先判断四个角
       if (mouseInBottom && mouseInRight) {
         el.style.cursor = 'se-resize';
+      } else if (mouseInBottom && mouseInLeft) {
+        el.style.cursor = 'sw-resize';
+      } else if (mouseInTop && mouseInLeft) {
+        el.style.cursor = 'nw-resize';
+      } else if (mouseInTop && mouseInRight) {
+        el.style.cursor = 'ne-resize';
       } else if (mouseInRight) {
         el.style.cursor = 'e-resize';
       } else if (mouseInBottom) {
         el.style.cursor = 's-resize';
-      } else {
+      } else if (mouseInLeft) {
+        el.style.cursor = 'w-resize';
+      } else if (mouseInTop) {
+        el.style.cursor = 'n-resize';
+      } else if (mouseInTitle) {
         el.style.cursor = 'move';
+      } else {
+        el.style.cursor = 'auto';
       }
     };
     el.onmousedown = e => {
@@ -230,16 +238,51 @@ Vue.directive('drag', function (el, binding) {
             pos = [w];
             move = [xMove];
             break;
+          case 'se-resize':
+            direct = ['width', 'height'];
+            pos = [w, h];
+            move = [xMove, yMove];
+            break;
           case 's-resize':
             direct = ['height'];
             pos = [h];
             move = [yMove];
+            break;
+          case 'sw-resize':
+            direct = ['width', 'height', 'left'];
+            pos = [w, h, x];
+            move = [-xMove, yMove, xMove];
+            break;
+          case 'w-resize':
+            direct = ['width', 'left'];
+            pos = [w, x];
+            move = [-xMove, xMove];
+            break;
+          case 'nw-resize':
+            direct = ['width', 'height', 'left', 'top'];
+            pos = [w, h, x, y];
+            move = [-xMove, -yMove, xMove, yMove];
+            break;
+          case 'n-resize':
+            direct = ['height', 'top'];
+            pos = [h, y];
+            move = [-yMove, yMove];
+            break;
+          case 'ne-resize':
+            direct = ['width', 'height', 'top'];
+            pos = [w, h, y];
+            move = [xMove ,-yMove, yMove];
             break;
           case 'move':
             direct = ['left', 'top'];
             pos = [x, y];
             limit = 0;
             break;
+          default:
+            direct = [];
+            pos = [];
+            limit = 0;
+            break
         }
         handleDiv(direct, pos, move, limit);
       };
@@ -249,7 +292,7 @@ Vue.directive('drag', function (el, binding) {
       };
     };
   } else {
-    el.style.cursor = 'default';
+    el.style.cursor = 'auto';
     //移除点击事件
     el.onmousedown = null;
     el.onmousemove = null;

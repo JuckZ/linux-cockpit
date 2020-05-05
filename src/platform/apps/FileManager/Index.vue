@@ -136,9 +136,6 @@
                       pageSize: 5,
                       position: 'bottom',
                     }"
-                    :style="{
-                      cursor: 'pointer',
-                    }"
                     size="middle"
                     :customRow="customClick"
                     :rowSelection="rowSelection"
@@ -469,7 +466,7 @@ export default {
     })
     // TODO监听响应并处理响应
     this.socket.on('scriptRes', (payload) => {
-      console.log(payload)
+      console.log('payload')
       // TODO 处理响应
       switch (payload.originPayload.options.operation) {
         case 'open':

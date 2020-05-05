@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-03 17:27:04
+ * @LastEditTime: 2020-05-05 23:00:32
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -68,7 +68,7 @@
 .appContainer {
   position: fixed;
   border-radius: 6px;
-  padding: 10px;
+  padding: 5px;
   background: rgba(255, 255, 255, 0.7);
   .appTitleBar {
     width: 100%;
