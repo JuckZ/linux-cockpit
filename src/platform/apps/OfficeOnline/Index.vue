@@ -1,0 +1,46 @@
+<!--
+ * @Author: Juck
+ * @Date: 2020-04-10 13:13:40
+ * @LastEditTime: 2020-05-05 20:55:30
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\src\platform\apps\OfficeOnline\Index.vue
+ * @Juck is coding...
+ -->
+<template>
+  <div>
+    <iframe class="officeOnline" :src="currentApp.status.initialData" frameborder="0"></iframe>
+  </div>
+</template>
+<style lang="css">
+.officeOnline {
+  position: absolute;
+  padding: 5%;
+  height: 100%;
+  width: 100%;
+}
+</style>
+<script>
+  export default {
+    data() {
+      return {
+        // isLoaded: false
+      };
+    },
+    props: ['currentApp'],
+    computed: {
+
+    },
+    components: {
+      
+    },
+    mounted() {
+      // 
+      if(this.currentApp.status.initialData != undefined) {
+        this.initialData = this.currentApp.status.initialData
+      } else {
+        console.log('空白文件');
+      }
+    }
+  };
+</script>

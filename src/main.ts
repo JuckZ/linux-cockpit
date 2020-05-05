@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-04 16:28:56
+ * @LastEditTime: 2020-05-05 22:00:07
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -15,6 +15,7 @@ import ApolloClient from 'apollo-boost'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import Viewer from 'v-viewer'
 // 导入自定义组件
 import Login from '@/platform/apps/Login/Index.vue'
 import NotFound from '@/platform/apps/NotFound/Index.vue'
@@ -29,7 +30,9 @@ import WeChat from '@/platform/apps/WeChat/Index.vue'
 import IClock from '@/platform/apps/IClock/Index.vue'
 import AMap from '@/platform/apps/AMap/Index.vue'
 import TextEditor from '@/platform/apps/TextEditor/Index.vue'
-
+import OfficeOnline from '@/platform/apps/OfficeOnline/Index.vue'
+import PDFViewer from '@/platform/apps/PDFViewer/Index.vue'
+import PictureViewer from '@/platform/apps/PictureViewer/Index.vue'
 
 // 导入antDesign组件
 import {
@@ -60,7 +63,7 @@ import {
 
 Vue.prototype.$notification = notification
 Vue.prototype.$message = message
-Vue.use(VueAxios, axios, VueApollo)
+Vue.use(VueAxios, axios, VueApollo, Viewer)
 // Vue.use(
 //   Button,
 //   Form,
@@ -124,6 +127,9 @@ Vue.component('WeChat', WeChat)
 Vue.component('IClock', IClock)
 Vue.component('AMap', AMap)
 Vue.component('TextEditor', TextEditor)
+Vue.component('OfficeOnline', OfficeOnline)
+Vue.component('PDFViewer', PDFViewer)
+Vue.component('PictureViewer', PictureViewer)
 
 
 

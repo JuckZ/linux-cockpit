@@ -469,7 +469,7 @@ export default {
     })
     // TODO监听响应并处理响应
     this.socket.on('scriptRes', (payload) => {
-      console.log('res')
+      console.log(payload)
       // TODO 处理响应
       switch (payload.originPayload.options.operation) {
         case 'open':
@@ -485,7 +485,7 @@ export default {
             if (target.type == '-') {
               // 根据文件后缀用不同的预览器打开
               // 先判断是否有相应可以使用的预览器
-              console.log('根据文件后缀用不同的预览器打开')
+              let previewUrl = ''
               switch (
                 target.name
                   .split('.')
@@ -493,8 +493,6 @@ export default {
                   .toLowerCase()
               ) {
                 case 'txt':
-                case 'doc':
-                  // TODO使用axios下载文件并将内容作为initialData传递给文本编辑器组件
                   this.axios.get(payload.fileSrc).then((res) => {
                     this.runApp({
                       app: this.apps.filter((app) => {
@@ -505,7 +503,43 @@ export default {
                       }
                     })
                   })
-
+                  break
+                case 'pdf':
+                  previewUrl = payload.fileSrc
+                  this.runApp({
+                      app: this.apps.filter((app) => {
+                        return app.componentName == 'PDFViewer'
+                      })[0],
+                      options: {
+                        initialData: previewUrl
+                      }
+                    })
+                  // this.axios.get(payload.fileSrc).then((res) => {
+                  //   this.runApp({
+                  //     app: this.apps.filter((app) => {
+                  //       return app.componentName == 'PDFViewer'
+                  //     })[0],
+                  //     options: {
+                  //       initialData: res.data
+                  //     }
+                  //   })
+                  // })
+                  break
+                case 'doc':
+                case 'docx':
+                case 'ppt':
+                case 'pptx':
+                case 'xls':
+                case 'xlsx':
+                  previewUrl = 'https://view.officeapps.live.com/op/view.aspx?src='+payload.chunk
+                  this.runApp({
+                      app: this.apps.filter((app) => {
+                        return app.componentName == 'OfficeOnline'
+                      })[0],
+                      options: {
+                        initialData: previewUrl
+                      }
+                    })
                   break
                 case 'png':
                 case 'jpg':

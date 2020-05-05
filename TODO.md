@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-04 22:40:01
+ * @LastEditTime: 2020-05-05 20:56:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -90,7 +90,7 @@ TAG TODO now
 1. 显示隐藏文件
 2. 预览会自动将文件下载到临时目录下，如果后面点击下载，则直接保存这个已经下载的目录，提供清理缓存的功能
 3. 菜单收起
-4. 视频，图片，各种文档等查看器 组件渲染进来iframe
+4. 视频，图片，各种文档等查看器
 5. dplayer
 6. 回收站的清空和还原
 7. 添加和删除标签页
@@ -188,3 +188,13 @@ mkdir Pictures Public Videos Music Downloads Documents Desktop .transh
 ```
 
 4. ss
+
+
+### 备份API
+
+预览表格  https://sheetjs.com/
+预览PDF  https://github.com/mozilla/pdf.js
+预览word 结合firefox send  使用在线api
+https://transfer.sh/
+https://view.officeapps.live.com/op/view.aspx?src=http://storage.xuetangx.com/public_assets/xuetangx/PDF/1.xls
+https://docs.google.com/viewer?url="fileurl"

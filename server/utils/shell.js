@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-04 23:13:50
+ * @LastEditTime: 2020-05-05 21:10:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -166,8 +166,7 @@ myBUS.on('uploadScript', payload => {
             .toLowerCase()
           ) {
             case 'txt':
-            case 'doc':
-              console.log('调用文本编辑器')
+            case 'pdf':
               // 将文件下载到server/public/downloads/下，并将访问路径传递给前端
               downloadFile(payload.options.currentStatus.srcDir + '/' +target.name, localDir, (err, result = 'noResult') => {
                 mySocket.emit('scriptRes', {
@@ -175,6 +174,19 @@ myBUS.on('uploadScript', payload => {
                   originPayload: payload
                 })
               })
+              break
+            // 先测试api能支持哪些类型的文件
+            case 'doc':
+            case 'docx':
+            case 'ppt':
+            case 'pptx':
+            case 'xls':
+            case 'xlsx':
+            // case 'wps':
+            // case 'xml':
+              script = 'curl --upload-file ' + payload.options.currentStatus.srcDir + '/' + target.name + ' https://transfer.sh/' + target.name
+              console.log(script);
+              execUploadScript(script, payload)
               break
             case 'png':
             case 'jpg':
