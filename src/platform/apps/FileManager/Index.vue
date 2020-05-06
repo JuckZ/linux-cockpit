@@ -511,16 +511,6 @@ export default {
                         initialData: previewUrl
                       }
                     })
-                  // this.axios.get(payload.fileSrc).then((res) => {
-                  //   this.runApp({
-                  //     app: this.apps.filter((app) => {
-                  //       return app.componentName == 'PDFViewer'
-                  //     })[0],
-                  //     options: {
-                  //       initialData: res.data
-                  //     }
-                  //   })
-                  // })
                   break
                 case 'doc':
                 case 'docx':
@@ -542,7 +532,21 @@ export default {
                 case 'jpg':
                 case 'jpeg':
                 case 'img':
-                  console.log('调用图片浏览器')
+                  previewUrl = payload.fileSrc
+                  // 先将图片路径添加到data中
+                  this.addPictures({
+                    options: {
+                      pictures: [previewUrl]
+                    }
+                  })
+                  this.runApp({
+                      app: this.apps.filter((app) => {
+                        return app.componentName == 'PictureViewer'
+                      })[0],
+                      options: {
+                        initialData: previewUrl
+                      }
+                    })
                   break
                 case 'mp3':
                   console.log('调用音乐播放器')
@@ -584,6 +588,7 @@ export default {
       initTab: 'fileManager/initTab',
       setTab: 'fileManager/setTab',
       runApp: 'config/runApp',
+      addPictures: 'pictureViewer/addPictures',
     }),
     onSearch(val) {
       console.log(val)

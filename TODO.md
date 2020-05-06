@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-06 10:59:49
+ * @LastEditTime: 2020-05-06 11:57:26
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -137,10 +137,11 @@ TAG TODO now
 
 ### 核心
 
-1. 权限问题，执行了没有root权限的root命令  cd  sudo su都不能执行
-2. 新的思路：sh + curl(获取的在线脚本，因为可以实时更新)
-3. 同个软件可以多开
-4. i18N
+1. 端口占用问题
+2. 权限问题，执行了没有root权限的root命令  cd  sudo su都不能执行
+3. 新的思路：sh + curl(获取的在线脚本，因为可以实时更新)
+4. 同个软件可以多开
+5. i18N
 
 ### 其他
 

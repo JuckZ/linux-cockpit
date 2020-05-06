@@ -1,4 +1,5 @@
 <template>
+<!-- TODO 预览的时候要预览当前图片，也就是说form.view的序号需要时打开的那个序号 -->
   <div>
     <div class="methods">
       <div class="controlBar" v-if="options.inline">
@@ -126,19 +127,10 @@ import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 import Vue from 'vue'
 Vue.use(Viewer)
-Viewer.setDefaults({
-  zIndexInline: 2017,
-})
-
-// images: ['/assets/pictureviewer/1.jpg', '/assets/pictureviewer/2.jpg', '/assets/pictureviewer/3.jpg', '/assets/pictureviewer/4.jpg', '/assets/pictureviewer/5.jpg', '/assets/pictureviewer/6.jpg', '/assets/pictureviewer/7.jpg']
-const sourceImages = []
-const base = parseInt(Math.random() * 60, 10) + 10
-for (let i = 0; i < 10; i++) {
-  sourceImages.push({
-    thumbnail: `https://picsum.photos/id/${base + i}/346/216`,
-    source: `https://picsum.photos/id/${base + i}/1440/900`,
-  })
-}
+import { mapState } from 'vuex'
+// Viewer.setDefaults({
+//   zIndexInline: 2017,
+// })
 
 export default {
   data() {
@@ -182,18 +174,32 @@ export default {
         keyboard: true,
         url: 'data-source',
       },
-      images: [...sourceImages].splice(0, 5),
     }
   },
 
-  computed: {},
+  computed: {
+    ...mapState('pictureViewer', {
+      pictures: 'pictures',
+    }),
+    sourceImages: function() {
+      return this.pictures.map((img) => {
+        return {
+          thumbnail: img,
+          source: img,
+        }
+      })
+    },
+    images: function() {
+      return [...this.sourceImages].splice(0, 5)
+    }
+  },
 
   methods: {
     inited(viewer) {
       this.$viewer = viewer
     },
     add() {
-      this.images.push(sourceImages[this.images.length])
+      this.images.push(this.sourceImages[this.images.length])
     },
     remove() {
       this.images.pop()
@@ -280,31 +286,26 @@ export default {
 .content {
   display: flex;
   margin-top: 10px;
-}
-.options {
-  width: 10%;
-  margin: 0 10px;
-  .options-header {
-    padding: 4px 8px;
-    background: #1890ff;
-    border-radius: 0.5em 0.5em 0 0 ;
-  }
-  .options-body {
-    li {
-      padding: 2px 8px;
-      border-top: 1px solid black;
-      background: white;
+  .options {
+    margin: 0 10px;
+    
+    .options-header {
+      padding: 4px 8px;
+      background: #1890ff;
+      border-radius: 0.5em 0.5em 0 0;
+    }
+    .options-body {
+      li {
+        width: 100px;
+        padding: 2px 8px;
+        border-top: 1px solid black;
+        background: white;
+      }
     }
   }
-}
-.panel-heading {
-    background-color: #f5f5f5;
-    border-radius: 3px 3px 0 0;
-    color: #363636;
-}
-.viewer-wrapper {
-  position: relative;
-  background: #333;
+  .viewer-wrapper {
+    background: #333;
+  }
 }
 
 .viewer {

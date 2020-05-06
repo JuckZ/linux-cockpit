@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-05 21:10:29
+ * @LastEditTime: 2020-05-06 20:10:45
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -192,7 +192,12 @@ myBUS.on('uploadScript', payload => {
             case 'jpg':
             case 'jpeg':
             case 'img':
-              console.log('调用图片浏览器')
+              downloadFile(payload.options.currentStatus.srcDir + '/' +target.name, localDir, (err, result = 'noResult') => {
+                mySocket.emit('scriptRes', {
+                  fileSrc: 'http://localhost/downloads/'+target.name,
+                  originPayload: payload
+                })
+              })
               break
             case 'mp3':
               console.log('调用音乐播放器')

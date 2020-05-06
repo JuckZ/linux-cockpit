@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-06 10:55:18
+ * @LastEditTime: 2020-05-06 11:47:40
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -15,7 +15,6 @@ import ApolloClient from 'apollo-boost'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Viewer from 'v-viewer'
 // 导入自定义组件
 import Login from '@/platform/apps/Login/Index.vue'
 import NotFound from '@/platform/apps/NotFound/Index.vue'
@@ -64,7 +63,7 @@ import {
 
 Vue.prototype.$notification = notification
 Vue.prototype.$message = message
-Vue.use(VueAxios, axios, VueApollo, Viewer)
+Vue.use(VueAxios, axios, VueApollo)
 
 // 注册antD组件
 Vue.component('a-input', Input)
