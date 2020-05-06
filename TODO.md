@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-05 20:56:24
+ * @LastEditTime: 2020-05-06 10:59:49
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -90,10 +90,9 @@ TAG TODO now
 1. 显示隐藏文件
 2. 预览会自动将文件下载到临时目录下，如果后面点击下载，则直接保存这个已经下载的目录，提供清理缓存的功能
 3. 菜单收起
-4. 视频，图片，各种文档等查看器
-5. dplayer
-6. 回收站的清空和还原
-7. 添加和删除标签页
+4. dplayer
+5. 回收站的清空和还原
+6. 添加和删除标签页
 
 ### SHELL终端
 

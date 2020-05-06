@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-05 23:44:16
+ * @LastEditTime: 2020-05-06 10:55:18
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -58,7 +58,8 @@ import {
   Modal,
   Drawer,
   Spin,
-  Divider
+  Divider,
+  List
 } from 'ant-design-vue'
 
 Vue.prototype.$notification = notification
@@ -98,6 +99,9 @@ Vue.component('a-modal', Modal)
 Vue.component('a-drawer', Drawer)
 Vue.component('a-spin', Spin)
 Vue.component('a-divider', Divider)
+Vue.component('a-checkbot-group', Checkbox.Group)
+Vue.component('a-list', List)
+Vue.component('a-list-item', List.Item)
 
 // 注册自定义组件
 Vue.component('Login', Login)

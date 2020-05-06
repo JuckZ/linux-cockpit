@@ -1,156 +1,121 @@
 <template>
   <div>
-    <div class="methods is-flex">
-      <div class="field has-addons">
-        <p class="control">
-          <button type="button" class="button is-primary"
-                  @click="toggleInline(false)"
-                  :class="{' is-active': !options.inline}"
-          >Modal</button>
-        </p>
-        <p class="control">
-          <button type="button" class="button is-primary"
-                  @click="toggleInline(true)"
-                  :class="{' is-active': options.inline}"
-          >Inline</button>
-        </p>
-      </div>
-      <button type="button" class="button" @click="add" :disabled="images.length===9">Add</button>
-      <button type="button" class="button" @click="remove" :disabled="images.length===1">Remove</button>
-      <template v-if="options.inline">
-        <div class="field has-addons" style="width: 110px">
-          <div class="control">
-            <span class="button is-static">View</span>
-          </div>
-          <div class="control">
-            <input class="input" type="text" v-model.number="form.view" @keyup="view">
-          </div>
-        </div>
-        <div class="field has-addons" style="width: 120px">
-          <div class="control">
-            <input class="input" type="text" v-model.number="form.zoom">
-          </div>
-          <div class="control">
-            <span class="button" @click="zoom()">Zoom</span>
-          </div>
-        </div>
-        <div class="field has-addons" style="width: 140px">
-          <div class="control">
-            <input class="input" type="text" v-model.number="form.zoomTo">
-          </div>
-          <div class="control">
-            <span class="button" @click="zoomTo">Zoom to</span>
-          </div>
-        </div>
-        <div class="field has-addons" style="width: 120px">
-          <div class="control">
-            <input class="input" type="text" v-model.number="form.rotate">
-          </div>
-          <div class="control">
-            <span class="button" @click="rotate()">Rotate</span>
-          </div>
-        </div>
-        <div class="field has-addons" style="width: 140px">
-          <div class="control">
-            <input class="input" type="text" v-model.number="form.rotateTo">
-          </div>
-          <div class="control">
-            <span class="button" @click="rotateTo">Rotate to</span>
-          </div>
-        </div>
-        <div class="field has-addons">
-          <div class="control">
-            <button type="button" class="button" @click="zoom(0.5)">Zoom In</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="zoom(-0.5)">Zoom Out</button>
-          </div>
-        </div>
-        <div class="field has-addons">
-          <div class="control">
-            <button type="button" class="button" @click="rotate(-90)">Rotate Left</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="rotate(90)">Rotate Right</button>
-          </div>
-        </div>
-        <div class="field has-addons">
-          <div class="control">
-            <button type="button" class="button" @click="scaleX()">Flip Horizontal</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="scaleY()">Flip Vertical</button>
-          </div>
-        </div>
-        <div class="field has-addons">
-          <div class="control">
-            <button type="button" class="button" @click="move(-10, 0)">Left</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="move(10, 0)">Right</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="move(0, -10)">Up</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="move(0, 10)">Down</button>
-          </div>
-        </div>
-        <div class="field has-addons">
-          <div class="control">
-            <button type="button" class="button" @click="prev">Prev</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="next">Next</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="play">Play</button>
-          </div>
-          <div class="control">
-            <button type="button" class="button" @click="stop">Stop</button>
-          </div>
-        </div>
-        <button type="button" class="button" @click="full">Full</button>
-        <button type="button" class="button" @click="tooltip">Tooltip</button>
-        <button type="button" class="button" @click="reset">Reset</button>
-      </template>
-      <template v-else>
-        <button type="button" class="button" @click="show">Show</button>
-      </template>
-    </div>
-    <div class="tile is-ancestor">
-      <div class="tile is-2 is-vertical is-parent">
-        <div class="tile is-child">
-          <nav class="panel options-panel">
-            <p class="panel-heading">
-              Options
-            </p>
-            <div class="panel-block" v-for="item of toggleOptions" :key="item">
-              <label class="checkbox">
-                <input type="checkbox" name="button" v-model="options[item]"> {{item}}
-              </label>
-            </div>
-          </nav>
-        </div>
-      </div>
-      <div class="tile is-10 is-vertical is-parent">
-        <div class="viewer-wrapper">
-          <viewer :options="options" :images="images"
-                  @inited="inited"
-                  class="viewer" ref="viewer"
+    <div class="methods">
+      <div class="controlBar" v-if="options.inline">
+        <a-input-group>
+          <a-button
+            type="primary"
+            @click="toggleInline(false)"
+            :class="{ ' is-active': !options.inline }"
+            >Modal</a-button
           >
-            <template slot-scope="scope">
-              <figure class="images">
-                <div class="image-wrapper" v-for="{source, thumbnail} in scope.images" :key="source">
-                  <img class="image"
-                       :src="thumbnail" :data-source="source" :alt="source.split('?image=').pop()"
-                  >
-                </div>
-              </figure>
-              <p><strong>Options: </strong>{{scope.options}}</p>
-            </template>
-          </viewer>
+          <a-button
+            type="primary"
+            @click="toggleInline(true)"
+            :class="{ ' is-active': options.inline }"
+            >Inline</a-button
+          >
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="add" :disabled="images.length === 9">Add</a-button>
+          <a-button @click="remove" :disabled="images.length === 1"
+            >Remove</a-button
+          >
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="view">View</a-button>
+          <a-input v-model.number="form.view"></a-input>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="zoom()">Zoom</a-button>
+          <a-input v-model.number="form.zoom"></a-input>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="zoomTo">ZoomTo</a-button>
+          <a-input v-model.number="form.zoomTo"></a-input>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="rotate()">Rotate</a-button>
+          <a-input v-model.number="form.rotate"></a-input>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="rotateTo">TotateTo</a-button>
+          <a-input v-model.number="form.rotateTo"></a-input>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="zoom(0.5)">Zoom In</a-button>
+          <a-button @click="zoom(-0.5)">Zoom Out</a-button>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="rotate(-90)">Rotate Left</a-button>
+          <a-button @click="rotate(90)">Rotate Right</a-button>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="scaleX()">Flip Horizontal</a-button>
+          <a-button @click="scaleY()">Flip Vertical</a-button>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="move(-10, 0)">Left</a-button>
+          <a-button @click="move(10, 0)">Right</a-button>
+          <a-button @click="move(0, -10)">Up</a-button>
+          <a-button @click="move(0, 10)">Down</a-button>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="prev">Prev</a-button>
+          <a-button @click="next">Next</a-button>
+          <a-button @click="play">Play</a-button>
+          <a-button @click="stop">Stop</a-button>
+        </a-input-group>
+        <a-input-group>
+          <a-button @click="full">Full</a-button>
+          <a-button @click="tooltip">Tooltip</a-button>
+          <a-button @click="reset">Reset</a-button>
+        </a-input-group>
+      </div>
+      <div v-else>
+        <a-button @click="show">Show</a-button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="options">
+        <div class="options-header">
+          Options
         </div>
+        <ul class="options-body">
+          <li v-for="item in toggleOptions" :key="item">
+            <label>
+              <input type="checkbox" v-model="options[item]" />
+              {{ item }}
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div class="viewer-wrapper">
+        <viewer
+          :options="options"
+          :images="images"
+          @inited="inited"
+          class="viewer"
+          ref="viewer"
+        >
+          <template slot-scope="scope">
+            <figure class="images">
+              <div
+                class="image-wrapper"
+                v-for="{ source, thumbnail } in scope.images"
+                :key="source"
+              >
+                <img
+                  class="image"
+                  :src="thumbnail"
+                  :data-source="source"
+                  :alt="source.split('?image=').pop()"
+                />
+              </div>
+            </figure>
+            <p><strong>Options: </strong>{{ scope.options }}</p>
+          </template>
+        </viewer>
       </div>
     </div>
   </div>
@@ -162,22 +127,21 @@ import Viewer from 'v-viewer'
 import Vue from 'vue'
 Vue.use(Viewer)
 Viewer.setDefaults({
-  zIndexInline: 2017
+  zIndexInline: 2017,
 })
 
 // images: ['/assets/pictureviewer/1.jpg', '/assets/pictureviewer/2.jpg', '/assets/pictureviewer/3.jpg', '/assets/pictureviewer/4.jpg', '/assets/pictureviewer/5.jpg', '/assets/pictureviewer/6.jpg', '/assets/pictureviewer/7.jpg']
 const sourceImages = []
-const base = parseInt((Math.random() * 60), 10) + 10
+const base = parseInt(Math.random() * 60, 10) + 10
 for (let i = 0; i < 10; i++) {
   sourceImages.push({
     thumbnail: `https://picsum.photos/id/${base + i}/346/216`,
-    source: `https://picsum.photos/id/${base + i}/1440/900`
+    source: `https://picsum.photos/id/${base + i}/1440/900`,
   })
 }
 
 export default {
-
-  data () {
+  data() {
     return {
       form: {
         view: 2,
@@ -186,7 +150,7 @@ export default {
         rotate: 90,
         rotateTo: 180,
         scaleX: 1,
-        scaleY: 1
+        scaleY: 1,
       },
       toggleOptions: [
         'button',
@@ -200,7 +164,7 @@ export default {
         'scalable',
         'transition',
         'fullscreen',
-        'keyboard'
+        'keyboard',
       ],
       options: {
         inline: true,
@@ -216,43 +180,42 @@ export default {
         transition: true,
         fullscreen: true,
         keyboard: true,
-        url: 'data-source'
+        url: 'data-source',
       },
-      images: [...sourceImages].splice(0, 5)
+      images: [...sourceImages].splice(0, 5),
     }
   },
 
-  computed: {
-  },
+  computed: {},
 
   methods: {
-    inited (viewer) {
+    inited(viewer) {
       this.$viewer = viewer
     },
-    add () {
+    add() {
       this.images.push(sourceImages[this.images.length])
     },
-    remove () {
+    remove() {
       this.images.pop()
     },
-    view () {
+    view() {
       if (this.form.view >= 0 && this.form.view < this.images.length) {
         this.$viewer.view(this.form.view)
       }
     },
-    zoom (value) {
+    zoom(value) {
       this.$viewer.zoom(value || this.form.zoom)
     },
-    zoomTo () {
+    zoomTo() {
       this.$viewer.zoomTo(this.form.zoomTo)
     },
-    rotate (value) {
+    rotate(value) {
       this.$viewer.rotate(value || this.form.rotate)
     },
-    rotateTo () {
+    rotateTo() {
       this.$viewer.rotateTo(this.form.rotateTo)
     },
-    scaleX (value) {
+    scaleX(value) {
       if (value) {
         this.$viewer.scaleX(value)
       } else {
@@ -260,7 +223,7 @@ export default {
         this.$viewer.scaleX(this.form.scaleX)
       }
     },
-    scaleY (value) {
+    scaleY(value) {
       if (value) {
         this.$viewer.scaleY(value)
       } else {
@@ -268,92 +231,104 @@ export default {
         this.$viewer.scaleY(this.form.scaleY)
       }
     },
-    move (x, y) {
+    move(x, y) {
       this.$viewer.move(x, y)
     },
-    prev () {
+    prev() {
       this.$viewer.prev()
     },
-    next () {
+    next() {
       this.$viewer.next()
     },
-    play () {
+    play() {
       this.$viewer.play()
     },
-    stop () {
+    stop() {
       this.$viewer.stop()
     },
-    show () {
+    show() {
       this.$viewer.show()
     },
-    full () {
+    full() {
       this.$viewer.full()
     },
-    tooltip () {
+    tooltip() {
       this.$viewer.tooltip()
     },
-    reset () {
+    reset() {
       this.$viewer.reset()
     },
-    toggleInline (inline) {
+    toggleInline(inline) {
       this.options.inline = inline
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
-  .viewer-wrapper {
-    position: relative;
-    background: #333;
-    height: 100%;
+.controlBar {
+  display: flex;
+  flex-wrap: wrap;
+  span {
+    width: auto;
+    margin-right: 20px;
   }
+  input {
+    max-width: 50px;
+  }
+}
+.content {
+  display: flex;
+  margin-top: 10px;
+}
+.options {
+  width: 10%;
+  margin: 0 10px;
+  .options-header {
+    padding: 4px 8px;
+    background: #1890ff;
+    border-radius: 0.5em 0.5em 0 0 ;
+  }
+  .options-body {
+    li {
+      padding: 2px 8px;
+      border-top: 1px solid black;
+      background: white;
+    }
+  }
+}
+.panel-heading {
+    background-color: #f5f5f5;
+    border-radius: 3px 3px 0 0;
+    color: #363636;
+}
+.viewer-wrapper {
+  position: relative;
+  background: #333;
+}
 
-  .methods {
-    margin-bottom: 1em;
+.viewer {
+  height: 100%;
+  .images {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     flex-wrap: wrap;
+    padding: 5px;
 
-    & > * {
-      margin-right: 0.75rem;
-    }
-  }
+    .image-wrapper {
+      display: inline-block;
+      width: calc(33% - 20px);
+      margin: 5px 5px 0 5px;
 
-  .options-panel {
-    .panel-block {
-      padding: 0;
-
-      .checkbox {
-        display: block;
+      .image {
         width: 100%;
-        margin: 0;
-        padding: 0.5em 0.75em;
-      }
-    }
-  }
-
-  .viewer {
-    height: 100%;
-
-    .images {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 5px;
-
-      .image-wrapper {
+        cursor: pointer;
         display: inline-block;
-        width: calc(33% - 20px);
-        margin: 5px 5px 0 5px;
-
-        .image {
-          width: 100%;
-          cursor: pointer;
-          display: inline-block;
-        }
       }
     }
   }
+}
 </style>
