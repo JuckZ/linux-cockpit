@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-06 11:57:26
+ * @LastEditTime: 2020-05-07 09:58:12
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -37,6 +37,7 @@ TAG TODO now
 6. 时钟等挂件自动隐藏标题栏，并加入到托盘中
 7. scss ？ 元素等使用变量，然后通过配置文件初始化变量，完成主题自定义
 8. 所有组件都可以拖拽，修改大小和位置。（有一定的限制。）
+9. 动画效果 app显示和隐藏，以及最小化（根据任务栏图标的位置设置动画）
 
 ## 功能
 
@@ -146,23 +147,19 @@ TAG TODO now
 ### 其他
 
 1. 注解
-2. flex布局
-3. 清理console.log等开发时使用的调试语句
-4. doc完善
-5. 脚本完善
-6. README.md完善
-7. js文件转ts文件
-8. Decorator重构Koa路由策略
-9. 窗口最小化后应该到托盘中
-10. 框架间更好的整合，electron-forge、vue-electron
-11. watch监控computed中mapState中的变化
-12. 多个SHELL支持（socket命名空间、多个socket连接）
-13. 文件管理器搜索功能、菜单收起功能、左侧菜单滚动效果
-14. 多个桌面
-15. 支持局域网nat，管理自己的服务器
-16. 自定义vue指令，实现拖拽和改变尺寸
-17. 如何让组件保持生命
-18. vue监控数组变化、对象变化  computed watch
+2. doc完善
+3. 脚本完善
+4. README.md完善
+5. js文件转ts文件
+6. Decorator重构Koa路由策略
+7. 窗口最小化后应该到托盘中
+8. 框架间更好的整合，electron-forge、vue-electron
+9. 多个SHELL支持（socket命名空间、多个socket连接）
+10. 文件管理器搜索功能、菜单收起功能、左侧菜单滚动效果
+11. 多个桌面
+12. 支持局域网nat，管理自己的服务器
+13. 如何让组件保持生命
+14. vue监控数组变化、对象变化  computed watch
 
 ## 初始化centos做了哪些事
 
@@ -186,8 +183,6 @@ TAG TODO now
 
 mkdir Pictures Public Videos Music Downloads Documents Desktop .transh
 ```
-
-4. ss
 
 
 ### 备份API

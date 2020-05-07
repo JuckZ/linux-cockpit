@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-05-03 22:41:51
+ * @LastEditTime: 2020-05-07 10:04:09
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
@@ -27,6 +27,14 @@ export default {
     // 将app设置为default
     setAppDefault: (context: any, payload: any) => {
         context.commit('setAppDefault', payload)
+    },
+    // 切换全屏与default状态
+    toggleAppStatusFullscreen: (context: any, payload: any) => {
+        if(context.state.apps[payload.app.id].status.window == 'fullscreen') {
+            context.commit('setAppDefault', payload)
+        } else {
+            context.commit('setAppFullscreen', payload)
+        }
     },
     // 设置app的聚焦状态
     setAppStatusFocus: (context: any, payload: any) => {

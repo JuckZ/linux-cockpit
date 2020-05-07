@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-05 21:47:51
+ * @LastEditTime: 2020-05-07 09:46:38
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\PDFViewer\Index.vue
@@ -10,6 +10,7 @@
 <template>
   <div>
     <iframe class="PDFViewer" :src="currentApp.status.initialData" frameborder="0"></iframe>
+    <embed :src="currentApp.status.initialData" type="application/pdf" width="100%" height="100%">
   </div>
 </template>
 <style lang="css">

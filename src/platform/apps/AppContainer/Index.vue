@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-05 23:00:32
+ * @LastEditTime: 2020-05-07 10:06:35
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -37,7 +37,10 @@
       }
     })"
   >
-    <div class="appTitleBar">
+    <div @dblclick="toggleAppStatusFullscreen({
+      app: currentApp,
+      options: {}
+    })" class="appTitleBar">
       <span>
         <!-- 标题文字 -->
         <slot name="titleText" />
@@ -114,7 +117,8 @@ export default {
       setAppDefault: 'config/setAppDefault',
       setAppStatusPosition: 'config/setAppStatusPosition',
       setAppStatusFocus: 'config/setAppStatusFocus',
-      closeMenu: 'menu/closeMenu'
+      closeMenu: 'menu/closeMenu',
+      toggleAppStatusFullscreen: 'config/toggleAppStatusFullscreen'
     }),
   }
 }
