@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-07 09:58:12
+ * @LastEditTime: 2020-05-07 13:30:55
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -99,12 +99,9 @@ TAG TODO now
 
 1. ssh exit之后的操作？
 2. 多个shell
-3. 身份验证
-4. 退格边界,以及退格到上一行
-5. 组件化
-6. 加密传输
-7. 组合键 vue修饰键
-8. 未退出的客户端处理（销毁）
+3. 退格边界,以及退格到上一行
+4. 加密传输
+5. 组合键 vue修饰键
 
 ## 浏览器
 
@@ -112,9 +109,8 @@ TAG TODO now
 
 ### 文本编辑器
 
-1. Vue2Editor
-2. 编辑配置文件
-3. json加载，解析yml也可以
+1. 编辑配置文件
+2. json加载，解析yml也可以
 
 ### 软件管理器
 
@@ -143,6 +139,7 @@ TAG TODO now
 3. 新的思路：sh + curl(获取的在线脚本，因为可以实时更新)
 4. 同个软件可以多开
 5. i18N
+6. shell部分可以尝试使用命名空间区别是那个app发送的命令
 
 ### 其他
 

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-06 20:10:45
+ * @LastEditTime: 2020-05-07 16:32:59
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -67,7 +67,7 @@ function execUploadScript(script, originPayload) {
     stream.on('close', function () {
       // conn.end();
     }).on('data', function (data) {
-      mySocket.emit('scriptRes', {
+      mySocket.emit(originPayload.target + 'ScriptRes', {
         chunk: data.toString(),
         originPayload: originPayload
       })
@@ -77,6 +77,113 @@ function execUploadScript(script, originPayload) {
   })
 }
 
+// 
+function fileManagerHanlder(payload) {
+  let script = ''
+  switch (payload.options.operation) {
+    case 'open':
+      if (payload.options.currentStatus.targets.length == 0) {
+        console.log('没有操作对象')
+      } else if (payload.options.currentStatus.targets.length == 1) {
+        // 只有一个操作对象时
+        const target = payload.options.currentStatus.targets[0]
+        // 如果是普通文件，则用对应的预览器打开
+        if (target.type == '-') {
+          // 存储文件的本地路径
+          const localDir = path.join(__dirname, '../public/downloads/' + target.name)
+          switch (
+            target.name
+            .split('.')
+            .pop()
+            .toLowerCase()
+          ) {
+            case 'txt':
+            case 'pdf':
+              // 将文件下载到server/public/downloads/下，并将访问路径传递给前端
+              downloadFile(payload.options.currentStatus.srcDir + '/' + target.name, localDir, (err, result = 'noResult') => {
+                mySocket.emit('fileManagerScriptRes', {
+                  fileSrc: 'http://localhost/downloads/' + target.name,
+                  originPayload: payload
+                })
+              })
+              break
+              // 先测试api能支持哪些类型的文件
+            case 'doc':
+            case 'docx':
+            case 'ppt':
+            case 'pptx':
+            case 'xls':
+            case 'xlsx':
+              // case 'wps':
+              // case 'xml':
+              script = 'curl --upload-file ' + payload.options.currentStatus.srcDir + '/' + target.name + ' https://transfer.sh/' + target.name
+              console.log(script);
+              execUploadScript(script, payload)
+              break
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'img':
+              downloadFile(payload.options.currentStatus.srcDir + '/' + target.name, localDir, (err, result = 'noResult') => {
+                mySocket.emit('fileManagerScriptRes', {
+                  fileSrc: 'http://localhost/downloads/' + target.name,
+                  originPayload: payload
+                })
+              })
+              break
+            case 'mp3':
+              console.log('调用音乐播放器')
+              break
+            case 'mp4':
+              console.log('调用视频播放器')
+              break
+            default:
+              console.log('暂时不支持此类型文件的预览')
+          }
+        } else if (target.type == 'd') {
+          // 如果是目录文件，则打开目录
+          // TODO target.name还需要加上当前路径srcDir
+          console.log('打开目录' + payload.options.currentStatus.srcDir + target.name)
+          script = 'cd ' + payload.options.currentStatus.srcDir + '/' + target.name + ' && ls -lh'
+          execUploadScript(script, payload)
+        } else {
+          // 如果是块设备文件等，则不进行操作
+          console.log('暂不支持打开块设备等')
+        }
+      }
+      break
+    case 'moveToTrash':
+      console.log('移入回收站')
+      break
+    case 'attributes':
+      console.log('属性')
+      break
+    default:
+      console.log('其他操作等待开发')
+  }
+}
+
+function userManagerHanlder(payload) {
+  let script = ''
+  switch (payload.options.operation) {
+    case 'setUsers':
+      script = 'lslogins -u'
+      execUploadScript(script, payload)
+      break
+    case 'deleteUser':
+      script = 'userdel ' + payload.options.user.user + ' && lslogins -u'
+      execUploadScript(script, payload)
+      break
+    case 'addUser': {
+      const userName = payload.options.user.userName
+      const password = payload.options.user.password
+      // script = 'useradd ' + userName + ' && echo ' + password + ' | passwd ' + userName + '--stdin &>/dev/null' + ' && lslogins -u'
+      script = '(useradd ' + userName + ' && echo ' + password + ' | passwd ' + userName + ' --stdin &>/dev/null)' + ' && lslogins -u'
+      execUploadScript(script, payload)
+      break
+    }
+  }
+}
 const initSocket = socket => {
   mySocket = socket
   // 创建shell
@@ -147,87 +254,15 @@ myBUS.on('disconnect', () => {
 })
 // 监听脚本上传事件
 myBUS.on('uploadScript', payload => {
-  let script = 'cd /'
-  switch (payload.options.operation) {
-    case 'open':
-      if (payload.options.currentStatus.targets.length == 0) {
-        console.log('没有操作对象')
-      } else if (payload.options.currentStatus.targets.length == 1) {
-        // 只有一个操作对象时
-        const target = payload.options.currentStatus.targets[0]
-        // 如果是普通文件，则用对应的预览器打开
-        if (target.type == '-') {
-          // 存储文件的本地路径
-          const localDir = path.join(__dirname, '../public/downloads/' + target.name)
-          switch (
-            target.name
-            .split('.')
-            .pop()
-            .toLowerCase()
-          ) {
-            case 'txt':
-            case 'pdf':
-              // 将文件下载到server/public/downloads/下，并将访问路径传递给前端
-              downloadFile(payload.options.currentStatus.srcDir + '/' +target.name, localDir, (err, result = 'noResult') => {
-                mySocket.emit('scriptRes', {
-                  fileSrc: 'http://localhost/downloads/'+target.name,
-                  originPayload: payload
-                })
-              })
-              break
-            // 先测试api能支持哪些类型的文件
-            case 'doc':
-            case 'docx':
-            case 'ppt':
-            case 'pptx':
-            case 'xls':
-            case 'xlsx':
-            // case 'wps':
-            // case 'xml':
-              script = 'curl --upload-file ' + payload.options.currentStatus.srcDir + '/' + target.name + ' https://transfer.sh/' + target.name
-              console.log(script);
-              execUploadScript(script, payload)
-              break
-            case 'png':
-            case 'jpg':
-            case 'jpeg':
-            case 'img':
-              downloadFile(payload.options.currentStatus.srcDir + '/' +target.name, localDir, (err, result = 'noResult') => {
-                mySocket.emit('scriptRes', {
-                  fileSrc: 'http://localhost/downloads/'+target.name,
-                  originPayload: payload
-                })
-              })
-              break
-            case 'mp3':
-              console.log('调用音乐播放器')
-              break
-            case 'mp4':
-              console.log('调用视频播放器')
-              break
-            default:
-              console.log('暂时不支持此类型文件的预览')
-          }
-        } else if (target.type == 'd') {
-          // 如果是目录文件，则打开目录
-          // TODO target.name还需要加上当前路径srcDir
-          console.log('打开目录' + payload.options.currentStatus.srcDir + target.name)
-          script = 'cd ' + payload.options.currentStatus.srcDir + '/' + target.name + ' && ls -lh'
-          execUploadScript(script, payload)
-        } else {
-          // 如果是块设备文件等，则不进行操作
-          console.log('暂不支持打开块设备等')
-        }
-      }
-      break
-    case 'moveToTrash':
-      console.log('移入回收站')
-      break
-    case 'attributes':
-      console.log('属性')
+  switch (payload.target) {
+    case 'fileManager':
+      fileManagerHanlder(payload)
+      break;
+    case 'userManager':
+      userManagerHanlder(payload)
       break
     default:
-      console.log('其他操作等待开发')
+      console.log();
   }
 
   // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'

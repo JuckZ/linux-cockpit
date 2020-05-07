@@ -465,7 +465,7 @@ export default {
       },
     })
     // TODO监听响应并处理响应
-    this.socket.on('scriptRes', (payload) => {
+    this.socket.on('fileManagerScriptRes', (payload) => {
       console.log('payload')
       // TODO 处理响应
       switch (payload.originPayload.options.operation) {
@@ -579,7 +579,7 @@ export default {
   },
   destroyed() {
     // 清除socket的监听器
-    this.socket.removeAllListeners(['scriptRes'])
+    this.socket.removeAllListeners(['fileManagerScriptRes'])
   },
   methods: {
     ...mapActions({
@@ -604,6 +604,7 @@ export default {
     },
     execFileManagerOperation(payload) {
       this.socket.emit('uploadScript', {
+        target: 'fileManager',
         options: {
           operation: payload.options.operation,
           currentStatus: payload.options.currentStatus || this.currentStatus,

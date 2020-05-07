@@ -26,6 +26,7 @@
     "koa-views": "^6.2.1",
     "less": "^3.11.1",
     "nodemon": "^2.0.3",
+    "pdfjs-dist": "^2.3.200",
     "socket.io": "^2.3.0",
     "socket.io-stream": "^0.9.1",
     "ssh2": "^0.8.8",

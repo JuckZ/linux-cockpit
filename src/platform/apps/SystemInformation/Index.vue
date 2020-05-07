@@ -1,18 +1,15 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-07 12:57:21
+ * @LastEditTime: 2020-05-07 11:20:07
  * @LastEditors: Juck
  * @Description: 
- * @FilePath: \linux-cockpit\src\platform\apps\PersonalCenter\Index.vue
+ * @FilePath: \linux-cockpit\src\platform\apps\SystemInformation\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div id="personalCenter">
-    <h1>this is personalCenter</h1>
-    修改用户名
-    修改用户密码
-    修改用户组
+  <div id="systemInformation">
+    <h1>this is SystemInformation</h1>
   </div>
 </template>
 <style lang="scss">

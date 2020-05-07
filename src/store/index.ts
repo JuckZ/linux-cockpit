@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-06 20:47:19
+ * @LastEditTime: 2020-05-07 13:23:39
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\store\index.ts
@@ -22,6 +22,8 @@ import wallpaper from '@/platform/apps/Wallpaper/store/'
 import fileManager from '@/platform/apps/FileManager/store/'
 import pictureViewer from '@/platform/apps/PictureViewer/store/'
 import config from '@/platform/apps/Config/store/'
+import userManager from '@/platform/apps/UserManager/store/'
+import systemInformation from '@/platform/apps/SystemInformation/store/'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -37,6 +39,8 @@ export default new Vuex.Store({
     wallpaper: wallpaper.store,
     fileManager: fileManager.store,
     config: config.store,
-    pictureViewer: pictureViewer.store
+    pictureViewer: pictureViewer.store,
+    userManager: userManager.store,
+    systemInformation: systemInformation.store
   },
 })

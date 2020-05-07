@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-06 11:47:40
+ * @LastEditTime: 2020-05-07 11:34:39
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -32,6 +32,8 @@ import TextEditor from '@/platform/apps/TextEditor/Index.vue'
 import OfficeOnline from '@/platform/apps/OfficeOnline/Index.vue'
 import PDFViewer from '@/platform/apps/PDFViewer/Index.vue'
 import PictureViewer from '@/platform/apps/PictureViewer/Index.vue'
+import UserManager from '@/platform/apps/UserManager/Index.vue'
+import SystemInformation from '@/platform/apps/SystemInformation/Index.vue'
 
 // 导入antDesign组件
 import {
@@ -58,7 +60,8 @@ import {
   Drawer,
   Spin,
   Divider,
-  List
+  List,
+  Avatar
 } from 'ant-design-vue'
 
 Vue.prototype.$notification = notification
@@ -101,6 +104,8 @@ Vue.component('a-divider', Divider)
 Vue.component('a-checkbot-group', Checkbox.Group)
 Vue.component('a-list', List)
 Vue.component('a-list-item', List.Item)
+Vue.component('a-list-item-meta', List.Item.Meta)
+Vue.component('a-avatar', Avatar)
 
 // 注册自定义组件
 Vue.component('Login', Login)
@@ -119,6 +124,8 @@ Vue.component('TextEditor', TextEditor)
 Vue.component('OfficeOnline', OfficeOnline)
 Vue.component('PDFViewer', PDFViewer)
 Vue.component('PictureViewer', PictureViewer)
+Vue.component('UserManager', UserManager)
+Vue.component('SystemInformation', SystemInformation)
 
 Vue.config.productionTip = false
 // // 产生apollo客户端实例对象

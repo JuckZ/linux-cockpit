@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-07 09:46:38
+ * @LastEditTime: 2020-05-07 10:47:26
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\PDFViewer\Index.vue
@@ -10,7 +10,7 @@
 <template>
   <div>
     <iframe class="PDFViewer" :src="currentApp.status.initialData" frameborder="0"></iframe>
-    <embed :src="currentApp.status.initialData" type="application/pdf" width="100%" height="100%">
+    <!-- <embed :src="currentApp.status.initialData" type="application/pdf" width="100%" height="100%"> -->
   </div>
 </template>
 <style lang="css">
@@ -22,26 +22,23 @@
 }
 </style>
 <script>
-  export default {
-    data() {
-      return {
-        // isLoaded: false
-      };
-    },
-    props: ['currentApp'],
-    computed: {
-
-    },
-    components: {
-      
-    },
-    mounted() {
-      // 
-      if(this.currentApp.status.initialData != undefined) {
-        this.initialData = this.currentApp.status.initialData
-      } else {
-        console.log('空白文件');
-      }
+// import PDFJS from 'pdfjs-dist'
+export default {
+  data() {
+    return {
+      // isLoaded: false
     }
-  };
+  },
+  props: ['currentApp'],
+  computed: {},
+  components: {},
+  mounted() {
+    //
+    if (this.currentApp.status.initialData != undefined) {
+      this.initialData = this.currentApp.status.initialData
+    } else {
+      console.log('空白文件')
+    }
+  },
+}
 </script>
