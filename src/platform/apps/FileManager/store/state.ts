@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-03 23:15:09
+ * @LastEditTime: 2020-05-08 14:21:08
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\store\state.ts
@@ -17,7 +17,7 @@ export default {
   //     totalSize: '50K', //当前路径下所有文件的总大小
   //     files: [
   //       {
-  //         key: 0, // antDesign table需要key值
+  //         key: 0, //antD中的table需要
   //         type: '-'||'d'||'p'||'l'||'b'||'c'||'s', // 普通文件||目录文件||管理文件||链接文件||块设备文件||字符设备文件||套接字文件
   //         ownerAuth: 'rwx',
   //         groupAuth: 'rwx',

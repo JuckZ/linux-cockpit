@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-07 16:32:59
+ * @LastEditTime: 2020-05-08 16:23:24
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -61,20 +61,25 @@ function downloadFile(remotePath, localPath, then) {
 
 // 运行脚本
 function execUploadScript(script, originPayload) {
-  console.log(script);
+  console.log('准备运行命令：'+script);
+  let res = ''
   conn.exec(script, function (err, stream) {
+    
     if (err) throw err;
     stream.on('close', function () {
       // conn.end();
     }).on('data', function (data) {
+      res += data.toString()
+    }).on('end', () => {
+      console.log('===============JUCK===============');
       mySocket.emit(originPayload.target + 'ScriptRes', {
-        chunk: data.toString(),
+        res: res,
         originPayload: originPayload
       })
-      console.log('=====');
-      console.log(data.toString());
+      console.log(res);
     });
   })
+  
 }
 
 // 
@@ -184,6 +189,23 @@ function userManagerHanlder(payload) {
     }
   }
 }
+
+function taskManagerHandler(payload) {
+  let script = ''
+  switch(payload.options.operation) {
+    case 'setTasks':
+      script = 'ps aux'
+      execUploadScript(script, payload)
+      break
+    case 'stopTask':
+      script = 'kill ' + payload.options.task.pid
+      execUploadScript(script, payload)
+      break
+    default:
+      console.log('no operation with taskManager');
+      
+  }
+}
 const initSocket = socket => {
   mySocket = socket
   // 创建shell
@@ -261,8 +283,11 @@ myBUS.on('uploadScript', payload => {
     case 'userManager':
       userManagerHanlder(payload)
       break
+    case 'taskManager':
+      taskManagerHandler(payload)
+      break
     default:
-      console.log();
+      console.log('no target');
   }
 
   // script = 'curl https://raw.githubusercontent.com/JuckZ/linux-scripts/master/FileManager/main.sh | sh'

@@ -518,7 +518,7 @@ export default {
                 case 'pptx':
                 case 'xls':
                 case 'xlsx':
-                  previewUrl = 'https://view.officeapps.live.com/op/view.aspx?src='+payload.chunk
+                  previewUrl = 'https://view.officeapps.live.com/op/view.aspx?src='+payload.res
                   this.runApp({
                       app: this.apps.filter((app) => {
                         return app.componentName == 'OfficeOnline'
@@ -614,7 +614,7 @@ export default {
     // 处理打开目录的返回值结果
     parseOpenDirRes(payload) {
       // 处理结果
-      const resultLines = payload.chunk.trim().split('\n')
+      const resultLines = payload.res.trim().split('\n')
       const files = []
       for (let i = 1; i < resultLines.length; i++) {
         // 将每个结果的数组表示push到数组中，形成二维数组

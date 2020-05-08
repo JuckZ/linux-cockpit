@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-07 16:32:27
+ * @LastEditTime: 2020-05-08 11:53:04
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\UserManager\Index.vue
@@ -115,7 +115,7 @@ export default {
         case 'deleteUser':
         case 'addUser': {
            // FIXME deleteUser 暂时也是通过linux获取删除后的用户名单
-          const resultLines = payload.chunk.trim().split('\n')
+          const resultLines = payload.res.trim().split('\n')
           const users = []
           for (let i = 1; i < resultLines.length; i++) {
             const userItemProperties = resultLines[i].trim().split(/\s+/)

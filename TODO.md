@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-07 13:30:55
+ * @LastEditTime: 2020-05-07 18:50:31
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -62,9 +62,10 @@ TAG TODO now
 
 ### 资源监视器
 
-1. 专门看系统信息的文件夹（动态更新）
-2. Zabbix 用来监控系统
-3. echats数据动态展示（系统内存、CPU等信息实时展示）
+1. i3-bar等实时状态栏
+2. 专门看系统信息的文件夹（动态更新）
+3. Zabbix 用来监控系统
+4. echats数据动态展示（系统内存、CPU等信息实时展示）
 
 ### 设置中心
 
@@ -121,6 +122,8 @@ TAG TODO now
 ### 便签
 
 ### 滴答清单
+
+### 闹钟
 
 ### 音乐播放器
 
@@ -190,3 +193,4 @@ mkdir Pictures Public Videos Music Downloads Documents Desktop .transh
 https://transfer.sh/
 https://view.officeapps.live.com/op/view.aspx?src=http://storage.xuetangx.com/public_assets/xuetangx/PDF/1.xls
 https://docs.google.com/viewer?url="fileurl"
+学习https://cockpit-project.org/guide/latest/的思想

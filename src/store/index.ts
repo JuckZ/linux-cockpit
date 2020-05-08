@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-07 13:23:39
+ * @LastEditTime: 2020-05-08 13:34:10
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\store\index.ts
@@ -24,6 +24,7 @@ import pictureViewer from '@/platform/apps/PictureViewer/store/'
 import config from '@/platform/apps/Config/store/'
 import userManager from '@/platform/apps/UserManager/store/'
 import systemInformation from '@/platform/apps/SystemInformation/store/'
+import taskManager from '@/platform/apps/TaskManager/store/'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -41,6 +42,7 @@ export default new Vuex.Store({
     config: config.store,
     pictureViewer: pictureViewer.store,
     userManager: userManager.store,
-    systemInformation: systemInformation.store
+    systemInformation: systemInformation.store,
+    taskManager: taskManager.store,
   },
 })
