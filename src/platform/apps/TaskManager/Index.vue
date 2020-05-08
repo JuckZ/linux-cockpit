@@ -2,6 +2,11 @@
   <a-table
     :data-source="tasks"
     :columns="columns"
+    :pagination="{
+      pageSize: 8,
+      position: 'bottom',
+    }"
+    size="middle"
     :rowKey="(record) => record.pid"
   >
     <div
@@ -49,15 +54,18 @@
       :style="{ color: filtered ? '#108ee9' : undefined }"
     />
     <span slot="action" slot-scope="record">
-      <a-button @click="
-      socket.emit('uploadScript', {
-        target: 'taskManager',
-        options: {
-          operation: 'stopTask',
-          task: record
-        }
-      })
-      ">终止进程</a-button>
+      <a-button
+        @click="
+          socket.emit('uploadScript', {
+            target: 'taskManager',
+            options: {
+              operation: 'stopTask',
+              task: record,
+            },
+          })
+        "
+        >终止进程</a-button
+      >
     </span>
     <template slot="customRender" slot-scope="text, record, index, column">
       <span v-if="searchText && searchedColumn === column.dataIndex">
@@ -78,6 +86,10 @@
       <template v-else>
         {{ text }}
       </template>
+    </template>
+    <template slot="customCommandRender" slot-scope="command">
+      <!-- TODO 一个卡片，鼠标停留之后会展示整条命令的信息，否则按照长度打省略号 -->
+      <span class="commandText">{{ command }}</span>
     </template>
   </a-table>
 </template>
@@ -187,7 +199,7 @@ export default {
           scopedSlots: {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
-            customRender: 'customRender',
+            customRender: 'customCommandRender',
           },
           onFilter: (value, record) =>
             record.command
@@ -245,7 +257,7 @@ export default {
               start: taskItemProperties[8],
               time: taskItemProperties[9],
               // TODO将命令处理一下，控制显示长度
-              command: taskItemProperties.slice(10).toString(),
+              command: taskItemProperties.slice(10).join(' ')
             }
             tasks.push(taskItem)
           }
@@ -289,9 +301,16 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .highlight {
   background-color: rgb(255, 192, 105);
   padding: 0px;
+}
+.commandText {
+  white-space: nowrap; /*强制span不换行*/
+  display: inline-block; /*将span当做块级元素对待*/
+  width: 100px; /*限制宽度 可设px*/
+  overflow: hidden; /*超出宽度部分隐藏*/
+  text-overflow: ellipsis; /*超出部分以点号代替*/
 }
 </style>
