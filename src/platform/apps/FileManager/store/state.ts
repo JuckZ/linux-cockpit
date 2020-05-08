@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-08 14:21:08
+ * @LastEditTime: 2020-05-09 00:10:10
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\FileManager\store\state.ts
@@ -149,9 +149,9 @@ export default {
       ],
     },
     mp3: {
-      previewer: 'MusicPlayer',
+      previewer: 'AudioPlayer',
       launchers: [
-        'MusicPlayer'
+        'AudioPlayer'
       ],
       icon: '',
       specialContextMenu: [

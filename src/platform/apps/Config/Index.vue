@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-05-07 11:21:11
+ * @LastEditTime: 2020-05-09 00:22:15
  * @LastEditors: Juck
  * @Description: 用于创建app、配置登录信息等操作
  * @FilePath: \linux-cockpit\src\platform\apps\Config\Index.vue
@@ -121,6 +121,8 @@ export default {
       [14, 'pictureViewer', '图片查看器', 'PictureViewer', '@/platform/apps/PictureViewer', '/assets/apps/PictureViewer/logo.png', true, false, false, false, true, false, 'fullscreen', false, 40, 40, 1200, 800, 'V0.0.1', 'Juck'],
       [15, 'userManager', '用户管理器', 'UserManager', '@/platform/apps/UserManager', '/assets/apps/UserManager/logo.png', true, false, false, false, true, false, 'default', false, 340, 40, 800, 600, 'V0.0.1', 'Juck'],
       [16, 'systemInformation', '系统信息', 'SystemInformation', '@/platform/apps/SystemInformation', '/assets/apps/SystemInformation/logo.png', true, false, false, false, true, false, 'default', false, 340, 40, 800, 600, 'V0.0.1', 'Juck'],
+      [17, 'videoPlayer', '视频播放器', 'VideoPlayer', '@/platform/apps/VideoPlayer', '/assets/apps/VideoPlayer/logo.png', true, false, false, false, true, false, 'default', false, 340, 40, 800, 500, 'V0.0.1', 'Juck'],
+      [18, 'audioPlayer', '音频播放器', 'AudioPlayer', '@/platform/apps/AudioPlayer', '/assets/apps/AudioPlayer/logo.png', true, false, false, false, true, false, 'default', false, 340, 40, 800, 200, 'V0.0.1', 'Juck'],
     ]
     for( const item of appsParameter) {
       apps.push(new App(...item))

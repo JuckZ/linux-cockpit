@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-08 16:23:24
+ * @LastEditTime: 2020-05-09 00:06:07
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -61,10 +61,10 @@ function downloadFile(remotePath, localPath, then) {
 
 // 运行脚本
 function execUploadScript(script, originPayload) {
-  console.log('准备运行命令：'+script);
+  console.log('准备运行命令：' + script);
   let res = ''
   conn.exec(script, function (err, stream) {
-    
+
     if (err) throw err;
     stream.on('close', function () {
       // conn.end();
@@ -79,7 +79,7 @@ function execUploadScript(script, originPayload) {
       console.log(res);
     });
   })
-  
+
 }
 
 // 
@@ -129,18 +129,16 @@ function fileManagerHanlder(payload) {
             case 'jpg':
             case 'jpeg':
             case 'img':
+            case 'mp3':
+            case 'mp4':
               downloadFile(payload.options.currentStatus.srcDir + '/' + target.name, localDir, (err, result = 'noResult') => {
+                console.log('here');
+                
                 mySocket.emit('fileManagerScriptRes', {
                   fileSrc: 'http://localhost/downloads/' + target.name,
                   originPayload: payload
                 })
               })
-              break
-            case 'mp3':
-              console.log('调用音乐播放器')
-              break
-            case 'mp4':
-              console.log('调用视频播放器')
               break
             default:
               console.log('暂时不支持此类型文件的预览')
@@ -192,7 +190,7 @@ function userManagerHanlder(payload) {
 
 function taskManagerHandler(payload) {
   let script = ''
-  switch(payload.options.operation) {
+  switch (payload.options.operation) {
     case 'setTasks':
       script = 'ps aux'
       execUploadScript(script, payload)
@@ -203,7 +201,7 @@ function taskManagerHandler(payload) {
       break
     default:
       console.log('no operation with taskManager');
-      
+
   }
 }
 const initSocket = socket => {

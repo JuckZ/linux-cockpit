@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-07 11:34:39
+ * @LastEditTime: 2020-05-08 23:45:35
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -34,6 +34,8 @@ import PDFViewer from '@/platform/apps/PDFViewer/Index.vue'
 import PictureViewer from '@/platform/apps/PictureViewer/Index.vue'
 import UserManager from '@/platform/apps/UserManager/Index.vue'
 import SystemInformation from '@/platform/apps/SystemInformation/Index.vue'
+import AudioPlayer from '@/platform/apps/AudioPlayer/Index.vue'
+import VideoPlayer from '@/platform/apps/VideoPlayer/Index.vue'
 
 // 导入antDesign组件
 import {
@@ -126,6 +128,8 @@ Vue.component('PDFViewer', PDFViewer)
 Vue.component('PictureViewer', PictureViewer)
 Vue.component('UserManager', UserManager)
 Vue.component('SystemInformation', SystemInformation)
+Vue.component('AudioPlayer', AudioPlayer)
+Vue.component('VideoPlayer', VideoPlayer)
 
 Vue.config.productionTip = false
 // // 产生apollo客户端实例对象

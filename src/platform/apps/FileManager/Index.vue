@@ -483,12 +483,11 @@ export default {
               // 根据文件后缀用不同的预览器打开
               // 先判断是否有相应可以使用的预览器
               let previewUrl = ''
-              switch (
-                target.name
-                  .split('.')
-                  .pop()
-                  .toLowerCase()
-              ) {
+              const ext = target.name
+                .split('.')
+                .pop()
+                .toLowerCase()
+              switch (ext) {
                 case 'txt':
                   this.axios.get(payload.fileSrc).then((res) => {
                     this.runApp({
@@ -496,21 +495,21 @@ export default {
                         return app.componentName == 'TextEditor'
                       })[0],
                       options: {
-                        initialData: res.data
-                      }
+                        initialData: res.data,
+                      },
                     })
                   })
                   break
                 case 'pdf':
                   previewUrl = payload.fileSrc
                   this.runApp({
-                      app: this.apps.filter((app) => {
-                        return app.componentName == 'PDFViewer'
-                      })[0],
-                      options: {
-                        initialData: previewUrl
-                      }
-                    })
+                    app: this.apps.filter((app) => {
+                      return app.componentName == 'PDFViewer'
+                    })[0],
+                    options: {
+                      initialData: previewUrl,
+                    },
+                  })
                   break
                 case 'doc':
                 case 'docx':
@@ -518,41 +517,57 @@ export default {
                 case 'pptx':
                 case 'xls':
                 case 'xlsx':
-                  previewUrl = 'https://view.officeapps.live.com/op/view.aspx?src='+payload.res
+                  previewUrl =
+                    'https://view.officeapps.live.com/op/view.aspx?src=' +
+                    payload.res
                   this.runApp({
-                      app: this.apps.filter((app) => {
-                        return app.componentName == 'OfficeOnline'
-                      })[0],
-                      options: {
-                        initialData: previewUrl
-                      }
-                    })
+                    app: this.apps.filter((app) => {
+                      return app.componentName == 'OfficeOnline'
+                    })[0],
+                    options: {
+                      initialData: previewUrl,
+                    },
+                  })
                   break
                 case 'png':
                 case 'jpg':
                 case 'jpeg':
-                case 'img':
+                case 'mp3':
+                case 'mp4':
                   previewUrl = payload.fileSrc
-                  // 先将图片路径添加到data中
+                  if(ext == 'png' || ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                    // 先将图片路径添加到data中
                   this.addPictures({
                     options: {
-                      pictures: [previewUrl]
-                    }
+                      pictures: [previewUrl],
+                    },
                   })
+                  } else if(ext == 'mp3') {
+                    this.addAudios({
+                    options: {
+                      audios: [previewUrl],
+                    },
+                  })
+                  } else if(ext == 'mp4') {
+                    this.addVideos({
+                    options: {
+                      videos: [previewUrl],
+                    },
+                  })
+                  }
+                  console.log(this.apps.filter((app) => {
+                      return app.componentName == this.fileTypes[ext].previewer
+                    })[0]);
+                  
                   this.runApp({
-                      app: this.apps.filter((app) => {
-                        return app.componentName == 'PictureViewer'
-                      })[0],
-                      options: {
-                        initialData: previewUrl
-                      }
-                    })
-                  break
-                case 'mp3':
-                  console.log('调用音乐播放器')
-                  break
-                case 'mp4':
-                  console.log('调用视频播放器')
+                    app: this.apps.filter((app) => {
+                      // return app.componentName == 'PictureViewer'
+                      return app.componentName == this.fileTypes[ext].previewer
+                    })[0],
+                    options: {
+                      initialData: previewUrl,
+                    },
+                  })
                   break
                 default:
                   console.log('暂时不支持此类型文件的预览')
@@ -589,6 +604,8 @@ export default {
       setTab: 'fileManager/setTab',
       runApp: 'config/runApp',
       addPictures: 'pictureViewer/addPictures',
+      addAudios: 'audioPlayer/addAudios',
+      addVideos: 'videoPlayer/addVideos'
     }),
     onSearch(val) {
       console.log(val)

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-05-07 10:01:20
+ * @LastEditTime: 2020-05-09 00:11:39
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -56,6 +56,7 @@ export default {
     },
     // 运行app
     runApp: (state: any, payload: any) => {
+        console.info(payload)
         state.apps[payload.app.id].status.running = true
         state.apps[payload.app.id].status.show = true
         state.focusAppID = payload.app.id
