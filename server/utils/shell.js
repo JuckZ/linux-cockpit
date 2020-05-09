@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-09 00:06:07
+ * @LastEditTime: 2020-05-09 10:04:37
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -204,6 +204,20 @@ function taskManagerHandler(payload) {
 
   }
 }
+
+function systemInformationHandler(payload) {
+  let script = ''
+  switch(payload.options.operation) {
+    case 'setMemStatus':
+      script = 'free'
+      execUploadScript(script, payload)
+      break
+    case 'setCpuStatus':
+      script = 'top -bn 1 -i -c'
+      execUploadScript(script, payload)
+      break
+  }
+}
 const initSocket = socket => {
   mySocket = socket
   // 创建shell
@@ -283,6 +297,9 @@ myBUS.on('uploadScript', payload => {
       break
     case 'taskManager':
       taskManagerHandler(payload)
+      break
+    case 'systemInformation':
+      systemInformationHandler(payload)
       break
     default:
       console.log('no target');
