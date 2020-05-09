@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-05-07 11:18:56
- * @LastEditTime: 2020-05-09 14:41:23
+ * @LastEditTime: 2020-05-09 14:43:31
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\SystemInformation\store\mutations.ts

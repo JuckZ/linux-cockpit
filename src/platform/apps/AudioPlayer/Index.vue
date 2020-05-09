@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-09 00:17:19
+ * @LastEditTime: 2020-05-09 14:47:09
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AudioPlayer\Index.vue
@@ -10,7 +10,7 @@
 <template>
   <div>
     
-    <audio class="audioPlayer" controls>
+    <audio class="audioPlayer" autoplay controls>
       <source :src="currentApp.status.initialData" type="audio/mp3">
     您的浏览器不支持 audio 元素。
     </audio>
