@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-05-07 11:18:56
- * @LastEditTime: 2020-05-09 12:16:23
+ * @LastEditTime: 2020-05-09 14:41:23
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\SystemInformation\store\mutations.ts
@@ -28,24 +28,22 @@ export default {
     }
   },
   setMemStatus: ( state: any, payload: any) => {
-    console.info(payload.options.memUsage)
     if(state.memStatus.length < 5) {
       state.memStatus.push(payload.options.memUsage)
     } else {
-      const temp = state.memStatus.slice(1)
-      console.log(temp);
-      
+      // FIXME 此处使用setCpuMemStatus同样的方法会遇到错误，即slice(1)截取的是最后一个元素
+      const temp = state.memStatus
+      temp.shift(1)
       temp.push(payload.options.memUsage)
-      state.memUsage = temp
-      console.log(temp);
-      
+      state.memUsage = temp      
     }
   },
   setTimeInTheMemState: ( state: any, payload: any) => {
     if(state.timeInTheMemState.length < 5) {
       state.timeInTheMemState.push(payload.options.time)
     } else {
-      const temp = state.timeInTheMemState.slice(1)
+      const temp = state.timeInTheMemState
+      temp.shift(1)
       temp.push(payload.options.time)
       state.timeInTheMemState = temp
     }

@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-05-07 11:18:56
- * @LastEditTime: 2020-05-09 11:59:53
+ * @LastEditTime: 2020-05-09 14:29:20
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\SystemInformation\Index.vue
@@ -47,14 +47,14 @@ export default {
     cpu: function() {
       return {
         title: {
-          text: '15分钟CPU平均负载',
+          text: 'CPU使用率',
           left: 'center'
         },
         tooltip: {},
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['CPU平均负载']
+          data: ['CPU使用率(%)']
         },
         xAxis: {
           name: '时间',
@@ -67,7 +67,7 @@ export default {
         },
         series: [
           {
-            name: 'CPU使用率',
+            name: 'CPU使用率(%)',
             type: 'line',
             data: this.cpuStatus
           }
@@ -85,7 +85,7 @@ export default {
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['内存使用率'],
+          data: ['内存使用率(%)'],
           show: false
         },
         xAxis: {
@@ -99,7 +99,7 @@ export default {
         },
         series: [
           {
-            name: '内存使用率',
+            name: 'CPU使用率(%)',
             type: 'line',
             data: this.memStatus
           }
@@ -148,10 +148,9 @@ export default {
         case 'setCpuStatus': {
           const resultLines =  payload.res.trim().split('\n')
           let cpuUsage = 0 //cpu占用率
-          
           if(resultLines.length >= 8) {
             for( let i = 7; i < resultLines.length; i++) {
-              cpuUsage += parseInt(parseFloat(resultLines[i].trim().split(/\s+/)[8]))
+              cpuUsage += parseFloat(resultLines[i].trim().split(/\s+/)[8])
             }
           } else {
             // 使用率为0
