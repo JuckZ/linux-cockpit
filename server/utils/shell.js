@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-09 10:04:37
+ * @LastEditTime: 2020-05-09 20:57:57
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -218,6 +218,26 @@ function systemInformationHandler(payload) {
       break
   }
 }
+
+function appStoreHandler(payload) {
+  let script = ''
+  switch(payload.options.operation) {
+    case 'installSoftware': {
+      switch(payload.options.app.name) {
+        case 'docker':
+          script = 'yum -y install ' + payload.options.app.name
+          execUploadScript(script, payload)
+          break
+        default:
+          console.log('There not exists a way to install ' + payload.options.app.name);
+      }
+      break
+    }
+    default:
+      script = ''
+  }
+}
+
 const initSocket = socket => {
   mySocket = socket
   // 创建shell
@@ -300,6 +320,9 @@ myBUS.on('uploadScript', payload => {
       break
     case 'systemInformation':
       systemInformationHandler(payload)
+      break
+    case 'appStore':
+      appStoreHandler(payload)
       break
     default:
       console.log('no target');

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-05-09 08:50:56
+ * @LastEditTime: 2020-05-09 18:21:09
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\mutations.ts
@@ -11,6 +11,9 @@ export default {
     // initApps初始化所有的app
     initApps: (state: any, payload: any) => {
         state.apps = payload
+    },
+    initLinuxApps: (state: any, payload: any) => {
+        state.linuxApps = payload
     },
     // 修改app的位置信息
     // TODO 需要对尺寸和位置加以限制

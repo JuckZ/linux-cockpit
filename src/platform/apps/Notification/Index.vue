@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-04-30 11:23:17
+ * @LastEditTime: 2020-05-09 21:41:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Notification\Index.vue
@@ -20,8 +20,9 @@
       :visible="visible"
       :afterVisibleChange="afterVisibleChange"
     >
-      <p>启动成功！2020年4月30日 11：20</p>
-      <p>登录成功！2020年4月30日 11：22</p>
+      <p v-for="notification in notifications" :key="notification.id">
+        {{notification.text}}
+      </p>
     </a-drawer>
   </div>
 </template>
@@ -41,13 +42,22 @@
   }
 </style>
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
       visible: false,
     };
   },
+  computed: {
+    ...mapState('notification', {
+      notifications: 'notifications'
+    })
+  },
   methods: {
+    ...mapActions({
+      removeNotification: 'notification/removeNotification'
+    }),
     afterVisibleChange(val) {
       console.log('visible', val);
     },

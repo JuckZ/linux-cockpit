@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-08 23:46:32
+ * @LastEditTime: 2020-05-09 21:33:56
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\store\index.ts
@@ -27,6 +27,7 @@ import systemInformation from '@/platform/apps/SystemInformation/store/'
 import taskManager from '@/platform/apps/TaskManager/store/'
 import audioPlayer from '@/platform/apps/AudioPlayer/store/'
 import videoPlayer from '@/platform/apps/VideoPlayer/store/'
+import notification from '@/platform/apps/Notification/store/'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -48,5 +49,6 @@ export default new Vuex.Store({
     taskManager: taskManager.store,
     audioPlayer: audioPlayer.store,
     videoPlayer: videoPlayer.store,
+    notification: notification.store
   },
 })

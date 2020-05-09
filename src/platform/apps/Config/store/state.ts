@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-05-03 16:26:28
+ * @LastEditTime: 2020-05-09 17:59:53
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -68,6 +68,7 @@ export default {
    *    author: app的作者
    */
   apps: [],
+  linuxApps: [],
   // 当前focus的app
   currentFocusAppID: -1,
   // 用户头像等信息

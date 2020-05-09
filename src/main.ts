@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-09 08:28:10
+ * @LastEditTime: 2020-05-09 15:54:14
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -63,7 +63,8 @@ import {
   Spin,
   Divider,
   List,
-  Avatar
+  Avatar,
+  Card
 } from 'ant-design-vue'
 
 Vue.prototype.$notification = notification
@@ -108,6 +109,8 @@ Vue.component('a-list', List)
 Vue.component('a-list-item', List.Item)
 Vue.component('a-list-item-meta', List.Item.Meta)
 Vue.component('a-avatar', Avatar)
+Vue.component('a-card', Card)
+Vue.component('a-card-meta', Card.Meta)
 
 // 注册自定义组件
 Vue.component('Login', Login)

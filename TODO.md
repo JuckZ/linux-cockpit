@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-21 13:14:41
- * @LastEditTime: 2020-05-07 18:50:31
+ * @LastEditTime: 2020-05-09 17:48:28
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\TODO.md
@@ -65,7 +65,6 @@ TAG TODO now
 1. i3-bar等实时状态栏
 2. 专门看系统信息的文件夹（动态更新）
 3. Zabbix 用来监控系统
-4. echats数据动态展示（系统内存、CPU等信息实时展示）
 
 ### 设置中心
 
@@ -92,7 +91,7 @@ TAG TODO now
 1. 显示隐藏文件
 2. 预览会自动将文件下载到临时目录下，如果后面点击下载，则直接保存这个已经下载的目录，提供清理缓存的功能
 3. 菜单收起
-4. dplayer
+4. dplayer vue-video-player
 5. 回收站的清空和还原
 6. 添加和删除标签页
 
@@ -137,12 +136,13 @@ TAG TODO now
 
 ### 核心
 
-1. 端口占用问题
-2. 权限问题，执行了没有root权限的root命令  cd  sudo su都不能执行
-3. 新的思路：sh + curl(获取的在线脚本，因为可以实时更新)
-4. 同个软件可以多开
-5. i18N
-6. shell部分可以尝试使用命名空间区别是那个app发送的命令
+1. 窗口向下滚动
+2. 端口占用问题
+3. 权限问题，执行了没有root权限的root命令  cd  sudo su都不能执行
+4. 新的思路：sh + curl(获取的在线脚本，因为可以实时更新)
+5. 同个软件可以多开
+6. i18N
+7. shell部分可以尝试使用命名空间区别是那个app发送的命令
 
 ### 其他
 

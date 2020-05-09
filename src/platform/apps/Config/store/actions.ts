@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-10 10:49:58
- * @LastEditTime: 2020-05-07 10:04:09
+ * @LastEditTime: 2020-05-09 18:23:29
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\actions.ts
@@ -11,6 +11,9 @@ export default {
     // 创建app
     initApps: (context: any, payload: any) => {
         context.commit('initApps', payload)
+    },
+    initLinuxApps: (context: any, payload: any) => {
+        context.commit('initLinuxApps', payload)
     },
     // 修改app的位置
     setAppStatusPosition: (context: any, payload: any) => {

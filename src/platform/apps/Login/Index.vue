@@ -108,8 +108,7 @@ import BUS from '@/platform/bus'
 import { mapState, mapActions } from 'vuex'
 export default {
   data() {
-    return {
-    }
+    return {}
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_login' })
@@ -131,7 +130,10 @@ export default {
     }),
     ...mapState('config', {
       apps: 'apps',
-    })
+    }),
+    ...mapState('notification', {
+      notifications: 'notifications',
+    }),
   },
   methods: {
     ...mapActions({
@@ -140,6 +142,7 @@ export default {
       setAppStatus: 'config/setAppStatus',
       runApp: 'config/runApp',
       shutdownApp: 'config/shutdownApp',
+      addNotification: 'notification/addNotification',
     }),
     // 上传私钥
     uploadPrivateKey(info) {
@@ -183,6 +186,17 @@ export default {
               // 存储登录信息(isLogined,userInfo)
               sessionStorage.setItem('isLogined', true)
               sessionStorage.setItem('userInfo', JSON.stringify(values))
+              const now = new Date()
+              this.addNotification({
+                options: {
+                  notification: {
+                    id: this.notifications.length,
+                    text:
+                      now.getHours() + ':' + now.getMinutes() + '————登录成功',
+                    target: 'login',
+                  },
+                },
+              })
             }
           })
         }

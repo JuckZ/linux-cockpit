@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-12 09:39:39
- * @LastEditTime: 2020-05-09 09:19:43
+ * @LastEditTime: 2020-05-09 18:26:35
  * @LastEditors: Juck
  * @Description: 用于创建app、配置登录信息等操作
  * @FilePath: \linux-cockpit\src\platform\apps\Config\Index.vue
@@ -100,15 +100,29 @@ export default {
         return this.status.position
       }
     }
+    class LinuxApp {
+      constructor(
+        id,
+        name,
+        chineseName,
+        imgSrc
+      ) {
+        this.id = id
+        this.name = name
+        this.chineseName = chineseName
+        this.imgSrc = imgSrc
+      }
+    }
     // 创建apps并存入到vuex中
     const apps = []
+    const linuxApps = []
     // 创建apps要用到的参数
     const appsParameter = [
       [0, 'login', '登录', 'Login', '@/platform/apps/Login', '/assets/apps/Login/logo.png', true, false, false, false, true, false, 'default', false, 360, 60, 800, 400, 'V0.0.1', 'Juck'],
       [1, 'shell', '终端', 'Shell', '@/platform/apps/Shell', '/assets/apps/Shell/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 800, 500, 'V0.0.1', 'Juck'],
       [2, 'fileManager', '文件管理器', 'FileManager', '@/platform/apps/FileManager', '/assets/apps/FileManager/logo.png', true, true, true, false, true, false, 'default', false, 260, 60, 900, 620, 'V0.0.1', 'Juck'],
       [3, 'taskManager', '任务管理器', 'TaskManager', '@/platform/apps/TaskManager', '/assets/apps/TaskManager/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 600, 600, 'V0.0.1', 'Juck'],
-      [4, 'appStore', '应用市场', 'AppStore', '@/platform/apps/AppStore', '/assets/apps/AppStore/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
+      [4, 'appStore', '应用市场', 'AppStore', '@/platform/apps/AppStore', '/assets/apps/AppStore/logo.png', true, true, true, false, true, false, 'fullscreen', false, 0, 0, 1400, 1400, 'V0.0.1', 'Juck'],
       [5, 'personalCenter', '个人中心', 'PersonalCenter', '@/platform/apps/PersonalCenter', '/assets/apps/PersonalCenter/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [6, 'systemSettings', '系统设置', 'SystemSettings', '@/platform/apps/SystemSettings', '/assets/apps/SystemSettings/logo.png', true, true, true, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
       [7, 'weather', '天气', 'Weather', '@/platform/apps/Weather', '/assets/apps/Weather/logo.png', true, true, false, false, true, false, 'default', false, 60, 60, 400, 400, 'V0.0.1', 'Juck'],
@@ -124,15 +138,33 @@ export default {
       [17, 'videoPlayer', '视频播放器', 'VideoPlayer', '@/platform/apps/VideoPlayer', '/assets/apps/VideoPlayer/logo.png', true, false, false, false, true, false, 'default', false, 340, 40, 800, 500, 'V0.0.1', 'Juck'],
       [18, 'audioPlayer', '音频播放器', 'AudioPlayer', '@/platform/apps/AudioPlayer', '/assets/apps/AudioPlayer/logo.png', true, false, false, false, true, false, 'default', false, 340, 40, 800, 200, 'V0.0.1', 'Juck'],
     ]
+    const linuxAppsParameter = [
+      [0, 'docker', 'Docker', '/assets/apps/AppStore/apps/docker.99.0.0.png'],
+      [1, '7-zip', '7-ZIP', '/assets/apps/AppStore/apps/7zip.install.19.0.svg'],
+      [2, 'apache', 'Apache', '/assets/apps/AppStore/apps/apache-httpd.2.4.43.png'],
+      [3, 'git', 'Git', '/assets/apps/AppStore/apps/git.install.2.26.2.svg'],
+      [4, 'java', 'JAVA', '/assets/apps/AppStore/apps/jre8.8.0.251.svg'],
+      [5, 'mongodb', 'MongoDB', '/assets/apps/AppStore/apps/mongodb.4.2.6.png'],
+      [6, 'mysql', 'MySQL', '/assets/apps/AppStore/apps/mysql-odbc.5.3.12.png'],
+      [7, 'nginx', 'Nginx', '/assets/apps/AppStore/apps/nginx.1.17.10.png'],
+      [8, 'node', 'Node', '/assets/apps/AppStore/apps/nodejs.install.14.2.0.png'],
+      [9, 'python', 'Python', '/assets/apps/AppStore/apps/python3.3.8.2.svg'],
+      [10, 'tomcat', 'Tomcat', '/assets/apps/AppStore/apps/Tomcat.9.0.34.png'],
+      [11, 'vim', 'Vim', '/assets/apps/AppStore/apps/vim.8.2.0705.svg']
+    ]
     for( const item of appsParameter) {
       apps.push(new App(...item))
     }
     this.initApps(apps)
+    for( const item of linuxAppsParameter) {
+      linuxApps.push(new LinuxApp(...item))
+    }
+    this.initLinuxApps(linuxApps)
   },
   methods: {
-    //   
     ...mapActions({
-      initApps: 'config/initApps'
+      initApps: 'config/initApps',
+      initLinuxApps: 'config/initLinuxApps',
     })
   },
 }
