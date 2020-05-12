@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-05-07 11:18:56
- * @LastEditTime: 2020-05-09 14:29:20
+ * @LastEditTime: 2020-05-10 00:12:41
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\SystemInformation\Index.vue
@@ -78,14 +78,14 @@ export default {
       return {
         title: {
           left: 'center',
-          text: '内存使用率',
+          text: '内存使用量',
           show: true
         },
         tooltip: {},
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['内存使用率(%)'],
+          data: ['内存使用量(%)'],
           show: false
         },
         xAxis: {
@@ -94,12 +94,12 @@ export default {
           data: this.timeInTheMemState //处于对应状态时的时间
         },
         yAxis: {
-          name: '内存使用率(%)',
+          name: '内存使用量(%)',
           nameLocation: 'end',
         },
         series: [
           {
-            name: 'CPU使用率(%)',
+            name: '内存使用量(%)',
             type: 'line',
             data: this.memStatus
           }
@@ -115,13 +115,13 @@ export default {
       this.socket.emit('uploadScript', {
         target: 'systemInformation',
         options: {
-          operation: 'setMemStatus'
+          operation: 'setCpuStatus'
         }
       })
       this.socket.emit('uploadScript', {
         target: 'systemInformation',
         options: {
-          operation: 'setCpuStatus'
+          operation: 'setMemStatus'
         }
       })
     }, timeRangeForGettingSystemResource)
@@ -131,7 +131,7 @@ export default {
         case 'setMemStatus': {
            // 处理返回值
            let memUsage = 0
-           memUsage = Math.round(parseFloat(payload.res.trim().split('\n')[1].split(/\s+/)[2])/1024)
+           memUsage = Math.round(parseFloat(payload.res.trim().split('\n')[1].split(/\s+/)[2])%1000)
           this.setMemStatus({
             options: {
               memUsage

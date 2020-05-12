@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-05-07 11:18:56
- * @LastEditTime: 2020-05-09 14:43:31
+ * @LastEditTime: 2020-05-12 16:42:05
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\SystemInformation\store\mutations.ts
@@ -42,8 +42,7 @@ export default {
     if(state.timeInTheMemState.length < 5) {
       state.timeInTheMemState.push(payload.options.time)
     } else {
-      const temp = state.timeInTheMemState
-      temp.shift(1)
+      const temp = state.timeInTheMemState.slice(1)
       temp.push(payload.options.time)
       state.timeInTheMemState = temp
     }
