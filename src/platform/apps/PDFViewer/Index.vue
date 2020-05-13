@@ -1,22 +1,17 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-07 10:47:26
+ * @LastEditTime: 2020-05-13 10:35:51
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\PDFViewer\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div>
     <iframe class="PDFViewer" :src="currentApp.status.initialData" frameborder="0"></iframe>
-    <!-- <embed :src="currentApp.status.initialData" type="application/pdf" width="100%" height="100%"> -->
-  </div>
 </template>
 <style lang="css">
 .PDFViewer {
-  position: absolute;
-  padding: 5%;
   height: 100%;
   width: 100%;
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-04-02 11:30:46
- * @LastEditTime: 2020-05-09 17:59:53
+ * @LastEditTime: 2020-05-13 11:37:22
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\Config\store\state.ts
@@ -61,6 +61,8 @@ export default {
    *      top: 窗口的纵坐标
    *      width: 窗口宽度
    *      height: 窗口高度
+   *      minHeight: 最小高度
+   *      minWidth: 最小宽度
    *    }
    *    initialData: {} // 初始化数据
    * }

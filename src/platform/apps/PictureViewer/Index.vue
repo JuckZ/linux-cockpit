@@ -1,6 +1,6 @@
 <template>
 <!-- TODO 预览的时候要预览当前图片，也就是说form.view的序号需要时打开的那个序号 -->
-  <div>
+  <div class="pictureViewer">
     <div class="methods">
       <div class="controlBar" v-if="options.inline">
         <a-input-group>
@@ -272,6 +272,9 @@ export default {
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
+.pictureViewer {
+  min-width: 80%;
+}
 .controlBar {
   display: flex;
   flex-wrap: wrap;

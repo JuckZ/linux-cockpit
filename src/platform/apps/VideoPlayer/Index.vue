@@ -1,29 +1,26 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-13 09:18:07
+ * @LastEditTime: 2020-05-13 10:58:26
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\VideoPlayer\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div>
     <video class="videoPlayer" controls>
-      <source :src="currentApp.status.initialData" type="audio/mp3">
-    您的浏览器不支持 video 元素。
+      <source :src="currentApp.status.initialData" type="video/mp4" />
+      您的浏览器不支持 video 元素。
     </video>
-  </div>
 </template>
 <style lang="css">
 .videoPlayer {
   padding: 5%;
-  height: 80%;
+  height: 100%;
   width: 100%;
 }
 </style>
 <script>
-// import PDFJS from 'pdfjs-dist'
 export default {
   data() {
     return {

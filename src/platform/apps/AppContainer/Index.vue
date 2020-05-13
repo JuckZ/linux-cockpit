@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-07 10:06:35
+ * @LastEditTime: 2020-05-13 11:46:12
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AppContainer\Index.vue
@@ -17,38 +17,59 @@
       minimize: currentApp.status.window == 'minimize',
     }"
     :style="{
-      'left': currentApp.positionWithUnit.left,
-      'top': currentApp.positionWithUnit.top,
+      left: currentApp.positionWithUnit.left,
+      top: currentApp.positionWithUnit.top,
       width: currentApp.positionWithUnit.width,
-      height: currentApp.positionWithUnit.height
+      height: currentApp.positionWithUnit.height,
+      minWidth: currentApp.positionWithUnit.minWidth,
+      minHeight: currentApp.positionWithUnit.minHeight
     }"
-    @mousedown="setAppStatusFocus({
-      app: currentApp
-    })"
-    @mouseup.left="setAppStatusPosition({
-      app: currentApp,
-      options: {
-        position: {
-          top: $event.currentTarget.style.top.split(/px/)[0],
-          left: $event.currentTarget.style.left.split(/px/)[0],
-          width: $event.currentTarget.style.width.split(/px/)[0],
-          height: $event.currentTarget.style.height.split(/px/)[0]
-        }
-      }
-    })"
+    @mousedown="
+      setAppStatusFocus({
+        app: currentApp,
+      })
+    "
+    @mouseup="
+    setAppStatusPosition({
+        app: currentApp,
+        options: {
+          position: {
+            top: $event.currentTarget.style.top.split(/px/)[0],
+            left: $event.currentTarget.style.left.split(/px/)[0],
+            width: $event.currentTarget.style.width.split(/px/)[0],
+            height: $event.currentTarget.style.height.split(/px/)[0],
+          },
+        },
+      })
+    "
   >
-    <div @dblclick="toggleAppStatusFullscreen({
-      app: currentApp,
-      options: {}
-    })" class="appTitleBar">
+    <div
+      @dblclick="
+        toggleAppStatusFullscreen({
+          app: currentApp,
+          options: {},
+        })
+      "
+      class="appTitleBar"
+    >
       <span>
         <!-- 标题文字 -->
         <slot name="titleText" />
       </span>
     </div>
     <!-- app组件本身 -->
-    <div class="appContent">
-      <slot :currentApp='currentApp' name="appComponent" />
+    <div
+      class="appContent"
+      :style="{
+        margin: '0 auto',
+        padding: '5px',
+        paddingTop: titleBarHeight + 'px',
+        marginTop: '-' + titleBarHeight + 'px',
+        width: '100%',
+        height: '100%',
+      }"
+    >
+      <slot :currentApp="currentApp" name="appComponent" />
     </div>
   </div>
 </template>
@@ -66,12 +87,11 @@
 }
 .isFocused {
   z-index: 999;
-  background: rgba(255, 255, 255, 0.9)!important;
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 .appContainer {
   position: fixed;
   border-radius: 6px;
-  padding: 5px;
   background: rgba(255, 255, 255, 0.7);
   .appTitleBar {
     width: 100%;
@@ -89,11 +109,7 @@
       }
     }
   }
-  .appContent {
-    // padding: 0px;
-  }
 }
-
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
@@ -103,7 +119,10 @@ export default {
   props: ['currentApp'],
   data() {
     return {
-      //
+      // 边框宽度
+      borderSize: 2,
+      // 标题栏高度
+      titleBarHeight: 28,
     }
   },
   computed: {
@@ -118,8 +137,8 @@ export default {
       setAppStatusPosition: 'config/setAppStatusPosition',
       setAppStatusFocus: 'config/setAppStatusFocus',
       closeMenu: 'menu/closeMenu',
-      toggleAppStatusFullscreen: 'config/toggleAppStatusFullscreen'
+      toggleAppStatusFullscreen: 'config/toggleAppStatusFullscreen',
     }),
-  }
+  },
 }
 </script>

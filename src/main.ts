@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 09:32:42
- * @LastEditTime: 2020-05-09 15:54:14
+ * @LastEditTime: 2020-05-13 11:41:11
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\main.ts
@@ -304,7 +304,7 @@ Vue.directive('drag', function (el, binding) {
         handleDiv(direct, pos, move, limit);
       };
       //取消移动事件
-      document.onmouseup = e => {
+      document.onmouseup = (e: any) => {
         document.onmousemove = null;
       };
     };
