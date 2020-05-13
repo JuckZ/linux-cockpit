@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-12 16:43:01
+ * @LastEditTime: 2020-05-12 18:14:31
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AudioPlayer\Index.vue
@@ -9,7 +9,6 @@
  -->
 <template>
   <div>
-    
     <audio class="audioPlayer" autoplay loop controls>
       <source :src="currentApp.status.initialData" type="audio/mp3">
     您的浏览器不支持 audio 元素。
@@ -18,13 +17,13 @@
 </template>
 <style lang="css">
 .audioPlayer {
-  padding: 5%;
-  height: 100%;
+  position: absolute;
+  display: inline-block;
+  height: 80%;
   width: 100%;
 }
 </style>
 <script>
-// import PDFJS from 'pdfjs-dist'
 export default {
   data() {
     return {

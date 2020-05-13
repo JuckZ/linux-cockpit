@@ -1,3 +1,12 @@
+/*
+ * @Author: Juck
+ * @Date: 2020-03-14 10:02:16
+ * @LastEditTime: 2020-05-13 09:36:09
+ * @LastEditors: Juck
+ * @Description: 
+ * @FilePath: \linux-cockpit\server\electron-main.js
+ * @Juck is coding...
+ */
 /**
  * electron入口文件
  * 创建koa后端服务，将vue打包的页面放入node容器中，首页访问地址假设为ip:port，
@@ -18,8 +27,9 @@ function createWindow () {
   })
 
   // 并且为你的应用加载index.html
-  require("./koa-app")  //导入koa后端入口文件，建立koa服务端
-  win.loadURL('http://localhost')
+  require('./koa-app')  //导入koa后端入口文件，建立koa服务端
+  // TODO 地址需要修改
+  win.loadURL('http://localhost:81')
 
   // 打开开发者工具
   win.webContents.openDevTools()
