@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-14 09:46:58
- * @LastEditTime: 2020-05-14 11:40:39
+ * @LastEditTime: 2020-05-14 16:06:26
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\README.md
@@ -46,7 +46,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 vue create linux-cockpit
 // 注意less版本一定是2.x.x，不然会报错，也可以使用3，但是需要配置
 yarn add less@2.7.3 less-loader node-sass sass-loader electron babel-plugin-import -D //babel-plugin-import 是一个用于按需加载组件代码和样式的 babel 插件
-yarn add ant-design-vue vue-router vuex ssh2 xterm koa koa-static @koa/router koa-views axios vue-axios @koa/cors@2 xterm-addon-attach xterm-addon-fit xterm-addon-search vue2-editor graphql vue-apollo apollo-boost apollo-server-koa socket.io socket.io-client socket.io-stream animate.css koa-jwt@2 jsonwebtoken v-viewer pdfjs-dist echarts vue-aplayer plyr vue-plyr vue-echarts
+yarn add ant-design-vue vue-router vuex ssh2 xterm koa koa-static @koa/router koa-views axios vue-axios @koa/cors@2 xterm-addon-attach xterm-addon-fit xterm-addon-search vue2-editor graphql vue-apollo apollo-boost apollo-server-koa socket.io socket.io-client socket.io-stream animate.css koa-jwt@2 jsonwebtoken v-viewer pdfjs-dist echarts vue-aplayer plyr vue-plyr vue-echarts electron-builder
 vue3安装graphql也可使用vue add apollo
 
 使用 vue-cli 3 的小伙伴，修改babel.config.js文件，配置 babel-plugin-import

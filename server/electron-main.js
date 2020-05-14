@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 10:02:16
- * @LastEditTime: 2020-05-13 09:36:09
+ * @LastEditTime: 2020-05-14 16:01:27
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\electron-main.js
@@ -14,7 +14,7 @@
  * 
  */
 const { app, BrowserWindow, screen } = require('electron')
-
+const path = require('path')
 function createWindow () {   
   // 创建浏览器窗口
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
@@ -29,8 +29,13 @@ function createWindow () {
   // 并且为你的应用加载index.html
   require('./koa-app')  //导入koa后端入口文件，建立koa服务端
   // TODO 地址需要修改
-  win.loadURL('http://localhost:81')
-
+  win.loadURL('http://localhost:80')
+  // 设置空菜单
+  win.setMenu(null)
+  // 设置窗口全屏
+  win.setFullScreen(true)
+  // 设置窗口图标
+  win.setIcon(path.join(__dirname, 'logo.png'))
   // 打开开发者工具
   win.webContents.openDevTools()
 }
