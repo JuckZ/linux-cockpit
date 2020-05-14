@@ -545,7 +545,14 @@ export default {
                   } else if(ext == 'mp3') {
                     this.addAudios({
                     options: {
-                      audios: [previewUrl],
+                      audios: [{
+                        id: payload.id,
+                        artist: payload.artist,
+                        title: payload.title,
+                        pic: payload.pic,
+                        src: payload.src,
+                        lrc: payload.lrc
+                      }],
                     },
                   })
                   } else if(ext == 'mp4') {
@@ -651,7 +658,8 @@ export default {
             day: fileItemProperties[6],
             timeOrYear: fileItemProperties[7],
           },
-          name: fileItemProperties[8],
+          // TODO 有待修改，当名字之间不止一个空格时会有错
+          name: fileItemProperties.slice(8).join(' '),
         }
         files.push(fileItem)
       }

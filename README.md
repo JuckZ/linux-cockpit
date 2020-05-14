@@ -1,7 +1,7 @@
 <!--
  * @Author: Juck
  * @Date: 2020-03-14 09:46:58
- * @LastEditTime: 2020-05-09 08:37:20
+ * @LastEditTime: 2020-05-14 11:40:39
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\README.md
@@ -46,7 +46,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 vue create linux-cockpit
 // 注意less版本一定是2.x.x，不然会报错，也可以使用3，但是需要配置
 yarn add less@2.7.3 less-loader node-sass sass-loader electron babel-plugin-import -D //babel-plugin-import 是一个用于按需加载组件代码和样式的 babel 插件
-yarn add ant-design-vue vue-router vuex ssh2 xterm vue-drag-resize koa koa-static @koa/router koa-views axios vue-axios @koa/cors@2 xterm-addon-attach xterm-addon-fit xterm-addon-search vue2-editor graphql vue-apollo apollo-boost apollo-server-koa socket.io socket.io-client socket.io-stream animate.css koa-jwt@2 jsonwebtoken v-viewer pdfjs-dist echarts vue-echarts
+yarn add ant-design-vue vue-router vuex ssh2 xterm koa koa-static @koa/router koa-views axios vue-axios @koa/cors@2 xterm-addon-attach xterm-addon-fit xterm-addon-search vue2-editor graphql vue-apollo apollo-boost apollo-server-koa socket.io socket.io-client socket.io-stream animate.css koa-jwt@2 jsonwebtoken v-viewer pdfjs-dist echarts vue-aplayer plyr vue-plyr vue-echarts
 vue3安装graphql也可使用vue add apollo
 
 使用 vue-cli 3 的小伙伴，修改babel.config.js文件，配置 babel-plugin-import
@@ -89,6 +89,12 @@ module.exports = {
 2. bing每日壁纸 //TODO 后台定时，自动下载壁纸备用
   https://bing.biturl.top/
 3. 微信网页版 //TODO 组件中嵌入iframe
+4. 音乐相关
+获取歌词 https://music.163.com/api/song/lyric?lv=1&kv=1&tv=-1&id={音乐ID} res.lrc.lyric
+搜索歌曲 http://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&type=1&offset=0&total=true&limit=1&s={歌曲关键字} 其中歌曲id=res.result.songs[0].id 图片=res.result.songs[0].album.artist.img1v1Url
+
+歌曲信息 http://music.163.com/api/song/detail/?id={歌曲ID}&ids=%5B{歌曲ID}%5D 
+
 
 ## 图层
 

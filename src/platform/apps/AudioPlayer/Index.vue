@@ -1,45 +1,53 @@
 <!--
  * @Author: Juck
  * @Date: 2020-04-10 13:13:40
- * @LastEditTime: 2020-05-12 18:14:31
+ * @LastEditTime: 2020-05-14 11:41:51
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\src\platform\apps\AudioPlayer\Index.vue
  * @Juck is coding...
  -->
 <template>
-  <div>
-    <audio class="audioPlayer" autoplay loop controls>
-      <source :src="currentApp.status.initialData" type="audio/mp3">
-    您的浏览器不支持 audio 元素。
-    </audio>
-  </div>
+  <aplayer
+    class="audioPlayer"
+    autoplay
+    theme="pic"
+    shuffle
+    repeat="list"
+    show-lrc
+    :muted.sync="muted"
+    :volume.sync="volume"
+    :music="audios[0]"
+    :list="audios"
+  />
 </template>
 <style lang="css">
-.audioPlayer {
-  position: absolute;
-  display: inline-block;
-  height: 80%;
-  width: 100%;
-}
+/* .audioPlayer {
+  text-align: center;
+} */
 </style>
 <script>
+import Aplayer from 'vue-aplayer'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      // isLoaded: false
+      volume: 1,
+      muted: false,
     }
   },
   props: ['currentApp'],
-  computed: {},
-  components: {},
+  computed: {
+    ...mapState('audioPlayer', {
+      audios: 'audios'
+    })
+  },
+  name: 'App',
+  components: {
+    Aplayer,
+  },
   mounted() {
     //
-    if (this.currentApp.status.initialData != undefined) {
-      this.initialData = this.currentApp.status.initialData
-    } else {
-      console.log('空白文件')
-    }
   },
 }
 </script>

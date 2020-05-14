@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-09 20:57:57
+ * @LastEditTime: 2020-05-14 11:44:39
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -20,6 +20,7 @@ const events = require('events')
 const Client = require('ssh2').Client;
 const fs = require('fs')
 const path = require('path')
+const axios = require('axios')
 let conn = null;
 // 用于表示shell是否准备就绪
 let isReady = false
@@ -129,17 +130,46 @@ function fileManagerHanlder(payload) {
             case 'jpg':
             case 'jpeg':
             case 'img':
-            case 'mp3':
             case 'mp4':
               downloadFile(payload.options.currentStatus.srcDir + '/' + target.name, localDir, (err, result = 'noResult') => {
-                console.log('here');
-                
                 mySocket.emit('fileManagerScriptRes', {
                   fileSrc: 'http://localhost/downloads/' + target.name,
                   originPayload: payload
                 })
               })
               break
+            case 'mp3': {
+              let pic = ''
+              let id = ''
+              const searchMusicUrl = 'http://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&type=1&offset=0&total=true&limit=1&s=' + target.name
+              let getLyricUrl = 'https://music.163.com/api/song/lyric?lv=1&kv=1&tv=-1&id='
+              axios.get(searchMusicUrl).then(res => {
+                id = res.data.result.songs[0].id
+                pic = res.data.result.songs[0].album.artist.img1v1Url
+                getLyricUrl += id
+                axios.get(getLyricUrl).then(res => {
+                  const lyricPath = localDir.split('.')[0] + '.lrc'
+                  // 写入歌词文件
+                  fs.writeFile(lyricPath, res.data.lrc.lyric, err => {
+                    if (err) {
+                      return console.error(err)
+                    }
+                  })
+                })
+              })
+              downloadFile(payload.options.currentStatus.srcDir + '/' + target.name, localDir, (err, result = 'noResult') => {
+                mySocket.emit('fileManagerScriptRes', {
+                  id,
+                  artist: target.name.split(' - ')[0],
+                  title: target.name.split(' - ')[1],
+                  src: 'http://localhost/downloads/' + target.name,
+                  pic,
+                  lrc: ('http://localhost/downloads/' + target.name).split('.')[0] + '.lrc',
+                  originPayload: payload
+                })
+              })
+              break
+            }
             default:
               console.log('暂时不支持此类型文件的预览')
           }
@@ -207,7 +237,7 @@ function taskManagerHandler(payload) {
 
 function systemInformationHandler(payload) {
   let script = ''
-  switch(payload.options.operation) {
+  switch (payload.options.operation) {
     case 'setMemStatus':
       script = 'free'
       execUploadScript(script, payload)
@@ -221,9 +251,9 @@ function systemInformationHandler(payload) {
 
 function appStoreHandler(payload) {
   let script = ''
-  switch(payload.options.operation) {
+  switch (payload.options.operation) {
     case 'installSoftware': {
-      switch(payload.options.app.name) {
+      switch (payload.options.app.name) {
         case 'docker':
           script = 'yum -y install ' + payload.options.app.name
           execUploadScript(script, payload)
