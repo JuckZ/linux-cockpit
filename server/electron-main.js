@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 10:02:16
- * @LastEditTime: 2020-05-14 16:01:27
+ * @LastEditTime: 2020-05-14 18:10:57
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\electron-main.js
@@ -29,7 +29,7 @@ function createWindow () {
   // 并且为你的应用加载index.html
   require('./koa-app')  //导入koa后端入口文件，建立koa服务端
   // TODO 地址需要修改
-  win.loadURL('http://localhost:80')
+  win.loadURL('http://localhost:81')
   // 设置空菜单
   win.setMenu(null)
   // 设置窗口全屏
