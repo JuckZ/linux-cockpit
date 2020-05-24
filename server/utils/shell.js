@@ -1,7 +1,7 @@
 /*
  * @Author: Juck
  * @Date: 2020-03-14 11:30:18
- * @LastEditTime: 2020-05-14 11:44:39
+ * @LastEditTime: 2020-05-20 03:13:18
  * @LastEditors: Juck
  * @Description: 
  * @FilePath: \linux-cockpit\server\utils\shell.js
@@ -123,7 +123,6 @@ function fileManagerHanlder(payload) {
               // case 'wps':
               // case 'xml':
               script = 'curl --upload-file ' + payload.options.currentStatus.srcDir + '/' + target.name + ' https://transfer.sh/' + target.name
-              console.log(script);
               execUploadScript(script, payload)
               break
             case 'png':
@@ -231,7 +230,6 @@ function taskManagerHandler(payload) {
       break
     default:
       console.log('no operation with taskManager');
-
   }
 }
 
