@@ -1,5 +1,9 @@
 # linux-cockpit
 
+## Screen recording
+
+[![](https://raw.githubusercontent.com/JuckZ/linux-cockpit/master/doc/linux-cockpit.jpg)]([https://player.bilibili.com/player.html?aid=683633468&bvid=BV1jS4y1w7SW&cid=711074429&page=1](https://www.bilibili.com/video/BV1it4y11712))
+
 ## Project setup
 ```
 yarn install
